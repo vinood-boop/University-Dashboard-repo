@@ -722,7 +722,7 @@
                   <h3>Programme Details</h3>
                   <div class="detail-fields">
                     <div><span>Programme</span><strong id="detailProgrammeCard">Tropical Biodiversity Programme</strong></div>
-                    <div><span>Category</span><strong id="detailCategory">Nature & Environment</strong></div>
+                    <div><span>Category</span><strong id="detailCategory">Nature and Adventure (NAA)</strong></div>
                     <div><span>Duration</span><strong>30 Days</strong></div>
                     <div><span>Fee</span><strong id="detailFee">RM 3,500</strong></div>
                   </div>
@@ -858,18 +858,30 @@
           <section class="programmes-page">
             <section class="panel programmes-control-panel" data-keywords="programmes filters status create new programme">
               <div class="programmes-controls">
-                <span class="programme-summary-with-tooltip"><span id="programmesSummary">Showing 10 of 11 programmes</span><span class="info-tooltip programme-flow-tooltip" tabindex="0" aria-label="Programme workflow" data-tooltip-trigger>?<span class="tooltip-panel programme-flow-tooltip-panel" role="tooltip"><span class="programme-flow-title">Programme workflow</span><span class="programme-flow-diagram"><span class="programme-flow-step university draft"><b>Draft</b><em>University</em><i>University prepares programme details before submission.</i></span><span class="programme-flow-arrow draft-to-kpt">-&gt;</span><span class="programme-flow-step kpt pending"><b>Pending KPT Approval</b><em>KPT</em><i>KPT reviews the submitted programme.</i></span><span class="programme-flow-arrow kpt-to-live">-&gt;</span><span class="programme-flow-step kpt live"><b>Live</b><em>KPT</em><i>KPT launches approved programmes for applications.</i></span><span class="programme-flow-arrow live-to-archive">-&gt;</span><span class="programme-flow-step university archive"><b>Archived</b><em>University</em><i>University can archive live programmes and keep history.</i></span><span class="programme-flow-arrow pending-to-change">↓</span><span class="programme-flow-arrow change-to-pending">↑</span><span class="programme-flow-step university change"><b>Changes Requested</b><em>University</em><i>KPT asks the university to correct or complete details.</i></span><span class="programme-flow-arrow live-to-resubmit">↓</span><span class="programme-flow-step university resubmit"><b>Resubmit</b><em>University</em><i>Approved programme changes are sent back to KPT review.</i></span><span class="programme-flow-arrow resubmit-to-pending">↖</span></span><span class="programme-flow-note">Universities control drafts, requested changes, resubmissions, and archiving. KPT controls approval and the move to Live.</span></span></span></span>
+                <span class="programme-summary-with-tooltip"><span id="programmesSummary">Showing 10 of 11 programmes</span><span class="info-tooltip programme-flow-tooltip" tabindex="0" aria-label="Programme workflow" data-tooltip-trigger>?<span class="tooltip-panel programme-flow-tooltip-panel" role="tooltip"><span class="programme-flow-title">Programme workflow</span><span class="programme-flow-diagram"><span class="programme-flow-unpublish-return" aria-label="Unpublished programmes return to Pending KPT Approval before publishing again"><span class="programme-flow-arrow">&darr;</span><span>To publish again: return to Pending KPT Approval</span></span><span class="programme-flow-step university draft"><b>Draft</b><em>University</em><i>University prepares programme details before submission.</i></span><span class="programme-flow-arrow draft-to-kpt">&rarr;</span><span class="programme-flow-step kpt pending"><b>Pending KPT Approval</b><em>KPT</em><i>KPT reviews the submitted programme.</i></span><span class="programme-flow-directions"><span class="programme-flow-arrow kpt-to-live" aria-label="KPT approval to Publish">&rarr;</span><span class="programme-flow-arrow live-to-pending" aria-label="Changes to a published programme return to Pending KPT Approval">&larr;</span><span class="programme-flow-return-mark" aria-label="Published programme changes require KPT review">i</span></span><span class="programme-flow-step kpt live"><b>Publish</b><em>KPT</em><i>KPT publishes approved programmes for applications.</i></span><span class="programme-flow-arrow live-to-archive">&rarr;</span><span class="programme-flow-step university archive"><b>Unpublish</b><em>University</em><i>University can unpublish programmes and keep their history.</i></span><span class="programme-flow-arrow pending-to-change">↓</span><span class="programme-flow-arrow change-to-pending">↑</span><span class="programme-flow-step university change"><b>Changes Requested</b><em>University</em><i>KPT asks the university to correct or complete details.</i></span></span><span class="programme-flow-note"><span class="programme-flow-return-mark" aria-hidden="true">i</span> Any changes made to a published programme return it to Pending KPT Approval for review.<br>Universities control drafts, requested changes, and unpublishing. KPT controls approval and publishing. Unpublished programmes must return to KPT approval before being published again.</span></span></span></span>
                 <button class="create-programme-btn" type="button" id="createProgramme">Create new programme</button>
                 <select class="range-select" id="programmePublicStatusFilter" aria-label="Programme status">
                   <option>All statuses</option>
                   <option>Pending KPT Approval</option>
                   <option>Changes Requested</option>
-                  <option>Approved</option>
-                  <option>Live</option>
+                  <option>Published</option>
                   <option>Draft</option>
                   <option>Rejected</option>
-                  <option>Resubmitted</option>
-                  <option>Archived</option>
+                  <option>Unpublish</option>
+                </select>
+                <select class="range-select" id="programmeCategoryFilter" aria-label="Programme category">
+                  <option>All categories</option>
+                  <option>Food, Culture &amp; Heritage (FCH)</option>
+                  <option>Language and Communication (LAC)</option>
+                  <option>Leadership and Management (LAM)</option>
+                  <option>Nature and Adventure (NAA)</option>
+                  <option>Science and Technology (SAT)</option>
+                  <option>Sports (SPT)</option>
+                  <option>Environmental and Health Science (EAH)</option>
+                  <option>Culinary and Hospitality (CAH)</option>
+                  <option>Arts &amp; Social Science (ANS)</option>
+                  <option>Agriculture and Veterinary (AAV)</option>
+                  <option>Business and Entrepreneurship (BAE)</option>
                 </select>
                 <label class="page-size-control">
                   <span>Show</span>
@@ -887,29 +899,29 @@
                 <thead>
                   <tr>
                     <th>Programme</th>
-                    <th>Category</th>
+                    <th><button class="sort-btn" type="button" data-sort-key="category">Category<span aria-hidden="true">&#8597;</span></button></th>
                     <th>Duration</th>
                     <th>Fee</th>
                     <th>Applicants</th>
-                    <th>Status</th>
+                    <th><button class="sort-btn" type="button" data-sort-key="status">Status<span aria-hidden="true">&#8597;</span></button></th>
                     <th>Submission</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-programme-category="nature & environment" data-public-status="pending kpt approval"><td><span class="programme-name">Tropical Biodiversity Programme</span></td><td>Nature & Environment</td><td>30 Days</td><td>RM 3,500</td><td>-</td><td><span class="status-chip amber">Pending KPT Approval</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="language & culture" data-public-status="changes requested"><td><span class="programme-name">Malay Language & Culture</span></td><td>Language & Culture</td><td>14 Days</td><td>RM 1,800</td><td>-</td><td><span class="status-chip purple">Changes Requested</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="business & innovation" data-public-status="live"><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>Business & Innovation</td><td>21 Days</td><td>RM 4,200</td><td>31</td><td><span class="status-chip green">Live</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="heritage & culture" data-public-status="live"><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>Culture & Heritage</td><td>10 Days</td><td>RM 2,100</td><td>16</td><td><span class="status-chip green">Live</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="technology" data-public-status="live"><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>Technology</td><td>12 Days</td><td>RM 3,800</td><td>-</td><td><span class="status-chip green">Live</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="nature & environment" data-public-status="live"><td><span class="programme-name">Rainforest Research Field School</span></td><td>Nature & Environment</td><td>18 Days</td><td>RM 4,100</td><td>-</td><td><span class="status-chip green">Live</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="language & culture" data-public-status="live"><td><span class="programme-name">Borneo Culture Immersion</span></td><td>Language & Culture</td><td>9 Days</td><td>RM 2,700</td><td>-</td><td><span class="status-chip green">Live</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="urban studies" data-public-status="draft"><td><span class="programme-name">Sustainable Cities Programme</span></td><td>Urban Studies</td><td>28 Days</td><td>RM 3,900</td><td>-</td><td><span class="status-chip neutral">Draft</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="culinary culture" data-public-status="rejected"><td><span class="programme-name">Food Culture Field School</span></td><td>Culinary Culture</td><td>12 Days</td><td>RM 2,600</td><td>-</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="technology" data-public-status="resubmitted"><td><span class="programme-name">Applied AI for Tourism</span></td><td>Technology</td><td>18 Days</td><td>RM 4,800</td><td>-</td><td><span class="status-chip blue">Resubmitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="nature & environment" data-public-status="archived"><td><span class="programme-name">Marine Conservation Lab</span></td><td>Nature & Environment</td><td>24 Days</td><td>RM 3,700</td><td>7</td><td><span class="status-chip neutral">Archived</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="language & culture" data-public-status="approved"><td><span class="programme-name">Bahasa for Healthcare Professionals</span></td><td>Language & Culture</td><td>16 Days</td><td>RM 2,400</td><td>-</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="business & innovation" data-public-status="approved"><td><span class="programme-name">Fintech Innovation Studio</span></td><td>Business & Innovation</td><td>20 Days</td><td>RM 4,500</td><td>-</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
-                  <tr data-programme-category="urban studies" data-public-status="archived"><td><span class="programme-name">Smart Mobility Lab</span></td><td>Urban Studies</td><td>15 Days</td><td>RM 3,300</td><td>3</td><td><span class="status-chip neutral">Archived</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="nature and adventure (naa)" data-public-status="pending kpt approval" data-overview="Participants spend 30 days in Malaysian rainforest reserves studying biodiversity through guided treks, species monitoring, and a supervised conservation project." data-language="English: Intermediate" data-target="General Public (including student)" data-credit="Not eligible" data-participants="15 - 25 participants; No participant waiver" data-inclusions="Accommodation, Meals, Local transport, Field equipment" data-activities="Guided rainforest trek, Species monitoring workshop, Conservation talk, Reflective report" data-outcome="Participants can identify key rainforest species, apply basic ecological survey methods, and propose a conservation micro-project." data-travel-tour="Borneo Eco Tours Sdn Bhd" data-certificate="Certificate of Completion" data-pic-name="Dr. Aisyah Rahman" data-pic-phone="+60 12-345 6789" data-pic-email="aisyah.rahman@upm.edu.my" data-pic-fax="+60 3-8946 1234"><td><span class="programme-name">Tropical Biodiversity Programme</span></td><td>Nature and Adventure (NAA)</td><td>30 Days</td><td>RM 3,500</td><td>-</td><td><span class="status-chip amber">Pending KPT Approval</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="language and communication (lac)" data-public-status="changes requested" data-overview="A 14-day language immersion combining structured Bahasa Malaysia lessons with cultural excursions, homestays, and community engagement." data-language="Malay: Beginner" data-target="Student only" data-credit="Eligible" data-participants="10 - 30 participants; 1 participant waived for every 15 participants" data-inclusions="Homestay, Meals, Course materials" data-activities="Daily language class, Batik workshop, Village homestay, Cultural performance" data-outcome="Participants can hold basic conversational Bahasa Malaysia and describe Malaysian cultural practices." data-travel-tour="N/A" data-certificate="Certificate of Attendance" data-pic-name="En. Farid Hakim" data-pic-phone="+60 13-221 5567" data-pic-email="farid.hakim@ukm.edu.my" data-pic-fax="+60 3-8921 4455"><td><span class="programme-name">Malay Language & Culture</span></td><td>Language and Communication (LAC)</td><td>14 Days</td><td>RM 1,800</td><td>-</td><td><span class="status-chip purple">Changes Requested</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="business and entrepreneurship (bae)" data-public-status="published" data-overview="An intensive 21-day bootcamp guiding participants from idea validation to pitching a digital business concept, mentored by industry practitioners." data-language="English: Advanced" data-target="General Public (including student)" data-credit="Not eligible" data-participants="20 - 40 participants; 1 participant waived for every 20 participants" data-inclusions="Co-working space access, Mentorship sessions, Course materials" data-activities="Market validation workshop, MVP building sprint, Pitch coaching, Demo day presentation" data-outcome="Participants can validate a business idea, build a minimum viable product, and pitch to investors." data-travel-tour="N/A" data-certificate="Certificate of Completion" data-pic-name="Ms. Nur Iman Zulkifli" data-pic-phone="+60 17-889 2231" data-pic-email="nuriman@usm.edu.my" data-pic-fax="+60 4-653 2210"><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>Business and Entrepreneurship (BAE)</td><td>21 Days</td><td>RM 4,200</td><td>31</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Digital Entrepreneurship Bootcamp on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="food, culture &amp; heritage (fch)" data-public-status="published" data-overview="A 10-day cultural heritage trail across museums, heritage sites, and community workshops celebrating Malaysia's multicultural history." data-language="None" data-target="General Public (including student)" data-credit="Eligible" data-participants="No participant limit; No participant waiver" data-inclusions="Entrance fees, Local transport, Guided tours" data-activities="Museum visit, Heritage walking tour, Craft workshop, Cultural performance night" data-outcome="Participants can describe key milestones in Malaysian heritage and reflect on multicultural identity." data-travel-tour="Heritage Trails Malaysia" data-certificate="Certificate of Attendance" data-pic-name="Dr. Choo Wei Ling" data-pic-phone="+60 12-771 4482" data-pic-email="chooweiling@um.edu.my" data-pic-fax="+60 3-7967 3344"><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>Food, Culture &amp; Heritage (FCH)</td><td>10 Days</td><td>RM 2,100</td><td>16</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Malaysian Heritage Experience on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="science and technology (sat)" data-public-status="published" data-overview="Participants combine AI tools with heritage storytelling, producing digital exhibits that reinterpret Malaysian folklore and history." data-language="English: Intermediate" data-target="Student only" data-credit="Eligible" data-participants="10 - 20 participants; No participant waiver" data-inclusions="Laptop access, Software licences, Materials" data-activities="AI tools workshop, Archive research visit, Digital storytelling studio, Exhibit showcase" data-outcome="Participants can apply generative AI tools to produce a heritage storytelling digital exhibit." data-travel-tour="TBC" data-certificate="Certificate of Achievement" data-pic-name="Dr. Karthik Selvam" data-pic-phone="+60 19-334 5567" data-pic-email="karthik.selvam@usm.edu.my" data-pic-fax="+60 4-653 8890"><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>Science and Technology (SAT)</td><td>12 Days</td><td>RM 3,800</td><td>-</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View AI Heritage Storytelling Lab on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="nature and adventure (naa)" data-public-status="published" data-overview="An 18-day field research programme training participants in tropical ecology data collection alongside university researchers." data-language="English: Advanced" data-target="Group" data-credit="Eligible" data-participants="8 - 16 participants; 1 participant waived for every 10 participants" data-inclusions="Field station lodging, Meals, Research equipment" data-activities="Camera trap deployment, Vegetation survey, Data analysis workshop, Research presentation" data-outcome="Participants can design and execute a basic field ecology research protocol." data-travel-tour="Borneo Eco Tours Sdn Bhd" data-certificate="Certificate of Completion" data-pic-name="Prof. Dr. Lim Boon Hock" data-pic-phone="+60 88-320 145" data-pic-email="lim.boonhock@ums.edu.my" data-pic-fax="+60 88-435 210"><td><span class="programme-name">Rainforest Research Field School</span></td><td>Nature and Adventure (NAA)</td><td>14 - 21 Days</td><td>RM 4,100</td><td>-</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Rainforest Research Field School on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="arts &amp; social science (ans)" data-public-status="published" data-overview="A 9-day cultural immersion in Sabah longhouses and communities, exploring indigenous Borneo traditions through hands-on activities." data-language="None" data-target="General Public (including student)" data-credit="Not eligible" data-participants="No participant limit; No participant waiver" data-inclusions="Longhouse stay, Meals, Local guide" data-activities="Longhouse stay, Traditional craft workshop, Cultural dance session, Community farming activity" data-outcome="Participants can describe indigenous Bornean customs and practise a traditional craft skill." data-travel-tour="Sabah Native Tours" data-certificate="Certificate of Attendance" data-pic-name="Pn. Salmah Jainal" data-pic-phone="+60 88-772 331" data-pic-email="salmah.jainal@ums.edu.my" data-pic-fax="+60 88-435 998"><td><span class="programme-name">Borneo Culture Immersion</span></td><td>Arts &amp; Social Science (ANS)</td><td>9 Days</td><td>RM 2,700</td><td>-</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Borneo Culture Immersion on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="leadership and management (lam)" data-public-status="draft" data-overview="A 28-day leadership programme exploring urban planning, smart mobility, and sustainability challenges across Malaysian cities." data-language="English: Intermediate" data-target="Group" data-credit="Others: Pending review with partner university" data-participants="15 - 30 participants; 1 participant waived for every 20 participants" data-inclusions="Site visit passes, Workshop materials" data-activities="Urban planning workshop, Smart mobility site visit, Sustainability case study, Group policy proposal" data-outcome="Participants can evaluate urban sustainability challenges and draft a policy recommendation." data-travel-tour="TBC" data-certificate="Certificate of Completion" data-pic-name="Ir. Chandran Muthu" data-pic-phone="+60 12-988 4471" data-pic-email="chandran.muthu@utm.edu.my" data-pic-fax="+60 7-553 2201"><td><span class="programme-name">Sustainable Cities Programme</span></td><td>Leadership and Management (LAM)</td><td>21 - 28 Days</td><td>RM 3,500 - RM 4,200</td><td>-</td><td><span class="status-chip neutral">Draft</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="culinary and hospitality (cah)" data-public-status="rejected" data-overview="A 12-day culinary and hospitality field school covering Malaysian food heritage, kitchen practicum, and hospitality service standards." data-language="None" data-target="General Public (including student)" data-credit="Not eligible" data-participants="No participant limit; No participant waiver" data-inclusions="Ingredients, Kitchen access, Meals" data-activities="Market tour, Kitchen practicum, Hospitality service simulation, Tasting showcase" data-outcome="Participants can prepare signature Malaysian dishes and apply basic hospitality service standards." data-travel-tour="N/A" data-certificate="Certificate of Participation" data-pic-name="Chef Rosnah Ibrahim" data-pic-phone="+60 16-223 9981" data-pic-email="rosnah.ibrahim@uitm.edu.my" data-pic-fax="+60 3-5544 7712"><td><span class="programme-name">Food Culture Field School</span></td><td>Culinary and Hospitality (CAH)</td><td>12 Days</td><td>RM 2,600</td><td>-</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="science and technology (sat)" data-public-status="pending kpt approval" data-overview="An 18-day applied programme where participants build AI-powered tools for tourism use cases, from chatbots to itinerary recommenders." data-language="English: Advanced" data-target="Student only" data-credit="Eligible" data-participants="10 - 25 participants; No participant waiver" data-inclusions="Laptop access, Cloud credits, Materials" data-activities="AI fundamentals workshop, Tourism dataset lab, Prototype building sprint, Industry showcase" data-outcome="Participants can build and demo an AI-powered tourism application prototype." data-travel-tour="TBC" data-certificate="Certificate of Completion" data-pic-name="Dr. Farah Nabila Yusof" data-pic-phone="+60 19-654 3321" data-pic-email="farah.nabila@usm.edu.my" data-pic-fax="+60 4-653 1120"><td><span class="programme-name">Applied AI for Tourism</span></td><td>Science and Technology (SAT)</td><td>18 Days</td><td>RM 4,800</td><td>-</td><td><span class="status-chip amber">Pending KPT Approval</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="environmental and health science (eah)" data-public-status="unpublish" data-overview="A 24-day marine conservation programme combining reef surveys, marine biology labs, and community conservation outreach." data-language="English: Intermediate" data-target="Group" data-credit="Eligible" data-participants="10 - 20 participants; 1 participant waived for every 10 participants" data-inclusions="Dive gear, Accommodation, Meals" data-activities="Reef survey dive, Marine biology lab, Beach clean-up, Conservation outreach talk" data-outcome="Participants can conduct a basic reef survey and propose a marine conservation outreach activity." data-travel-tour="Semporna Dive Adventures" data-certificate="Certificate of Completion" data-pic-name="Dr. Ahmad Zaki Rashid" data-pic-phone="+60 89-781 220" data-pic-email="ahmadzaki.rashid@ums.edu.my" data-pic-fax="+60 88-435 776"><td><span class="programme-name">Marine Conservation Lab</span></td><td>Environmental and Health Science (EAH)</td><td>24 Days</td><td>RM 3,700</td><td>7</td><td><span class="status-chip neutral">Unpublish</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="environmental and health science (eah)" data-public-status="published" data-overview="A 16-day specialised language programme equipping healthcare-focused participants with clinical Bahasa Malaysia communication skills." data-language="Malay: Intermediate" data-target="Group" data-credit="Eligible" data-participants="10 - 20 participants; No participant waiver" data-inclusions="Course materials, Clinical simulation access" data-activities="Clinical vocabulary class, Role-play consultation practice, Hospital visit, Assessment interview" data-outcome="Participants can conduct a basic patient consultation in Bahasa Malaysia." data-travel-tour="N/A" data-certificate="Certificate of Completion" data-pic-name="Dr. Siti Mariam Kassim" data-pic-phone="+60 13-556 7743" data-pic-email="siti.mariam@ukm.edu.my" data-pic-fax="+60 3-8921 6677"><td><span class="programme-name">Bahasa for Healthcare Professionals</span></td><td>Environmental and Health Science (EAH)</td><td>16 Days</td><td>RM 2,400</td><td>-</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Bahasa for Healthcare Professionals on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="business and entrepreneurship (bae)" data-public-status="published" data-overview="A 20-day studio programme where participants design and prototype fintech solutions with guidance from banking and startup partners." data-language="English: Advanced" data-target="General Public (including student)" data-credit="Not eligible" data-participants="15 - 30 participants; 1 participant waived for every 20 participants" data-inclusions="Co-working space access, Mentorship sessions, API sandbox access" data-activities="Fintech landscape briefing, Prototype design sprint, Compliance workshop, Investor demo day" data-outcome="Participants can prototype a fintech solution and present it to a panel of industry mentors." data-travel-tour="N/A" data-certificate="Certificate of Completion" data-pic-name="Mr. Vincent Tan Wei Jie" data-pic-phone="+60 12-334 8891" data-pic-email="vincent.tan@usm.edu.my" data-pic-fax="+60 4-653 9021"><td><span class="programme-name">Fintech Innovation Studio</span></td><td>Business and Entrepreneurship (BAE)</td><td>20 Days</td><td>RM 4,000 - RM 5,000</td><td>-</td><td><span class="programme-status-inline"><span class="status-chip green">Published</span><a class="programme-live-link" href="#" aria-label="View Fintech Innovation Studio on live site" title="View live listing">&#8599;</a></span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
+                  <tr data-programme-category="sports (spt)" data-public-status="unpublish" data-overview="A 15-day lab exploring smart mobility and sports technology innovation, from wearable tracking to urban transport data analysis." data-language="English: Intermediate" data-target="Group" data-credit="Others: Under review with faculty of engineering" data-participants="10 - 20 participants; No participant waiver" data-inclusions="Wearable devices, Lab access, Materials" data-activities="Wearable tech workshop, Mobility data analysis, Prototype testing, Showcase demo" data-outcome="Participants can analyse mobility data and prototype a smart mobility or sports tech solution." data-travel-tour="TBC" data-certificate="Certificate of Completion" data-pic-name="En. Hafiz Rosli" data-pic-phone="+60 12-778 2245" data-pic-email="hafiz.rosli@utm.edu.my" data-pic-fax="+60 7-553 8810"><td><span class="programme-name">Smart Mobility Lab</span></td><td>Sports (SPT)</td><td>15 Days</td><td>RM 3,300</td><td>3</td><td><span class="status-chip neutral">Unpublish</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td></tr>
                 </tbody>
               </table>
             </div>
@@ -930,10 +942,20 @@
                   <p>
                     <span id="programmeDetailMeta">30 Days&nbsp;&nbsp; RM 3,500</span>
                     <span class="status-chip amber" id="programmeDetailStatus">Pending KPT Approval</span>
+                    <a class="programme-live-link" id="programmeDetailLiveLink" href="#" aria-label="View programme on live site" title="View live listing" hidden>&#8599;</a>
                   </p>
                   <p class="programme-detail-summary" id="programmeDetailSummary">Programme overview appears here.</p>
                 </div>
-                <div class="programme-management-actions" id="programmeManagementActions" hidden>
+                <div class="programme-hero-actions">
+                  <div class="programme-hero-actions-row">
+                    <div class="section-actions">
+                      <button type="button" id="editProgrammeDetails">Edit</button>
+                      <button type="button" id="cancelProgrammeDetailsEdit" hidden>Cancel</button>
+                      <button class="primary" type="button" id="saveProgrammeDetails" hidden>Save changes</button>
+                    </div>
+                    <div class="programme-management-actions" id="programmeManagementActions" hidden>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -952,86 +974,248 @@
               </div>
 
               <div class="programme-tab-panel active" data-programme-panel="overview">
-              <div class="detail-grid">
-                <article class="panel detail-panel">
-                  <h3>Programme Information</h3>
+              <div class="programme-overview-grid">
+                <article class="panel detail-panel programme-info-panel accent-mint">
+                  <h3>Basic Information</h3>
                   <div class="detail-fields">
-                    <div><span>Category</span><strong id="programmeDetailCategory">Nature & Environment</strong></div>
-                    <div><span>Duration</span><strong id="programmeDetailDuration">30 Days</strong></div>
-                    <div><span>Fee</span><strong id="programmeDetailFee">RM 3,500</strong></div>
-                    <div><span>Applications</span><strong id="programmeDetailApplicants">24</strong></div>
-                    <div><span>Target Group</span><strong id="programmeDetailTarget">General Public (including student)</strong></div>
-                    <div><span>Credit Transfer</span><strong id="programmeDetailCredit">Eligible</strong></div>
+                    <div>
+                      <span>Category</span>
+                      <strong id="programmeDetailCategory" class="editable-display">Nature and Adventure (NAA)</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailCategory" aria-label="Edit category" hidden>
+                        <option>Food, Culture &amp; Heritage (FCH)</option>
+                        <option>Language and Communication (LAC)</option>
+                        <option>Leadership and Management (LAM)</option>
+                        <option>Nature and Adventure (NAA)</option>
+                        <option>Science and Technology (SAT)</option>
+                        <option>Sports (SPT)</option>
+                        <option>Environmental and Health Science (EAH)</option>
+                        <option>Culinary and Hospitality (CAH)</option>
+                        <option>Arts &amp; Social Science (ANS)</option>
+                        <option>Agriculture and Veterinary (AAV)</option>
+                        <option>Business and Entrepreneurship (BAE)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <span>Language Proficiency</span>
+                      <strong id="programmeDetailLanguage" class="editable-display">English</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailLanguage" aria-label="Edit language proficiency" hidden>
+                        <option>None</option>
+                        <option>English: Beginner</option>
+                        <option>English: Intermediate</option>
+                        <option>English: Advanced</option>
+                        <option>Malay: Beginner</option>
+                        <option>Malay: Intermediate</option>
+                        <option>Malay: Advanced</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
                   </div>
                 </article>
 
-                <article class="panel detail-panel">
+                <article class="panel detail-panel programme-info-panel programme-approval-panel">
                   <h3>Approval Status</h3>
                   <div class="detail-fields">
                     <div><span>Status</span><strong id="programmeDetailStatusText">Pending KPT Approval</strong></div>
                     <div><span>Last Updated</span><strong>13 Aug 2026</strong></div>
-                    <div><span>Language</span><strong id="programmeDetailLanguage">English</strong></div>
-                    <div><span>Gallery</span><strong>4 images uploaded</strong></div>
                   </div>
                 </article>
 
-                <article class="panel detail-panel">
-                  <h3>Learning Scope</h3>
-                  <div class="programme-scope-list">
-                    <div><span>Outcome</span><strong id="programmeDetailOutcome">Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.</strong></div>
-                    <div><span>Activities</span><strong id="programmeDetailActivities">Site visit, guided workshop, reflective project</strong></div>
+                <article class="panel detail-panel programme-info-panel programme-overview-wide accent-lavender">
+                  <h3>Audience, Duration &amp; Fees</h3>
+                  <div class="detail-fields">
+                    <div>
+                      <span>Target Group</span>
+                      <strong id="programmeDetailTarget" class="editable-display">General Public (including student)</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailTarget" data-editable-other="programmeDetailTargetOtherInput" data-editable-other-trigger="Others" aria-label="Edit target group" hidden>
+                        <option>Individual</option>
+                        <option>Group</option>
+                        <option>General Public (including student)</option>
+                        <option>Student only</option>
+                        <option>Others</option>
+                      </select>
+                      <input type="text" class="editable-input editable-other-input" id="programmeDetailTargetOtherInput" placeholder="Describe target group" aria-label="Other target group" hidden>
+                      <small class="field-issue-note" id="programmeDetailTargetIssue" hidden></small>
+                    </div>
+                    <div>
+                      <span>Participants</span>
+                      <strong id="programmeDetailParticipantsLimit" class="editable-display">Not specified</strong>
+                      <strong id="programmeDetailParticipantsWaiver" class="editable-display">No participant waiver</strong>
+                      <div class="editable-compound" data-editable-compound="participants" data-editable-display-limit="programmeDetailParticipantsLimit" data-editable-display-waiver="programmeDetailParticipantsWaiver" hidden>
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="participantLimitType" aria-label="Edit participant limit type">
+                            <option>No limit</option>
+                            <option>Set min/max</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="participantMin" data-visibility="limit" min="1" placeholder="Min e.g., 10" aria-label="Edit minimum participants" hidden>
+                          <input type="number" class="editable-input" data-role="participantMax" data-visibility="limit" min="1" placeholder="Max e.g., 40" aria-label="Edit maximum participants" hidden>
+                        </div>
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="participantWaiverType" aria-label="Edit participant waiver type">
+                            <option>No waiver</option>
+                            <option>Set waiver</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="participantWaived" data-visibility="waiver" min="1" placeholder="Waived e.g., 1" aria-label="Edit waived participants" hidden>
+                          <input type="number" class="editable-input" data-role="participantEvery" data-visibility="waiver" min="1" placeholder="Every e.g., 20" aria-label="Edit for every participants" hidden>
+                        </div>
+                      </div>
+                      <small class="field-issue-note" id="programmeDetailParticipantsIssue" hidden></small>
+                    </div>
+                    <div>
+                      <span>Duration</span>
+                      <strong id="programmeDetailDuration" class="editable-display">30 Days</strong>
+                      <div class="editable-compound" data-editable-compound="duration" data-editable-display="programmeDetailDuration" hidden>
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="durationType" aria-label="Edit duration type">
+                            <option>Fixed days</option>
+                            <option>Date range</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationValue" data-visibility="fixed" min="1" placeholder="e.g., 14" aria-label="Edit duration value">
+                          <select class="editable-input" data-role="durationUnit" data-visibility="fixed" aria-label="Edit duration unit">
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 7" aria-label="Edit minimum duration value" hidden>
+                          <select class="editable-input" data-role="durationMinUnit" data-visibility="range" aria-label="Edit minimum duration unit" hidden>
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 14" aria-label="Edit maximum duration value" hidden>
+                          <select class="editable-input" data-role="durationMaxUnit" data-visibility="range" aria-label="Edit maximum duration unit" hidden>
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                        </div>
+                      </div>
+                      <small class="field-issue-note" id="programmeDetailDurationIssue" hidden></small>
+                    </div>
+                    <div>
+                      <span>Fee</span>
+                      <strong id="programmeDetailFee" class="editable-display">RM 3,500</strong>
+                      <div class="editable-compound" data-editable-compound="fee" data-editable-display="programmeDetailFee" hidden>
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="feeType" aria-label="Edit fee type">
+                            <option>Fixed fee</option>
+                            <option>Fee range</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="feeValue" data-visibility="fixed" min="0" placeholder="e.g., 1200" aria-label="Edit fee amount">
+                          <input type="number" class="editable-input" data-role="feeMin" data-visibility="range" min="0" placeholder="Min e.g., 1000" aria-label="Edit minimum fee" hidden>
+                          <input type="number" class="editable-input" data-role="feeMax" data-visibility="range" min="0" placeholder="Max e.g., 1500" aria-label="Edit maximum fee" hidden>
+                        </div>
+                      </div>
+                      <small class="field-issue-note" id="programmeDetailFeeIssue" hidden></small>
+                    </div>
+                    <div>
+                      <span>Credit Transfer</span>
+                      <strong id="programmeDetailCredit" class="editable-display">Eligible</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailCredit" data-editable-other="programmeDetailCreditOtherInput" data-editable-other-trigger="Others" aria-label="Edit credit transfer" hidden>
+                        <option>Eligible</option>
+                        <option>Not eligible</option>
+                        <option>Others</option>
+                      </select>
+                      <input type="text" class="editable-input editable-other-input" id="programmeDetailCreditOtherInput" placeholder="Explain other credit transfer arrangement" aria-label="Other credit transfer explanation" hidden>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="panel detail-panel programme-info-panel programme-overview-wide accent-sky">
+                  <h3>Travel, Certification &amp; PIC Details</h3>
+                  <div class="detail-fields">
+                    <div>
+                      <span>Registered Travel Tour</span>
+                      <strong id="programmeDetailTravelTour" class="editable-display">TBC</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailTravelTour" data-editable-other="programmeDetailTravelTourOtherInput" data-editable-other-trigger="Registered Travel Agency" data-editable-other-format="raw" aria-label="Edit registered travel tour" hidden>
+                        <option>TBC</option>
+                        <option>N/A</option>
+                        <option>Registered Travel Agency</option>
+                      </select>
+                      <input type="text" class="editable-input editable-other-input" id="programmeDetailTravelTourOtherInput" placeholder="e.g., Borneo Eco Tours Sdn Bhd" aria-label="Travel agency name" hidden>
+                    </div>
+                    <div>
+                      <span>Certificate Type</span>
+                      <strong id="programmeDetailCertificate" class="editable-display">Certificate of Completion</strong>
+                      <select class="editable-input" data-editable-target="programmeDetailCertificate" data-editable-other="programmeDetailCertificateOtherInput" data-editable-other-trigger="Others" data-editable-other-format="raw" aria-label="Edit certificate type" hidden>
+                        <option>Certificate of Completion</option>
+                        <option>Certificate of Attendance</option>
+                        <option>Certificate of Participation</option>
+                        <option>Certificate of Achievement</option>
+                        <option>None</option>
+                        <option>Others</option>
+                      </select>
+                      <input type="text" class="editable-input editable-other-input" id="programmeDetailCertificateOtherInput" placeholder="Describe certificate type" aria-label="Other certificate type" hidden>
+                    </div>
+                  </div>
+                  <div class="programme-pic-card">
+                    <div class="programme-pic-card-head">
+                      <span>Person In Charge</span>
+                      <strong id="programmeDetailPicName" class="editable-display">Not specified</strong>
+                      <input type="text" class="editable-input" data-editable-target="programmeDetailPicName" placeholder="e.g., Dr. Aisyah Rahman" aria-label="Edit PIC name" hidden>
+                    </div>
+                    <div class="programme-pic-card-contact">
+                      <div>
+                        <span>Contact Number</span>
+                        <strong id="programmeDetailPicPhone" class="editable-display">Not specified</strong>
+                        <input type="tel" class="editable-input" data-editable-target="programmeDetailPicPhone" placeholder="e.g., +60 12-345 6789" aria-label="Edit PIC contact number" hidden>
+                      </div>
+                      <div>
+                        <span>Email</span>
+                        <strong id="programmeDetailPicEmail" class="editable-display">Not specified</strong>
+                        <input type="email" class="editable-input" data-editable-target="programmeDetailPicEmail" placeholder="e.g., pic@university.edu.my" aria-label="Edit PIC email" hidden>
+                      </div>
+                      <div>
+                        <span>Fax Number</span>
+                        <strong id="programmeDetailPicFax" class="editable-display">Not specified</strong>
+                        <input type="text" class="editable-input" data-editable-target="programmeDetailPicFax" placeholder="e.g., +60 3-1234 5678" aria-label="Edit PIC fax number" hidden>
+                      </div>
+                    </div>
                   </div>
                 </article>
               </div>
               </div>
 
               <div class="programme-tab-panel" data-programme-panel="details" hidden>
-                <article class="panel detail-panel">
+                <article class="panel detail-panel programme-info-panel accent-peach">
                   <div class="detail-section-head">
-                    <h3>Details</h3>
-                    <div class="section-actions">
-                      <button type="button" id="editProgrammeDetails">Edit</button>
-                      <button type="button" id="cancelProgrammeDetailsEdit" hidden>Cancel</button>
-                      <button class="primary" type="button" id="saveProgrammeDetails" hidden>Save changes</button>
-                    </div>
+                    <h3>Programme Content</h3>
                   </div>
                   <div class="programme-status-notice compact-warning" id="programmeEditWarning" hidden>
                     <strong>Programme changes will be forwarded to KPT.</strong>
                     <p>Saved edits must be reviewed and approved by KPT before they can go live.</p>
                     <button type="button" id="confirmProgrammeChanges">Confirm with KPT</button>
                   </div>
-                  <div class="detail-fields">
-                    <div><span>Overview</span><strong id="programmeDetailsOverview">Programme overview appears here.</strong></div>
-                    <div><span>Language Proficiency</span><strong id="programmeDetailsLanguage">English</strong></div>
-                    <div><span>Target Group</span><strong id="programmeDetailsTarget">General Public (including student)</strong></div>
-                    <div><span>Credit Transfer</span><strong id="programmeDetailsCredit">Eligible</strong></div>
-                    <div><span>Activities</span><strong id="programmeDetailsActivities">Activity 1, Activity 2, guided site visit</strong></div>
-                  </div>
-                  <div class="programme-gallery-detail">
-                    <span>Gallery</span>
-                    <div class="programme-gallery-grid">
-                      <div>
-                        <span class="gallery-thumb" aria-hidden="true"></span>
-                        <strong>Programme cover image</strong>
-                        <small>Placeholder image</small>
-                        <button type="button" data-gallery-action="view">View</button>
-                        <button type="button" data-gallery-action="replace">Replace</button>
+                  <div class="programme-scope-list">
+                    <div class="programme-scope-list-wide">
+                      <span>Learning Outcome</span>
+                      <ul class="programme-detail-list editable-display" id="programmeDetailsOutcome" data-value="Learning outcome 1"><li>Learning outcome 1</li></ul>
+                      <div class="editable-compound" data-editable-compound="list" data-editable-display="programmeDetailsOutcome" data-list-label="Learning outcome" hidden>
+                        <div class="stacked-inputs" data-role="listInputs"></div>
+                        <button class="inline-add-btn" type="button" data-role="listAddButton">+ Add Learning Outcome</button>
                       </div>
-                      <div>
-                        <span class="gallery-thumb" aria-hidden="true"></span>
-                        <strong>Activity image</strong>
-                        <small>Placeholder image</small>
-                        <button type="button" data-gallery-action="view">View</button>
-                        <button type="button" data-gallery-action="replace">Replace</button>
-                      </div>
-                      <div>
-                        <span class="gallery-thumb" aria-hidden="true"></span>
-                        <strong>Campus image</strong>
-                        <small>Placeholder image</small>
-                        <button type="button" data-gallery-action="view">View</button>
-                        <button type="button" data-gallery-action="replace">Replace</button>
+                      <small class="field-issue-note" id="programmeDetailsOutcomeIssue" hidden></small>
+                    </div>
+                    <div>
+                      <span>What Is Included</span>
+                      <ul class="programme-detail-list editable-display" id="programmeDetailsInclusions" data-value="No included items added"><li>No included items added</li></ul>
+                      <div class="editable-compound" data-editable-compound="list" data-editable-display="programmeDetailsInclusions" data-list-label="Included item" hidden>
+                        <div class="stacked-inputs" data-role="listInputs"></div>
+                        <button class="inline-add-btn" type="button" data-role="listAddButton">+ Add Included Item</button>
                       </div>
                     </div>
+                    <div>
+                      <span>Activities</span>
+                      <ul class="programme-detail-list editable-display" id="programmeDetailsActivities" data-value="Activity 1, Activity 2, guided site visit"><li>Activity 1</li><li>Activity 2</li><li>guided site visit</li></ul>
+                      <div class="editable-compound" data-editable-compound="list" data-editable-display="programmeDetailsActivities" data-list-label="Activity" hidden>
+                        <div class="stacked-inputs" data-role="listInputs"></div>
+                        <button class="inline-add-btn" type="button" data-role="listAddButton">+ Add Activity</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="programme-gallery-detail">
+                    <div class="programme-gallery-detail-head">
+                      <span>Gallery</span>
+                      <button class="inline-add-btn editing-only-control" type="button" id="addProgrammeDetailsGalleryImage" hidden>+ Add Images</button>
+                    </div>
+                    <input type="file" id="programmeDetailsGalleryInput" accept="image/*" multiple hidden>
+                    <div class="programme-gallery-grid" id="programmeDetailsGalleryGrid"></div>
                   </div>
                 </article>
               </div>
@@ -1042,7 +1226,7 @@
                     <h3 id="programmeChangesTitle">Proceed with programme changes?</h3>
                     <button class="modal-close" type="button" id="closeProgrammeChanges" aria-label="Close confirmation dialog">X</button>
                   </div>
-                  <p class="confirm-message">Saving these edits will forward the programme to KPT for approval before the changes can go live. Proceed with changes?</p>
+                  <p class="confirm-message">Saving these edits will forward the programme to <strong>KPT for approval</strong> before the changes can go live. Proceed with changes?</p>
                   <div class="modal-actions">
                     <button type="button" id="cancelProgrammeChanges">Cancel</button>
                     <button class="primary" type="button" id="proceedProgrammeChanges">Proceed with changes</button>
@@ -1058,9 +1242,72 @@
                   </div>
                   <div class="programme-requested-form">
                     <label class="request-textbox">
+                      <em id="requestedProgrammeDurationNote">Duration needs clarification. KPT requested a clearer programme duration.</em>
+                      <span>Duration *</span>
+                      <span id="requestedProgrammeDurationDisplay" hidden></span>
+                      <div class="editable-compound" id="requestedProgrammeDurationCompound" data-editable-compound="duration">
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="durationType" aria-label="Requested duration type">
+                            <option>Fixed days</option>
+                            <option>Date range</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationValue" data-visibility="fixed" min="1" placeholder="e.g., 14" aria-label="Requested duration value">
+                          <select class="editable-input" data-role="durationUnit" data-visibility="fixed" aria-label="Requested duration unit">
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 7" aria-label="Requested minimum duration value" hidden>
+                          <select class="editable-input" data-role="durationMinUnit" data-visibility="range" aria-label="Requested minimum duration unit" hidden>
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 14" aria-label="Requested maximum duration value" hidden>
+                          <select class="editable-input" data-role="durationMaxUnit" data-visibility="range" aria-label="Requested maximum duration unit" hidden>
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </label>
+                    <label class="request-textbox">
                       <em id="requestedProgrammeFeeNote">Fee needs clarification. KPT requested a clearer fee amount and currency.</em>
                       <span>Fees *</span>
-                      <input type="text" id="requestedProgrammeFee" value="RM 1,800" aria-label="Requested programme fee">
+                      <span id="requestedProgrammeFeeDisplay" hidden></span>
+                      <div class="editable-compound" id="requestedProgrammeFeeCompound" data-editable-compound="fee">
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="feeType" aria-label="Requested fee type">
+                            <option>Fixed fee</option>
+                            <option>Fee range</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="feeValue" data-visibility="fixed" min="0" placeholder="e.g., 1200" aria-label="Requested fee amount">
+                          <input type="number" class="editable-input" data-role="feeMin" data-visibility="range" min="0" placeholder="Min e.g., 1000" aria-label="Requested minimum fee" hidden>
+                          <input type="number" class="editable-input" data-role="feeMax" data-visibility="range" min="0" placeholder="Max e.g., 1500" aria-label="Requested maximum fee" hidden>
+                        </div>
+                      </div>
+                    </label>
+                    <label class="request-textbox">
+                      <em id="requestedProgrammeParticipantsNote">Participant limits and waivers must match what KPT reviewed.</em>
+                      <span>Participants *</span>
+                      <span id="requestedProgrammeParticipantsLimitDisplay" hidden></span>
+                      <span id="requestedProgrammeParticipantsWaiverDisplay" hidden></span>
+                      <div class="editable-compound" id="requestedProgrammeParticipantsCompound" data-editable-compound="participants">
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="participantLimitType" aria-label="Requested participant limit type">
+                            <option>No limit</option>
+                            <option>Set min/max</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="participantMin" data-visibility="limit" min="1" placeholder="Min e.g., 10" aria-label="Requested minimum participants" hidden>
+                          <input type="number" class="editable-input" data-role="participantMax" data-visibility="limit" min="1" placeholder="Max e.g., 40" aria-label="Requested maximum participants" hidden>
+                        </div>
+                        <div class="editable-compound-row">
+                          <select class="editable-input" data-role="participantWaiverType" aria-label="Requested participant waiver type">
+                            <option>No waiver</option>
+                            <option>Set waiver</option>
+                          </select>
+                          <input type="number" class="editable-input" data-role="participantWaived" data-visibility="waiver" min="1" placeholder="Waived e.g., 1" aria-label="Requested waived participants" hidden>
+                          <input type="number" class="editable-input" data-role="participantEvery" data-visibility="waiver" min="1" placeholder="Every e.g., 20" aria-label="Requested for every participants" hidden>
+                        </div>
+                      </div>
                     </label>
                     <label class="request-textbox">
                       <em id="requestedProgrammeLearningNote">Learning outcomes are too broad. Add a measurable outcome for participants.</em>
@@ -1081,53 +1328,6 @@
                   <div class="modal-actions">
                     <button type="button" id="cancelRequestedChanges">Cancel</button>
                     <button class="primary" type="button" id="submitRequestedChanges">Confirm changes</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="request-modal" id="draftProgrammeModal" hidden>
-                <div class="request-modal-card wide-modal-card" role="dialog" aria-modal="true" aria-labelledby="draftProgrammeTitle">
-                  <div class="request-modal-head">
-                    <h3 id="draftProgrammeTitle">Continue editing draft</h3>
-                    <button class="modal-close" type="button" id="closeDraftProgramme" aria-label="Close draft programme dialog">X</button>
-                  </div>
-                  <div class="programme-requested-form">
-                    <label class="request-textbox">
-                      <span>Programme Name *</span>
-                      <input type="text" id="draftProgrammeName" value="Sustainable Cities Programme" aria-label="Draft programme name">
-                    </label>
-                    <label class="request-textbox">
-                      <span>Overview *</span>
-                      <textarea id="draftProgrammeOverview" rows="3" aria-label="Draft programme overview">Sustainable Cities Programme explores urban planning, smart mobility, and sustainability challenges in Malaysian cities.</textarea>
-                    </label>
-                    <div class="programme-inline-row">
-                      <label class="request-textbox">
-                        <span>Duration *</span>
-                        <input type="text" id="draftProgrammeDuration" value="28 Days" aria-label="Draft duration">
-                      </label>
-                      <label class="request-textbox">
-                        <span>Fees *</span>
-                        <input type="text" id="draftProgrammeFee" value="RM 3,900" aria-label="Draft fee">
-                      </label>
-                      <label class="request-textbox">
-                        <span>Target Group *</span>
-                        <select class="range-select" id="draftProgrammeTarget" aria-label="Draft target group">
-                          <option>Individual</option>
-                          <option>Group</option>
-                          <option selected>General Public (including student)</option>
-                          <option>Student only</option>
-                        </select>
-                      </label>
-                    </div>
-                    <label class="request-textbox">
-                      <span>Learning Scope *</span>
-                      <textarea id="draftProgrammeLearning" rows="3" aria-label="Draft learning scope">Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.</textarea>
-                    </label>
-                  </div>
-                  <div class="modal-actions">
-                    <button type="button" id="cancelDraftProgramme">Cancel</button>
-                    <button type="button" id="saveDraftProgramme">Save Draft</button>
-                    <button class="primary" type="button" id="submitDraftProgramme">Submit to KPT</button>
                   </div>
                 </div>
               </div>
@@ -1201,14 +1401,17 @@
               <div class="detail-hero panel">
                 <div>
                   <button class="back-link" type="button" id="backToProgrammes"><span aria-hidden="true">&#8592;</span> Back to programmes</button>
-                  <h2>Create New Programme</h2>
+                  <h2 id="programmeCreateHeading">Create New Programme</h2>
                   <p>
-                    <span>Add a new Edutourism programme for international students.</span>
+                    <span id="programmeCreateSubheading">Add a new Edutourism programme for international students.</span>
                   </p>
                 </div>
               </div>
               <article class="panel detail-panel">
                 <div class="programme-form-grid">
+                  <div class="programme-form-wide programme-section-divider divider-mint">
+                    <h3>Basic Information</h3>
+                  </div>
                   <label class="request-textbox programme-form-wide">
                     <span>Programme Name *</span>
                     <input type="text" id="createProgrammeName" placeholder="e.g., Summer Research Programme 2026" aria-label="Programme name">
@@ -1217,39 +1420,43 @@
                     <span>Overview *</span>
                     <textarea rows="4" id="createProgrammeOverview" placeholder="Provide a comprehensive overview of the programme..." aria-label="Programme overview"></textarea>
                   </label>
-                  <div class="programme-inline-row programme-form-wide">
+                  <div class="programme-split-row programme-form-wide">
                     <label class="request-textbox">
-                      <span>Duration *</span>
-                      <input type="text" id="createProgrammeDuration" placeholder="e.g., 8 weeks or 2 months" aria-label="Programme duration">
+                      <span>Category *</span>
+                      <select class="range-select" id="createProgrammeCategory" aria-label="Programme category">
+                        <option>Select programme category</option>
+                        <option>Food, Culture &amp; Heritage (FCH)</option>
+                        <option>Language and Communication (LAC)</option>
+                        <option>Leadership and Management (LAM)</option>
+                        <option>Nature and Adventure (NAA)</option>
+                        <option>Science and Technology (SAT)</option>
+                        <option>Sports (SPT)</option>
+                        <option>Environmental and Health Science (EAH)</option>
+                        <option>Culinary and Hospitality (CAH)</option>
+                        <option>Arts &amp; Social Science (ANS)</option>
+                        <option>Agriculture and Veterinary (AAV)</option>
+                        <option>Business and Entrepreneurship (BAE)</option>
+                      </select>
                     </label>
-                    <div class="request-textbox">
-                      <span>Fees *</span>
-                      <div class="fee-row">
-                        <select class="range-select" id="createProgrammeCurrency" aria-label="Currency">
-                          <option>USD</option>
-                          <option>MYR</option>
-                        </select>
-                        <input type="text" id="createProgrammeFee" placeholder="e.g., 5000" aria-label="Programme fee">
-                      </div>
-                    </div>
                     <label class="request-textbox">
                       <span>Language Proficiency *</span>
                       <select class="range-select" id="createProgrammeLanguage" aria-label="Language proficiency">
                         <option>Select required language proficiency</option>
-                        <option>English</option>
-                        <option>Malay</option>
+                        <option>None</option>
+                        <option>English: Beginner</option>
+                        <option>English: Intermediate</option>
+                        <option>English: Advanced</option>
+                        <option>Malay: Beginner</option>
+                        <option>Malay: Intermediate</option>
+                        <option>Malay: Advanced</option>
+                        <option>Other</option>
                       </select>
                     </label>
                   </div>
-                  <div class="programme-toggle-row programme-form-wide">
-                    <div>
-                      <strong>Eligibility for Credit Transfer</strong>
-                      <span>Is this programme eligible for credit transfer?</span>
-                    </div>
-                    <label class="toggle-switch">
-                      <input type="checkbox" id="createProgrammeCredit" aria-label="Eligibility for credit transfer">
-                      <span></span>
-                    </label>
+                  <div class="programme-form-wide programme-section-divider divider-lavender">
+                    <h3>Audience, Duration &amp; Fees</h3>
+                  </div>
+                  <div class="programme-split-row programme-form-wide">
                     <label class="request-textbox">
                       <span>Target Group *</span>
                       <select class="range-select" id="createProgrammeTarget" aria-label="Target group">
@@ -1258,16 +1465,165 @@
                         <option>Group</option>
                         <option>General Public (including student)</option>
                         <option>Student only</option>
+                        <option>Others</option>
                       </select>
                     </label>
+                    <label class="request-textbox" id="createProgrammeTargetOtherField" hidden>
+                      <span>Other Target Group *</span>
+                      <input type="text" id="createProgrammeTargetOther" placeholder="Describe target group" aria-label="Other target group">
+                    </label>
                   </div>
-                  <div class="request-textbox programme-form-wide">
-                    <span>List of Activities *</span>
-                    <div class="stacked-inputs" id="programmeActivities">
-                      <label><input type="text" value="Activity 1" aria-label="Activity 1"><button type="button" aria-label="Remove activity" data-remove-item>X</button></label>
-                      <label><input type="text" value="Activity 2" aria-label="Activity 2"><button type="button" aria-label="Remove activity" data-remove-item>X</button></label>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Participants</strong>
+                      <span>Set participant limits only when the programme requires a minimum or maximum group size.</span>
                     </div>
-                    <button class="inline-add-btn" type="button" id="addProgrammeActivity">+ Add Activity</button>
+                    <div class="programme-setting-controls participant-setting-controls">
+                      <div class="participant-control-row">
+                        <label class="request-textbox">
+                          <span>Participant Limit *</span>
+                          <select class="range-select" id="createProgrammeParticipantLimitType" aria-label="Participant limit type">
+                            <option>No limit</option>
+                            <option>Set min/max</option>
+                          </select>
+                        </label>
+                        <div class="dual-input-row" id="createProgrammeParticipantLimitFields" hidden>
+                          <label class="request-textbox">
+                            <span>Minimum Participants *</span>
+                            <input type="number" id="createProgrammeMinParticipants" min="1" placeholder="e.g., 10" aria-label="Minimum participants">
+                          </label>
+                          <label class="request-textbox">
+                            <span>Maximum Participants *</span>
+                            <input type="number" id="createProgrammeMaxParticipants" min="1" placeholder="e.g., 40" aria-label="Maximum participants">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="participant-control-row">
+                        <label class="request-textbox">
+                          <span>Participant Waiver *</span>
+                          <select class="range-select" id="createProgrammeWaiverType" aria-label="Participant waiver type">
+                            <option>No waiver</option>
+                            <option>Set waiver</option>
+                          </select>
+                        </label>
+                        <div class="request-textbox" id="createProgrammeWaiverFields" hidden>
+                          <div class="dual-input-row">
+                            <label class="request-textbox">
+                              <span>Waived Participants *</span>
+                              <input type="number" id="createProgrammeWaivedParticipants" min="1" placeholder="e.g., 1" aria-label="Waived participants">
+                            </label>
+                            <label class="request-textbox">
+                              <span>For Every Participants *</span>
+                              <input type="number" id="createProgrammeWaiverEveryParticipants" min="1" placeholder="e.g., 20" aria-label="For every participants">
+                            </label>
+                          </div>
+                          <small id="createProgrammeWaiverPreview">Waiver for 1 participant for every 20 participants.</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Duration</strong>
+                      <span>Set a fixed number of days, or provide a range when the programme length can vary.</span>
+                    </div>
+                    <div class="programme-setting-controls">
+                      <label class="request-textbox">
+                        <span>Duration Type *</span>
+                        <select class="range-select" id="createProgrammeDurationType" aria-label="Duration type">
+                          <option>Fixed days</option>
+                          <option>Date range</option>
+                        </select>
+                      </label>
+                      <label class="request-textbox">
+                        <span>Fixed Duration *</span>
+                        <div class="duration-value-row">
+                          <input type="number" id="createProgrammeDuration" min="1" placeholder="e.g., 14" aria-label="Programme fixed duration value">
+                          <select class="range-select" id="createProgrammeDurationUnit" aria-label="Programme fixed duration unit">
+                            <option>Day(s)</option>
+                            <option>Month(s)</option>
+                          </select>
+                        </div>
+                      </label>
+                      <label class="request-textbox" id="createProgrammeDurationRangeFields" hidden>
+                        <span>Duration Range *</span>
+                        <div class="dual-input-row">
+                          <div class="duration-value-row">
+                            <input type="number" id="createProgrammeDurationMin" min="1" placeholder="Min e.g., 7" aria-label="Minimum duration value">
+                            <select class="range-select" id="createProgrammeDurationMinUnit" aria-label="Minimum duration unit">
+                              <option>Day(s)</option>
+                              <option>Month(s)</option>
+                            </select>
+                          </div>
+                          <div class="duration-value-row">
+                            <input type="number" id="createProgrammeDurationMax" min="1" placeholder="Max e.g., 14" aria-label="Maximum duration value">
+                            <select class="range-select" id="createProgrammeDurationMaxUnit" aria-label="Maximum duration unit">
+                              <option>Day(s)</option>
+                              <option>Month(s)</option>
+                            </select>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Fee</strong>
+                      <span>Enter programme fees in USD as a fixed amount or a fee range.</span>
+                    </div>
+                    <div class="programme-setting-controls">
+                      <label class="request-textbox">
+                        <span>Fee Type *</span>
+                        <select class="range-select" id="createProgrammeFeeType" aria-label="Fee type">
+                          <option>Fixed fee</option>
+                          <option>Fee range</option>
+                        </select>
+                      </label>
+                      <label class="request-textbox">
+                        <span>Fixed Fee (USD) *</span>
+                        <input type="number" id="createProgrammeFee" min="0" step="1" placeholder="e.g., 1200" aria-label="Programme fixed fee">
+                      </label>
+                      <label class="request-textbox" id="createProgrammeFeeRangeFields" hidden>
+                        <span>Fee Range (USD) *</span>
+                        <div class="dual-input-row">
+                          <input type="number" id="createProgrammeFeeMin" min="0" step="1" placeholder="Min e.g., 1000" aria-label="Minimum fee">
+                          <input type="number" id="createProgrammeFeeMax" min="0" step="1" placeholder="Max e.g., 1500" aria-label="Maximum fee">
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Eligibility for Credit Transfer</strong>
+                      <span>Is this programme eligible for credit transfer?</span>
+                    </div>
+                    <div class="request-textbox">
+                      <span>Credit Transfer *</span>
+                      <div class="radio-option-row" id="createProgrammeCredit" role="radiogroup" aria-label="Eligibility for credit transfer">
+                        <label><input type="radio" name="createProgrammeCredit" value="Yes"> Yes</label>
+                        <label><input type="radio" name="createProgrammeCredit" value="No" checked> No</label>
+                        <label><input type="radio" name="createProgrammeCredit" value="Others"> Others</label>
+                      </div>
+                      <input type="text" id="createProgrammeCreditOther" placeholder="Explain other credit transfer arrangement" aria-label="Other credit transfer explanation" hidden>
+                    </div>
+                  </div>
+                  <div class="programme-form-wide programme-section-divider divider-peach">
+                    <h3>Programme Content</h3>
+                  </div>
+                  <div class="programme-split-row programme-form-wide">
+                    <div class="request-textbox">
+                      <span>What Is Included</span>
+                      <div class="stacked-inputs" id="programmeInclusions" data-minimum-items="0"></div>
+                      <button class="inline-add-btn" type="button" id="addProgrammeInclusion">+ Add Included Item</button>
+                    </div>
+                    <div class="request-textbox">
+                      <span>List of Activities *</span>
+                      <div class="stacked-inputs" id="programmeActivities">
+                        <label><input type="text" placeholder="Activity 1" aria-label="Activity 1"><button type="button" aria-label="Remove activity" data-remove-item>X</button></label>
+                        <label><input type="text" placeholder="Activity 2" aria-label="Activity 2"><button type="button" aria-label="Remove activity" data-remove-item>X</button></label>
+                      </div>
+                      <button class="inline-add-btn" type="button" id="addProgrammeActivity">+ Add Activity</button>
+                    </div>
                   </div>
                   <div class="request-textbox programme-form-wide">
                     <span>Gallery</span>
@@ -1278,6 +1634,7 @@
                       <input type="file" id="createProgrammeGallery" accept="image/*" multiple hidden>
                       <button type="button" id="browseProgrammeGallery">Browse Files</button>
                       <small id="programmeGalleryCount">No images selected</small>
+                      <div class="gallery-preview-grid" id="programmeGalleryPreview" aria-label="Selected programme images"></div>
                     </div>
                   </div>
                   <div class="request-textbox programme-form-wide">
@@ -1286,6 +1643,76 @@
                       <label><input type="text" value="Learning outcome 1" aria-label="Learning outcome 1"><button type="button" aria-label="Remove learning scope" data-remove-item>X</button></label>
                     </div>
                     <button class="inline-add-btn" type="button" id="addProgrammeLearningScope">+ Add Learning Scope</button>
+                  </div>
+                  <div class="programme-form-wide programme-section-divider divider-sky">
+                    <h3>Travel, Certification &amp; PIC Details</h3>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Registered Travel Tour</strong>
+                      <span>Set the travel tour status, or name the registered travel agency handling this programme.</span>
+                    </div>
+                    <div class="programme-setting-controls">
+                      <label class="request-textbox">
+                        <span>Travel Tour Status *</span>
+                        <select class="range-select" id="createProgrammeTravelTour" aria-label="Registered travel tour status">
+                          <option>TBC</option>
+                          <option>N/A</option>
+                          <option>Registered Travel Agency</option>
+                        </select>
+                      </label>
+                      <label class="request-textbox" id="createProgrammeTravelAgencyField" hidden>
+                        <span>Travel Agency Name *</span>
+                        <input type="text" id="createProgrammeTravelAgency" placeholder="e.g., Borneo Eco Tours Sdn Bhd" aria-label="Travel agency name">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Certificate Type</strong>
+                      <span>Choose the certificate participants receive on completion, or specify another type.</span>
+                    </div>
+                    <div class="programme-setting-controls">
+                      <label class="request-textbox">
+                        <span>Certificate Type *</span>
+                        <select class="range-select" id="createProgrammeCertificateType" aria-label="Certificate type">
+                          <option>Certificate of Completion</option>
+                          <option>Certificate of Attendance</option>
+                          <option>Certificate of Participation</option>
+                          <option>Certificate of Achievement</option>
+                          <option>None</option>
+                          <option>Others</option>
+                        </select>
+                      </label>
+                      <label class="request-textbox" id="createProgrammeCertificateOtherField" hidden>
+                        <span>Other Certificate Type *</span>
+                        <input type="text" id="createProgrammeCertificateOther" placeholder="Describe certificate type" aria-label="Other certificate type">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="programme-setting-row programme-form-wide">
+                    <div>
+                      <strong>Person In Charge (PIC) Details</strong>
+                      <span>Main contact for KPT correspondence and programme coordination.</span>
+                    </div>
+                    <div class="programme-setting-controls">
+                      <label class="request-textbox">
+                        <span>PIC Name *</span>
+                        <input type="text" id="createProgrammePicName" placeholder="e.g., Dr. Aisyah Rahman" aria-label="PIC name">
+                      </label>
+                      <label class="request-textbox">
+                        <span>PIC Contact Number *</span>
+                        <input type="tel" id="createProgrammePicPhone" placeholder="e.g., +60 12-345 6789" aria-label="PIC contact number">
+                      </label>
+                      <label class="request-textbox">
+                        <span>PIC Email *</span>
+                        <input type="email" id="createProgrammePicEmail" placeholder="e.g., pic@university.edu.my" aria-label="PIC email">
+                      </label>
+                      <label class="request-textbox">
+                        <span>PIC Fax Number</span>
+                        <input type="text" id="createProgrammePicFax" placeholder="e.g., +60 3-1234 5678" aria-label="PIC fax number">
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div class="modal-actions programme-form-actions">
@@ -1388,11 +1815,11 @@
                     <tr><th>Programme</th><th>Total Apps</th><th>Acceptance Rate</th><th>Avg Processing</th><th>Offer Letters</th><th>Revenue</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span><small>Business & Innovation</small></td><td><span class="status-chip blue">45</span></td><td>71%</td><td>5 days</td><td><span class="status-chip green">32</span></td><td>RM 130,200</td></tr>
-                    <tr><td><span class="programme-name">Malaysian Heritage Experience</span><small>Culture & Heritage</small></td><td><span class="status-chip blue">38</span></td><td>63%</td><td>4 days</td><td><span class="status-chip green">24</span></td><td>RM 88,200</td></tr>
-                    <tr><td><span class="programme-name">Marine Conservation Lab</span><small>Nature & Environment</small></td><td><span class="status-chip blue">32</span></td><td>62%</td><td>6 days</td><td><span class="status-chip green">20</span></td><td>RM 51,800</td></tr>
-                    <tr><td><span class="programme-name">Applied AI for Tourism</span><small>Technology</small></td><td><span class="status-chip blue">25</span></td><td>72%</td><td>3 days</td><td><span class="status-chip green">18</span></td><td>RM 32,400</td></tr>
-                    <tr><td><span class="programme-name">Borneo Culture Immersion</span><small>Language & Culture</small></td><td><span class="status-chip blue">16</span></td><td>62%</td><td>7 days</td><td><span class="status-chip green">10</span></td><td>RM 16,000</td></tr>
+                    <tr><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span><small>Business and Entrepreneurship (BAE)</small></td><td><span class="status-chip blue">45</span></td><td>71%</td><td>5 days</td><td><span class="status-chip green">32</span></td><td>RM 130,200</td></tr>
+                    <tr><td><span class="programme-name">Malaysian Heritage Experience</span><small>Food, Culture &amp; Heritage (FCH)</small></td><td><span class="status-chip blue">38</span></td><td>63%</td><td>4 days</td><td><span class="status-chip green">24</span></td><td>RM 88,200</td></tr>
+                    <tr><td><span class="programme-name">Marine Conservation Lab</span><small>Environmental and Health Science (EAH)</small></td><td><span class="status-chip blue">32</span></td><td>62%</td><td>6 days</td><td><span class="status-chip green">20</span></td><td>RM 51,800</td></tr>
+                    <tr><td><span class="programme-name">Applied AI for Tourism</span><small>Science and Technology (SAT)</small></td><td><span class="status-chip blue">25</span></td><td>72%</td><td>3 days</td><td><span class="status-chip green">18</span></td><td>RM 32,400</td></tr>
+                    <tr><td><span class="programme-name">Borneo Culture Immersion</span><small>Arts &amp; Social Science (ANS)</small></td><td><span class="status-chip blue">16</span></td><td>62%</td><td>7 days</td><td><span class="status-chip green">10</span></td><td>RM 16,000</td></tr>
                   </tbody>
                 </table>
               </div>

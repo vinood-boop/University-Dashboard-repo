@@ -14,10 +14,12 @@ const applicantTypeFilter = document.querySelector("#applicantTypeFilter");
 const nationalityFilter = document.querySelector("#nationalityFilter");
 const applicantsPerPage = document.querySelector("#applicantsPerPage");
 const programmePublicStatusFilter = document.querySelector("#programmePublicStatusFilter");
+const programmeCategoryFilter = document.querySelector("#programmeCategoryFilter");
 const programmesPerPage = document.querySelector("#programmesPerPage");
 const programmesSummary = document.querySelector("#programmesSummary");
 const programmesTableBody = document.querySelector(".programmes-table tbody");
 let programmeRows = document.querySelectorAll(".programmes-table tbody tr");
+const programmeSortButtons = document.querySelectorAll(".programmes-table [data-sort-key]");
 const programmePaginationSummary = document.querySelector("#programmePaginationSummary");
 const programmePageIndicator = document.querySelector("#programmePageIndicator");
 const prevProgrammePage = document.querySelector("#prevProgrammePage");
@@ -29,6 +31,7 @@ const cancelProgrammeCreate = document.querySelector("#cancelProgrammeCreate");
 const backToProgrammes = document.querySelector("#backToProgrammes");
 const backToProgrammesFromDetail = document.querySelector("#backToProgrammesFromDetail");
 const programmeManagementActions = document.querySelector("#programmeManagementActions");
+const programmeDetailLiveLink = document.querySelector("#programmeDetailLiveLink");
 const programmeDetailTabButtons = document.querySelectorAll("[data-programme-tab]");
 const programmeDetailPanels = document.querySelectorAll("[data-programme-panel]");
 const programmeApplicationsRows = document.querySelector("#programmeApplicationsRows");
@@ -46,24 +49,21 @@ const requestedChangesModal = document.querySelector("#requestedChangesModal");
 const closeRequestedChanges = document.querySelector("#closeRequestedChanges");
 const cancelRequestedChanges = document.querySelector("#cancelRequestedChanges");
 const submitRequestedChanges = document.querySelector("#submitRequestedChanges");
-const requestedProgrammeFee = document.querySelector("#requestedProgrammeFee");
 const requestedProgrammeLearning = document.querySelector("#requestedProgrammeLearning");
 const requestedProgrammeTarget = document.querySelector("#requestedProgrammeTarget");
 const requestedProgrammeFeeNote = document.querySelector("#requestedProgrammeFeeNote");
 const requestedProgrammeLearningNote = document.querySelector("#requestedProgrammeLearningNote");
 const requestedProgrammeTargetNote = document.querySelector("#requestedProgrammeTargetNote");
+const requestedProgrammeDurationNote = document.querySelector("#requestedProgrammeDurationNote");
+const requestedProgrammeParticipantsNote = document.querySelector("#requestedProgrammeParticipantsNote");
+const requestedProgrammeDurationCompound = document.querySelector("#requestedProgrammeDurationCompound");
+const requestedProgrammeDurationDisplay = document.querySelector("#requestedProgrammeDurationDisplay");
+const requestedProgrammeFeeCompound = document.querySelector("#requestedProgrammeFeeCompound");
+const requestedProgrammeFeeDisplay = document.querySelector("#requestedProgrammeFeeDisplay");
+const requestedProgrammeParticipantsCompound = document.querySelector("#requestedProgrammeParticipantsCompound");
+const requestedProgrammeParticipantsLimitDisplay = document.querySelector("#requestedProgrammeParticipantsLimitDisplay");
+const requestedProgrammeParticipantsWaiverDisplay = document.querySelector("#requestedProgrammeParticipantsWaiverDisplay");
 const requestedChangesTitle = document.querySelector("#requestedChangesTitle");
-const draftProgrammeModal = document.querySelector("#draftProgrammeModal");
-const closeDraftProgramme = document.querySelector("#closeDraftProgramme");
-const cancelDraftProgramme = document.querySelector("#cancelDraftProgramme");
-const saveDraftProgramme = document.querySelector("#saveDraftProgramme");
-const submitDraftProgramme = document.querySelector("#submitDraftProgramme");
-const draftProgrammeName = document.querySelector("#draftProgrammeName");
-const draftProgrammeOverview = document.querySelector("#draftProgrammeOverview");
-const draftProgrammeDuration = document.querySelector("#draftProgrammeDuration");
-const draftProgrammeFee = document.querySelector("#draftProgrammeFee");
-const draftProgrammeTarget = document.querySelector("#draftProgrammeTarget");
-const draftProgrammeLearning = document.querySelector("#draftProgrammeLearning");
 const kptNoticeModal = document.querySelector("#kptNoticeModal");
 const kptNoticeTitle = document.querySelector("#kptNoticeTitle");
 const kptNoticeBody = document.querySelector("#kptNoticeBody");
@@ -76,17 +76,58 @@ const programmeActivities = document.querySelector("#programmeActivities");
 const addProgrammeActivity = document.querySelector("#addProgrammeActivity");
 const programmeLearningScopes = document.querySelector("#programmeLearningScopes");
 const addProgrammeLearningScope = document.querySelector("#addProgrammeLearningScope");
+const programmeCreateHeading = document.querySelector("#programmeCreateHeading");
+const programmeCreateSubheading = document.querySelector("#programmeCreateSubheading");
 const createProgrammeName = document.querySelector("#createProgrammeName");
 const createProgrammeOverview = document.querySelector("#createProgrammeOverview");
+const createProgrammeCategory = document.querySelector("#createProgrammeCategory");
+const createProgrammeDurationType = document.querySelector("#createProgrammeDurationType");
 const createProgrammeDuration = document.querySelector("#createProgrammeDuration");
-const createProgrammeCurrency = document.querySelector("#createProgrammeCurrency");
+const createProgrammeDurationUnit = document.querySelector("#createProgrammeDurationUnit");
+const createProgrammeDurationRangeFields = document.querySelector("#createProgrammeDurationRangeFields");
+const createProgrammeDurationMin = document.querySelector("#createProgrammeDurationMin");
+const createProgrammeDurationMinUnit = document.querySelector("#createProgrammeDurationMinUnit");
+const createProgrammeDurationMax = document.querySelector("#createProgrammeDurationMax");
+const createProgrammeDurationMaxUnit = document.querySelector("#createProgrammeDurationMaxUnit");
+const createProgrammeFeeType = document.querySelector("#createProgrammeFeeType");
 const createProgrammeFee = document.querySelector("#createProgrammeFee");
+const createProgrammeFeeRangeFields = document.querySelector("#createProgrammeFeeRangeFields");
+const createProgrammeFeeMin = document.querySelector("#createProgrammeFeeMin");
+const createProgrammeFeeMax = document.querySelector("#createProgrammeFeeMax");
 const createProgrammeLanguage = document.querySelector("#createProgrammeLanguage");
 const createProgrammeCredit = document.querySelector("#createProgrammeCredit");
+const createProgrammeCreditOther = document.querySelector("#createProgrammeCreditOther");
 const createProgrammeTarget = document.querySelector("#createProgrammeTarget");
+const createProgrammeTargetOtherField = document.querySelector("#createProgrammeTargetOtherField");
+const createProgrammeTargetOther = document.querySelector("#createProgrammeTargetOther");
+const createProgrammeTravelTour = document.querySelector("#createProgrammeTravelTour");
+const createProgrammeTravelAgencyField = document.querySelector("#createProgrammeTravelAgencyField");
+const createProgrammeTravelAgency = document.querySelector("#createProgrammeTravelAgency");
+const createProgrammeCertificateType = document.querySelector("#createProgrammeCertificateType");
+const createProgrammeCertificateOtherField = document.querySelector("#createProgrammeCertificateOtherField");
+const createProgrammeCertificateOther = document.querySelector("#createProgrammeCertificateOther");
+const createProgrammePicName = document.querySelector("#createProgrammePicName");
+const createProgrammePicPhone = document.querySelector("#createProgrammePicPhone");
+const createProgrammePicEmail = document.querySelector("#createProgrammePicEmail");
+const createProgrammePicFax = document.querySelector("#createProgrammePicFax");
+const createProgrammeParticipantLimitType = document.querySelector("#createProgrammeParticipantLimitType");
+const createProgrammeParticipantLimitFields = document.querySelector("#createProgrammeParticipantLimitFields");
+const createProgrammeMinParticipants = document.querySelector("#createProgrammeMinParticipants");
+const createProgrammeMaxParticipants = document.querySelector("#createProgrammeMaxParticipants");
+const createProgrammeWaiverType = document.querySelector("#createProgrammeWaiverType");
+const createProgrammeWaiverFields = document.querySelector("#createProgrammeWaiverFields");
+const createProgrammeWaivedParticipants = document.querySelector("#createProgrammeWaivedParticipants");
+const createProgrammeWaiverEveryParticipants = document.querySelector("#createProgrammeWaiverEveryParticipants");
+const createProgrammeWaiverPreview = document.querySelector("#createProgrammeWaiverPreview");
+const programmeInclusions = document.querySelector("#programmeInclusions");
+const addProgrammeInclusion = document.querySelector("#addProgrammeInclusion");
 const createProgrammeGallery = document.querySelector("#createProgrammeGallery");
 const browseProgrammeGallery = document.querySelector("#browseProgrammeGallery");
 const programmeGalleryCount = document.querySelector("#programmeGalleryCount");
+const programmeGalleryPreview = document.querySelector("#programmeGalleryPreview");
+const programmeDetailsGalleryGrid = document.querySelector("#programmeDetailsGalleryGrid");
+const addProgrammeDetailsGalleryImage = document.querySelector("#addProgrammeDetailsGalleryImage");
+const programmeDetailsGalleryInput = document.querySelector("#programmeDetailsGalleryInput");
 const saveProgrammeDraft = document.querySelector("#saveProgrammeDraft");
 const submitProgrammeKpt = document.querySelector("#submitProgrammeKpt");
 const columnToggles = document.querySelectorAll("[data-column-toggle]");
@@ -194,12 +235,18 @@ const previewBody = document.querySelector("#previewBody");
 const closePreview = document.querySelector("#closePreview");
 const donePreview = document.querySelector("#donePreview");
 let applicationSort = { key: "", direction: "asc" };
+let programmeSort = { key: "", direction: "asc" };
 let currentApplicationPage = 1;
 let currentProgrammePage = 1;
 let activeApplicantRow = null;
 let currentApplicationOrder = [];
+let editingDraftRow = null;
 let activeProgrammeRow = null;
 const programmeGalleryImages = new Map();
+let pendingProgrammeGalleryImages = [];
+let pendingProgrammeDetailsGalleryImages = [];
+let programmeDetailsGalleryReplaceIndex = null;
+const DEFAULT_PROGRAMME_GALLERY_LABELS = ["Programme cover image", "Activity image", "Campus image"];
 const initialProgrammeTableHtml = programmesTableBody?.innerHTML || "";
 const initialUserTableHtml = userTableBody?.innerHTML || "";
 const initialAuditTableHtml = auditTableBody?.innerHTML || "";
@@ -208,7 +255,8 @@ const initialSettingsToggles = [...settingsToggles].map((toggle) => toggle.check
 const initialSessionListHtml = sessionList?.innerHTML || "";
 const initialProgrammeCreateFields = {
   activities: programmeActivities?.innerHTML || "",
-  learningScopes: programmeLearningScopes?.innerHTML || ""
+  learningScopes: programmeLearningScopes?.innerHTML || "",
+  inclusions: programmeInclusions?.innerHTML || ""
 };
 let pendingProgrammeStatusChange = null;
 let pendingProgrammeDelete = null;
@@ -655,7 +703,7 @@ function getProgrammeApplicantCount(programmeName) {
 }
 
 function shouldShowProgrammeApplicants(status) {
-  return ["live", "archived", "resubmitted"].includes(status);
+  return ["published", "unpublish"].includes(status);
 }
 
 function syncProgrammeApplicantCounts() {
@@ -671,14 +719,22 @@ function syncProgrammeApplicantCounts() {
 function updateProgrammeRows() {
   syncProgrammeApplicantCounts();
   const status = programmePublicStatusFilter?.value.toLowerCase() || "all statuses";
+  const category = programmeCategoryFilter?.value.toLowerCase() || "all categories";
   const pageSize = programmesPerPage?.value || "10";
   const limit = pageSize === "all" ? Infinity : Number(pageSize);
   const matchedRows = [];
 
   programmeRows.forEach((row) => {
-    const matchesStatus = status === "all statuses" || row.dataset.publicStatus === status;
+    const publicStatus = row.dataset.publicStatus || "";
+    const programmeCategory = row.dataset.programmeCategory || "";
+    const matchesStatus =
+      status === "all statuses" ||
+      publicStatus === status;
+    const matchesCategory =
+      category === "all categories" ||
+      programmeCategory === category;
     row.hidden = true;
-    if (matchesStatus) matchedRows.push(row);
+    if (matchesStatus && matchesCategory) matchedRows.push(row);
   });
 
   const totalPages = limit === Infinity ? 1 : Math.max(1, Math.ceil(matchedRows.length / limit));
@@ -714,16 +770,72 @@ function updateProgrammeRows() {
 function resetProgrammeCreateForm() {
   if (createProgrammeName) createProgrammeName.value = "";
   if (createProgrammeOverview) createProgrammeOverview.value = "";
+  if (createProgrammeCategory) createProgrammeCategory.value = "Select programme category";
+  if (createProgrammeDurationType) createProgrammeDurationType.value = "Fixed days";
   if (createProgrammeDuration) createProgrammeDuration.value = "";
-  if (createProgrammeCurrency) createProgrammeCurrency.value = "USD";
+  if (createProgrammeDurationUnit) createProgrammeDurationUnit.value = "Day(s)";
+  if (createProgrammeDurationMin) createProgrammeDurationMin.value = "";
+  if (createProgrammeDurationMinUnit) createProgrammeDurationMinUnit.value = "Day(s)";
+  if (createProgrammeDurationMax) createProgrammeDurationMax.value = "";
+  if (createProgrammeDurationMaxUnit) createProgrammeDurationMaxUnit.value = "Day(s)";
+  if (createProgrammeFeeType) createProgrammeFeeType.value = "Fixed fee";
   if (createProgrammeFee) createProgrammeFee.value = "";
+  if (createProgrammeFeeMin) createProgrammeFeeMin.value = "";
+  if (createProgrammeFeeMax) createProgrammeFeeMax.value = "";
   if (createProgrammeLanguage) createProgrammeLanguage.value = "Select required language proficiency";
-  if (createProgrammeCredit) createProgrammeCredit.checked = false;
+  createProgrammeCredit?.querySelector('input[value="No"]')?.click();
+  if (createProgrammeCreditOther) createProgrammeCreditOther.value = "";
   if (createProgrammeTarget) createProgrammeTarget.value = "Select target group";
+  if (createProgrammeTargetOther) createProgrammeTargetOther.value = "";
+  if (createProgrammeTravelTour) createProgrammeTravelTour.value = "TBC";
+  if (createProgrammeTravelAgency) createProgrammeTravelAgency.value = "";
+  if (createProgrammeCertificateType) createProgrammeCertificateType.value = "Certificate of Completion";
+  if (createProgrammeCertificateOther) createProgrammeCertificateOther.value = "";
+  if (createProgrammePicName) createProgrammePicName.value = "";
+  if (createProgrammePicPhone) createProgrammePicPhone.value = "";
+  if (createProgrammePicEmail) createProgrammePicEmail.value = "";
+  if (createProgrammePicFax) createProgrammePicFax.value = "";
+  if (createProgrammeParticipantLimitType) createProgrammeParticipantLimitType.value = "No limit";
+  if (createProgrammeMinParticipants) createProgrammeMinParticipants.value = "";
+  if (createProgrammeMaxParticipants) createProgrammeMaxParticipants.value = "";
+  if (createProgrammeWaiverType) createProgrammeWaiverType.value = "No waiver";
+  if (createProgrammeWaivedParticipants) createProgrammeWaivedParticipants.value = "";
+  if (createProgrammeWaiverEveryParticipants) createProgrammeWaiverEveryParticipants.value = "";
+  updateProgrammeWaiverPreview();
   if (createProgrammeGallery) createProgrammeGallery.value = "";
-  if (programmeGalleryCount) programmeGalleryCount.textContent = "No images selected";
+  pendingProgrammeGalleryImages.forEach((image) => URL.revokeObjectURL(image.url));
+  pendingProgrammeGalleryImages = [];
+  renderCreateProgrammeGallery();
   if (programmeActivities) programmeActivities.innerHTML = initialProgrammeCreateFields.activities;
   if (programmeLearningScopes) programmeLearningScopes.innerHTML = initialProgrammeCreateFields.learningScopes;
+  if (programmeInclusions) programmeInclusions.innerHTML = initialProgrammeCreateFields.inclusions;
+  syncProgrammeCreateConditionalFields();
+}
+
+function escapeAttribute(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function renderCreateProgrammeGallery() {
+  if (programmeGalleryCount) {
+    const count = pendingProgrammeGalleryImages.length;
+    programmeGalleryCount.textContent = count ? `${count} image${count === 1 ? "" : "s"} selected` : "No images selected";
+  }
+  if (!programmeGalleryPreview) return;
+  programmeGalleryPreview.innerHTML = pendingProgrammeGalleryImages.map((image, index) => `
+    <div class="gallery-preview-item">
+      <img src="${image.url}" alt="${escapeAttribute(image.name)}">
+      <button type="button" data-gallery-remove="${index}" aria-label="Remove ${escapeAttribute(image.name)}">X</button>
+      <label>
+        <span>Image Context</span>
+        <input type="text" value="${escapeAttribute(image.context)}" data-gallery-context="${index}" placeholder="e.g., Programme cover image" aria-label="Image context for ${escapeAttribute(image.name)}">
+      </label>
+    </div>
+  `).join("");
 }
 
 function resetProgrammesDemoState() {
@@ -737,12 +849,15 @@ function resetProgrammesDemoState() {
     row.hidden = false;
   });
   programmeGalleryImages.clear();
+  pendingProgrammeGalleryImages.forEach((image) => URL.revokeObjectURL(image.url));
+  pendingProgrammeGalleryImages = [];
   pendingProgrammeDelete = null;
   pendingProgrammeAction = null;
   pendingProgrammeActionAudit = null;
   pendingProgrammeStatusChange = null;
   resetProgrammeCreateForm();
   if (programmePublicStatusFilter) programmePublicStatusFilter.value = "All statuses";
+  if (programmeCategoryFilter) programmeCategoryFilter.value = "All categories";
   if (programmesPerPage) programmesPerPage.value = "10";
   currentProgrammePage = 1;
   updateProgrammeRows();
@@ -766,6 +881,144 @@ function showProgrammeCreateForm() {
   if (programmeCreatePanel) programmeCreatePanel.hidden = false;
 }
 
+function populateStackedInputsFromCsv(container, labelPrefix, csvValue, fallbackCsv) {
+  if (!container) return;
+  const items = String(csvValue || fallbackCsv || "").split(",").map((item) => item.trim()).filter(Boolean);
+  container.innerHTML = "";
+  (items.length ? items : [""]).forEach((value) => {
+    addStackedInput(container, labelPrefix);
+    const lastInput = container.querySelector("label:last-child input");
+    if (lastInput) lastInput.value = value;
+  });
+}
+
+function populateCreateFormFromRow(row) {
+  const cells = row.children;
+  const name = row.querySelector(".programme-name")?.textContent.trim() || "";
+  const category = cells[1]?.textContent.trim() || "";
+  const durationText = cells[2]?.textContent.trim() || "";
+  const feeText = cells[3]?.textContent.trim() || "";
+
+  if (createProgrammeName) createProgrammeName.value = name;
+  if (createProgrammeOverview) createProgrammeOverview.value = row.dataset.overview || "";
+  if (createProgrammeCategory) createProgrammeCategory.value = category || "Select programme category";
+  if (createProgrammeLanguage) createProgrammeLanguage.value = row.dataset.language || "Select required language proficiency";
+
+  const durationData = parseDurationValue(durationText);
+  if (createProgrammeDurationType) createProgrammeDurationType.value = durationData.type;
+  if (durationData.type === "Date range") {
+    if (createProgrammeDurationMin) createProgrammeDurationMin.value = durationData.min;
+    if (createProgrammeDurationMinUnit) createProgrammeDurationMinUnit.value = durationData.minUnit;
+    if (createProgrammeDurationMax) createProgrammeDurationMax.value = durationData.max;
+    if (createProgrammeDurationMaxUnit) createProgrammeDurationMaxUnit.value = durationData.maxUnit;
+  } else {
+    if (createProgrammeDuration) createProgrammeDuration.value = durationData.value;
+    if (createProgrammeDurationUnit) createProgrammeDurationUnit.value = durationData.unit;
+  }
+
+  const feeData = parseFeeValue(feeText);
+  if (createProgrammeFeeType) createProgrammeFeeType.value = feeData.type;
+  if (feeData.type === "Fee range") {
+    if (createProgrammeFeeMin) createProgrammeFeeMin.value = feeData.min;
+    if (createProgrammeFeeMax) createProgrammeFeeMax.value = feeData.max;
+  } else {
+    if (createProgrammeFee) createProgrammeFee.value = feeData.value;
+  }
+
+  const creditValue = row.dataset.credit || "Not eligible";
+  let creditRadioValue = "No";
+  let creditOtherText = "";
+  if (/^eligible$/i.test(creditValue)) {
+    creditRadioValue = "Yes";
+  } else if (/^not eligible$/i.test(creditValue)) {
+    creditRadioValue = "No";
+  } else {
+    creditRadioValue = "Others";
+    creditOtherText = creditValue.startsWith("Others: ") ? creditValue.slice(8) : creditValue;
+  }
+  createProgrammeCredit?.querySelector(`input[value="${creditRadioValue}"]`)?.click();
+  if (createProgrammeCreditOther) createProgrammeCreditOther.value = creditOtherText;
+
+  const targetValue = row.dataset.target || "General Public (including student)";
+  const targetPresets = ["Individual", "Group", "General Public (including student)", "Student only"];
+  if (createProgrammeTarget) {
+    if (targetPresets.includes(targetValue)) {
+      createProgrammeTarget.value = targetValue;
+      if (createProgrammeTargetOther) createProgrammeTargetOther.value = "";
+    } else {
+      createProgrammeTarget.value = "Others";
+      if (createProgrammeTargetOther) createProgrammeTargetOther.value = targetValue.startsWith("Others: ") ? targetValue.slice(8) : targetValue;
+    }
+  }
+
+  const participantsText = row.dataset.participants || "";
+  const [limitPart, waiverPart] = participantsText.includes(";")
+    ? participantsText.split(";").map((part) => part.trim())
+    : [participantsText, ""];
+  const limitData = parseParticipantsLimit(limitPart);
+  const waiverData = parseParticipantsWaiver(waiverPart);
+  if (createProgrammeParticipantLimitType) createProgrammeParticipantLimitType.value = limitData.limitType;
+  if (createProgrammeMinParticipants) createProgrammeMinParticipants.value = limitData.min;
+  if (createProgrammeMaxParticipants) createProgrammeMaxParticipants.value = limitData.max;
+  if (createProgrammeWaiverType) createProgrammeWaiverType.value = waiverData.waiverType;
+  if (createProgrammeWaivedParticipants) createProgrammeWaivedParticipants.value = waiverData.waived;
+  if (createProgrammeWaiverEveryParticipants) createProgrammeWaiverEveryParticipants.value = waiverData.every;
+  updateProgrammeWaiverPreview();
+
+  const travelValue = row.dataset.travelTour || "TBC";
+  if (createProgrammeTravelTour) {
+    if (["TBC", "N/A"].includes(travelValue)) {
+      createProgrammeTravelTour.value = travelValue;
+      if (createProgrammeTravelAgency) createProgrammeTravelAgency.value = "";
+    } else {
+      createProgrammeTravelTour.value = "Registered Travel Agency";
+      if (createProgrammeTravelAgency) createProgrammeTravelAgency.value = travelValue;
+    }
+  }
+
+  const certificateValue = row.dataset.certificate || "Certificate of Completion";
+  const certificatePresets = ["Certificate of Completion", "Certificate of Attendance", "Certificate of Participation", "Certificate of Achievement", "None"];
+  if (createProgrammeCertificateType) {
+    if (certificatePresets.includes(certificateValue)) {
+      createProgrammeCertificateType.value = certificateValue;
+      if (createProgrammeCertificateOther) createProgrammeCertificateOther.value = "";
+    } else {
+      createProgrammeCertificateType.value = "Others";
+      if (createProgrammeCertificateOther) createProgrammeCertificateOther.value = certificateValue;
+    }
+  }
+
+  if (createProgrammePicName) createProgrammePicName.value = row.dataset.picName === "Not specified" ? "" : (row.dataset.picName || "");
+  if (createProgrammePicPhone) createProgrammePicPhone.value = row.dataset.picPhone === "Not specified" ? "" : (row.dataset.picPhone || "");
+  if (createProgrammePicEmail) createProgrammePicEmail.value = row.dataset.picEmail === "Not specified" ? "" : (row.dataset.picEmail || "");
+  if (createProgrammePicFax) createProgrammePicFax.value = row.dataset.picFax === "Not specified" ? "" : (row.dataset.picFax || "");
+
+  populateStackedInputsFromCsv(programmeInclusions, "Included item", row.dataset.inclusions, "");
+  populateStackedInputsFromCsv(programmeActivities, "Activity", row.dataset.activities, "Activity 1, Activity 2");
+  populateStackedInputsFromCsv(programmeLearningScopes, "Learning outcome", row.dataset.outcome, "Learning outcome 1");
+
+  pendingProgrammeGalleryImages.forEach((image) => URL.revokeObjectURL(image.url));
+  pendingProgrammeGalleryImages = (programmeGalleryImages.get(name) || []).map((image) => (
+    typeof image === "string"
+      ? { url: image, context: "Uploaded image", name: "image" }
+      : { ...image, name: image.context || "image" }
+  ));
+  renderCreateProgrammeGallery();
+
+  syncProgrammeCreateConditionalFields();
+}
+
+function openDraftProgrammeEditor(row) {
+  if (!row) return;
+  resetProgrammeCreateForm();
+  editingDraftRow = row;
+  populateCreateFormFromRow(row);
+  if (programmeCreateHeading) programmeCreateHeading.textContent = "Edit Draft Programme";
+  if (programmeCreateSubheading) programmeCreateSubheading.textContent = "Update the draft details before saving or submitting to KPT.";
+  if (saveProgrammeDraft) saveProgrammeDraft.textContent = "Save Changes";
+  showProgrammeCreateForm();
+}
+
 function showProgrammesList() {
   if (programmesControlPanel) programmesControlPanel.hidden = false;
   if (programmesTableWrap) programmesTableWrap.hidden = false;
@@ -780,51 +1033,163 @@ function attachProgrammeRowActions(row) {
   });
 }
 
+function getCreateProgrammeCreditValue() {
+  const selected = createProgrammeCredit?.querySelector('input[name="createProgrammeCredit"]:checked')?.value || "No";
+  if (selected !== "Others") return selected;
+  const otherValue = createProgrammeCreditOther?.value.trim();
+  return otherValue ? `Others: ${otherValue}` : "Others";
+}
+
+function getCreateProgrammeTargetValue() {
+  const selected = createProgrammeTarget?.value || "General Public (including student)";
+  if (selected === "Select target group") return "General Public (including student)";
+  if (selected !== "Others") return selected;
+  const otherValue = createProgrammeTargetOther?.value.trim();
+  return otherValue ? `Others: ${otherValue}` : "Others";
+}
+
+function getCreateProgrammeTravelTourValue() {
+  const selected = createProgrammeTravelTour?.value || "TBC";
+  if (selected !== "Registered Travel Agency") return selected;
+  const agencyValue = createProgrammeTravelAgency?.value.trim();
+  return agencyValue || "Registered Travel Agency";
+}
+
+function getCreateProgrammeCertificateValue() {
+  const selected = createProgrammeCertificateType?.value || "Certificate of Completion";
+  if (selected !== "Others") return selected;
+  const otherValue = createProgrammeCertificateOther?.value.trim();
+  return otherValue || "Others";
+}
+
+function getCreateProgrammeParticipantValue() {
+  const participantLimit = createProgrammeParticipantLimitType?.value === "Set min/max"
+    ? `${createProgrammeMinParticipants?.value || "10"} - ${createProgrammeMaxParticipants?.value || "40"} participants`
+    : "No participant limit";
+  const participantWaiver = getCreateProgrammeWaiverValue();
+  return `${participantLimit}; ${participantWaiver}`;
+}
+
+function getCreateProgrammeWaiverValue() {
+  if (createProgrammeWaiverType?.value !== "Set waiver") return "No participant waiver";
+  const waivedCount = Number(createProgrammeWaivedParticipants?.value) || 1;
+  const everyCount = Number(createProgrammeWaiverEveryParticipants?.value) || 20;
+  const participantLabel = waivedCount === 1 ? "participant" : "participants";
+  return `${waivedCount} ${participantLabel} waived for every ${everyCount} participants`;
+}
+
+function updateProgrammeWaiverPreview() {
+  if (!createProgrammeWaiverPreview) return;
+  const waivedCount = Number(createProgrammeWaivedParticipants?.value) || 1;
+  const everyCount = Number(createProgrammeWaiverEveryParticipants?.value) || 20;
+  const participantLabel = waivedCount === 1 ? "participant" : "participants";
+  createProgrammeWaiverPreview.textContent = `Waiver for ${waivedCount} ${participantLabel} for every ${everyCount} participants.`;
+}
+
+function formatProgrammeDuration(value, unit) {
+  const amount = Number(value) || 1;
+  const normalizedUnit = unit === "Month(s)" ? "month" : "day";
+  return `${amount} ${normalizedUnit}${amount === 1 ? "" : "s"}`;
+}
+
 function getCreateProgrammeData(status) {
-  const feeValue = createProgrammeFee?.value.trim() || "0";
-  const currency = createProgrammeCurrency?.value || "MYR";
-  const fee = currency === "MYR" ? `RM ${feeValue}` : `${currency} ${feeValue}`;
+  const feeValue = createProgrammeFee?.value || "0";
+  const feeType = createProgrammeFeeType?.value || "Fixed fee";
+  const durationType = createProgrammeDurationType?.value || "Fixed days";
+  const durationMin = createProgrammeDurationMin?.value || "7";
+  const durationMax = createProgrammeDurationMax?.value || "14";
+  const feeMin = createProgrammeFeeMin?.value || "1000";
+  const feeMax = createProgrammeFeeMax?.value || "1500";
   const activities = [...(programmeActivities?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const outcomes = [...(programmeLearningScopes?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
+  const inclusions = [...(programmeInclusions?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
+  const duration = durationType === "Date range"
+    ? `${formatProgrammeDuration(durationMin, createProgrammeDurationMinUnit?.value)} - ${formatProgrammeDuration(durationMax, createProgrammeDurationMaxUnit?.value)}`
+    : formatProgrammeDuration(createProgrammeDuration?.value || "14", createProgrammeDurationUnit?.value);
+  const fee = feeType === "Fee range"
+    ? `USD ${feeMin} - USD ${feeMax}`
+    : `USD ${feeValue}`;
   return {
     name: createProgrammeName?.value.trim() || "Untitled Programme",
     overview: createProgrammeOverview?.value.trim() || "Programme overview appears here.",
-    duration: createProgrammeDuration?.value.trim() || "30 Days",
+    category: createProgrammeCategory?.value === "Select programme category" ? "Science and Technology (SAT)" : createProgrammeCategory?.value || "Science and Technology (SAT)",
+    duration,
     fee,
     language: createProgrammeLanguage?.value || "English",
-    credit: createProgrammeCredit?.checked ? "Eligible" : "Not eligible",
-    target: createProgrammeTarget?.value === "Select target group" ? "General Public (including student)" : createProgrammeTarget?.value || "General Public (including student)",
+    credit: getCreateProgrammeCreditValue(),
+    target: getCreateProgrammeTargetValue(),
+    participants: getCreateProgrammeParticipantValue(),
+    travelTour: getCreateProgrammeTravelTourValue(),
+    certificate: getCreateProgrammeCertificateValue(),
+    picName: createProgrammePicName?.value.trim() || "Not specified",
+    picPhone: createProgrammePicPhone?.value.trim() || "Not specified",
+    picEmail: createProgrammePicEmail?.value.trim() || "Not specified",
+    picFax: createProgrammePicFax?.value.trim() || "Not specified",
+    inclusions: inclusions.length ? inclusions.join(", ") : "No included items added",
     activities: activities.length ? activities.join(", ") : "Activity 1, Activity 2",
     outcome: outcomes.length ? outcomes.join(", ") : "Learning outcome 1",
     status
   };
 }
 
-function createProgrammeRow(status) {
-  const data = getCreateProgrammeData(status);
+function applyProgrammeDataToRow(row, data, status) {
   const normalizedStatus = status.toLowerCase();
   const chipClass = normalizedStatus === "draft" ? "status-chip neutral" : "status-chip amber";
-  const tbody = document.querySelector(".programmes-table tbody");
-  if (!tbody) return;
-  const row = document.createElement("tr");
-  row.dataset.programmeCategory = "custom programme";
+  row.dataset.programmeCategory = data.category.toLowerCase();
   row.dataset.publicStatus = normalizedStatus;
   row.dataset.overview = data.overview;
   row.dataset.language = data.language;
   row.dataset.credit = data.credit;
   row.dataset.target = data.target;
+  row.dataset.participants = data.participants;
+  row.dataset.inclusions = data.inclusions;
   row.dataset.activities = data.activities;
   row.dataset.outcome = data.outcome;
-  row.innerHTML = `<td><span class="programme-name">${data.name}</span></td><td>Custom Programme</td><td>${data.duration}</td><td>${data.fee}</td><td>-</td><td><span class="${chipClass}">${status}</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td>`;
+  row.dataset.travelTour = data.travelTour;
+  row.dataset.certificate = data.certificate;
+  row.dataset.picName = data.picName;
+  row.dataset.picPhone = data.picPhone;
+  row.dataset.picEmail = data.picEmail;
+  row.dataset.picFax = data.picFax;
+  row.innerHTML = `<td><span class="programme-name">${data.name}</span></td><td>${data.category}</td><td>${data.duration}</td><td>${data.fee}</td><td>-</td><td><span class="${chipClass}">${status}</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td>`;
+}
+
+function createProgrammeRow(status) {
+  const data = getCreateProgrammeData(status);
+  const tbody = document.querySelector(".programmes-table tbody");
+  if (!tbody) return;
+  const row = document.createElement("tr");
+  applyProgrammeDataToRow(row, data, status);
   tbody.prepend(row);
   programmeRows = document.querySelectorAll(".programmes-table tbody tr");
   attachProgrammeRowActions(row);
-  if (createProgrammeGallery?.files?.length) {
-    programmeGalleryImages.set(data.name, [...createProgrammeGallery.files].map((file) => URL.createObjectURL(file)));
+  if (pendingProgrammeGalleryImages.length) {
+    programmeGalleryImages.set(data.name, pendingProgrammeGalleryImages.map((image) => ({ ...image })));
+    pendingProgrammeGalleryImages = [];
   }
   updateProgrammeRows();
   addAuditRecord({ action: `${status === "Draft" ? "Created draft programme" : "Submitted programme to KPT"}: ${data.name}`, entity: "Programme" });
   showProgrammesList();
+}
+
+function updateProgrammeRowFromForm(row, status) {
+  const previousName = row.querySelector(".programme-name")?.textContent.trim() || "";
+  const data = getCreateProgrammeData(status);
+  applyProgrammeDataToRow(row, data, status);
+  attachProgrammeRowActions(row);
+  if (pendingProgrammeGalleryImages.length) {
+    if (previousName && previousName !== data.name) programmeGalleryImages.delete(previousName);
+    programmeGalleryImages.set(data.name, pendingProgrammeGalleryImages.map((image) => ({ ...image })));
+    pendingProgrammeGalleryImages = [];
+  } else if (previousName && previousName !== data.name && programmeGalleryImages.has(previousName)) {
+    programmeGalleryImages.set(data.name, programmeGalleryImages.get(previousName));
+    programmeGalleryImages.delete(previousName);
+  }
+  programmeRows = document.querySelectorAll(".programmes-table tbody tr");
+  updateProgrammeRows();
+  addAuditRecord({ action: `${status === "Draft" ? "Updated draft programme" : "Submitted draft programme to KPT"}: ${data.name}`, entity: "Programme" });
+  activeProgrammeRow = row;
+  showProgrammeDetail(row);
 }
 
 function showProgrammeDetail(row) {
@@ -854,30 +1219,34 @@ function showProgrammeDetail(row) {
   setText("#programmeDetailCategory", category);
   setText("#programmeDetailDuration", duration);
   setText("#programmeDetailFee", fee);
-  setText("#programmeDetailApplicants", applicants);
   setText("#programmeDetailStatusText", status);
   setText("#programmeDetailTarget", row.dataset.target || (applicants === "0" ? "Group" : "General Public (including student)"));
+  renderProgrammeParticipants(row.dataset.participants);
   setText("#programmeDetailCredit", row.dataset.credit || (category.toLowerCase().includes("business") ? "Not eligible" : "Eligible"));
   setText("#programmeDetailLanguage", row.dataset.language || (category.toLowerCase().includes("language") ? "Malay" : "English"));
-  setText("#programmeDetailOutcome", row.dataset.outcome || "Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.");
-  setText("#programmeDetailActivities", row.dataset.activities || "Activity 1, Activity 2, guided site visit");
-  setText("#programmeDetailsOverview", customOverview || summaries[name] || `${name} introduces participants to academic, cultural, and industry learning through a structured short programme.`);
-  setText("#programmeDetailsLanguage", row.dataset.language || (category.toLowerCase().includes("language") ? "Malay" : "English"));
-  setText("#programmeDetailsTarget", row.dataset.target || (applicants === "-" ? "Group" : "General Public (including student)"));
-  setText("#programmeDetailsCredit", row.dataset.credit || (category.toLowerCase().includes("business") ? "Not eligible" : "Eligible"));
-  setText("#programmeDetailsActivities", row.dataset.activities || "Activity 1, Activity 2, guided site visit");
+  setText("#programmeDetailTravelTour", row.dataset.travelTour || "TBC");
+  setText("#programmeDetailCertificate", row.dataset.certificate || "Certificate of Completion");
+  setText("#programmeDetailPicName", row.dataset.picName || "Not specified");
+  setText("#programmeDetailPicPhone", row.dataset.picPhone || "Not specified");
+  setText("#programmeDetailPicEmail", row.dataset.picEmail || "Not specified");
+  setText("#programmeDetailPicFax", row.dataset.picFax || "Not specified");
+  setListField("#programmeDetailsOutcome", row.dataset.outcome, "Learning outcome 1");
+  setListField("#programmeDetailsInclusions", row.dataset.inclusions, "No included items added");
+  setListField("#programmeDetailsActivities", row.dataset.activities, "Activity 1, Activity 2, guided site visit");
   renderProgrammeGallery(name);
-  setText("#programmeApplicationsStatus", normalizedStatus === "live" ? "Accepting applications" : "Historical applications only");
+  setText("#programmeApplicationsStatus", normalizedStatus === "published" ? "Accepting applications" : "Historical applications only");
   const detailStatus = document.querySelector("#programmeDetailStatus");
   if (detailStatus) {
     detailStatus.className = chipClass;
     detailStatus.textContent = status;
   }
   renderProgrammeStatusNotice(normalizedStatus);
+  renderProgrammeFieldIssues(normalizedStatus);
   renderProgrammeDetailTabs(normalizedStatus);
   renderProgrammeApplications(name);
   renderProgrammeHistoryTimeline(normalizedStatus);
   renderProgrammeManagementActions(normalizedStatus);
+  if (programmeDetailLiveLink) programmeDetailLiveLink.hidden = normalizedStatus !== "published";
   setProgrammeDetailsEditing(false, normalizedStatus);
   setActiveProgrammeTab("overview");
   if (programmesControlPanel) programmesControlPanel.hidden = true;
@@ -932,9 +1301,11 @@ function updateActiveProgrammeStatus(status, chipClass = "status-chip amber") {
   }
   setText("#programmeDetailStatusText", status);
   renderProgrammeStatusNotice(normalizedStatus);
+  renderProgrammeFieldIssues(normalizedStatus);
   renderProgrammeDetailTabs(normalizedStatus);
   renderProgrammeHistoryTimeline(normalizedStatus);
   renderProgrammeManagementActions(normalizedStatus);
+  if (programmeDetailLiveLink) programmeDetailLiveLink.hidden = normalizedStatus !== "published";
   setProgrammeDetailsEditing(false, normalizedStatus);
   updateProgrammeRows();
 }
@@ -985,25 +1356,23 @@ function deleteActiveProgrammeDraft() {
 }
 
 function applyRequestedProgrammeChanges() {
-  setText("#programmeDetailFee", requestedProgrammeFee?.value.trim() || "RM 1,800");
-  setText("#programmeDetailsCredit", document.querySelector("#programmeDetailsCredit")?.textContent.trim() || "Eligible");
-  setText("#programmeDetailOutcome", requestedProgrammeLearning?.value.trim() || "Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.");
-  setText("#programmeDetailsTarget", requestedProgrammeTarget?.value || "General Public (including student)");
+  if (requestedProgrammeDurationCompound && requestedProgrammeDurationDisplay) {
+    commitDurationCompound(requestedProgrammeDurationCompound, requestedProgrammeDurationDisplay);
+    setText("#programmeDetailDuration", requestedProgrammeDurationDisplay.textContent);
+  }
+  if (requestedProgrammeFeeCompound && requestedProgrammeFeeDisplay) {
+    commitFeeCompound(requestedProgrammeFeeCompound, requestedProgrammeFeeDisplay);
+    setText("#programmeDetailFee", requestedProgrammeFeeDisplay.textContent);
+  }
+  if (requestedProgrammeParticipantsCompound && requestedProgrammeParticipantsLimitDisplay && requestedProgrammeParticipantsWaiverDisplay) {
+    commitParticipantsCompound(requestedProgrammeParticipantsCompound, requestedProgrammeParticipantsLimitDisplay, requestedProgrammeParticipantsWaiverDisplay);
+    setText("#programmeDetailParticipantsLimit", requestedProgrammeParticipantsLimitDisplay.textContent);
+    setText("#programmeDetailParticipantsWaiver", requestedProgrammeParticipantsWaiverDisplay.textContent);
+  }
+  setListField("#programmeDetailsOutcome", requestedProgrammeLearning?.value.trim(), "Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.");
   setText("#programmeDetailTarget", requestedProgrammeTarget?.value || "General Public (including student)");
   closeRequestedChangesModal();
   updateActiveProgrammeStatus("Pending KPT Approval", "status-chip amber");
-}
-
-function applyDraftProgrammeEdits() {
-  setText("#programmeDetailName", draftProgrammeName?.value.trim() || "Programme");
-  setText("#programmeDetailSummary", draftProgrammeOverview?.value.trim() || "Programme overview appears here.");
-  setText("#programmeDetailsOverview", draftProgrammeOverview?.value.trim() || "Programme overview appears here.");
-  setText("#programmeDetailDuration", draftProgrammeDuration?.value.trim() || "28 Days");
-  setText("#programmeDetailFee", draftProgrammeFee?.value.trim() || "RM 3,900");
-  setText("#programmeDetailTarget", draftProgrammeTarget?.value || "General Public (including student)");
-  setText("#programmeDetailsTarget", draftProgrammeTarget?.value || "General Public (including student)");
-  setText("#programmeDetailOutcome", draftProgrammeLearning?.value.trim() || "Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.");
-  closeDraftProgrammeModal();
 }
 
 function renderProgrammeApplications(programmeName) {
@@ -1041,60 +1410,598 @@ function renderProgrammeApplications(programmeName) {
   });
 }
 
+function getProgrammeGalleryImages(programmeName) {
+  const stored = programmeGalleryImages.get(programmeName);
+  if (stored && stored.length) {
+    return stored.map((image) => (typeof image === "string" ? { url: image, context: "Uploaded image" } : { ...image }));
+  }
+  return DEFAULT_PROGRAMME_GALLERY_LABELS.map((label) => ({ url: null, context: label }));
+}
+
+function renderProgrammeDetailsGalleryGrid(images, isEditing) {
+  if (!programmeDetailsGalleryGrid) return;
+  if (!images.length) {
+    programmeDetailsGalleryGrid.innerHTML = '<p class="programme-gallery-empty">No images uploaded</p>';
+    return;
+  }
+  programmeDetailsGalleryGrid.innerHTML = images.map((image, index) => `
+    <div>
+      <span class="gallery-thumb" aria-hidden="true" style="${image.url ? `background-image:url('${escapeAttribute(image.url)}');background-size:cover;background-position:center;` : ""}"></span>
+      <strong>${escapeAttribute(image.context || `Image ${index + 1}`)}</strong>
+      <small>${image.url ? "Uploaded image" : "Placeholder image"}</small>
+      <button type="button" data-gallery-action="view" data-index="${index}">View</button>
+      <button type="button" data-gallery-action="replace" data-index="${index}" ${isEditing ? "" : "hidden"}>Replace</button>
+      <button type="button" data-gallery-action="remove" data-index="${index}" ${isEditing ? "" : "hidden"}>Remove</button>
+    </div>
+  `).join("");
+}
+
 function renderProgrammeGallery(programmeName) {
-  const images = programmeGalleryImages.get(programmeName) || [];
-  document.querySelectorAll(".programme-gallery-grid > div").forEach((card, index) => {
-    const thumb = card.querySelector(".gallery-thumb");
-    const label = card.querySelector("small");
-    if (images[index] && thumb) {
-      thumb.style.backgroundImage = `url("${images[index]}")`;
-      thumb.style.backgroundSize = "cover";
-      thumb.style.backgroundPosition = "center";
-      if (label) label.textContent = "Uploaded image";
-    } else if (thumb) {
-      thumb.style.backgroundImage = "";
-      thumb.style.backgroundSize = "";
-      thumb.style.backgroundPosition = "";
-      if (label) label.textContent = "Placeholder image";
-    }
-  });
+  renderProgrammeDetailsGalleryGrid(getProgrammeGalleryImages(programmeName), false);
 }
 
 function canEditProgrammeDetails(status) {
-  return ["approved", "live", "archived", "draft", "changes requested"].includes(status);
+  return ["changes requested", "published", "unpublish", "draft"].includes(status);
+}
+
+function getEditableProgrammePanels() {
+  return document.querySelectorAll(
+    "#programmeDetail .programme-tab-panel[data-programme-panel='overview'], #programmeDetail .programme-tab-panel[data-programme-panel='details']"
+  );
+}
+
+function syncEditableOtherSelect(select, display) {
+  const displayText = display.textContent.trim();
+  const triggerValue = select.dataset.editableOtherTrigger;
+  const otherInput = select.dataset.editableOther ? document.getElementById(select.dataset.editableOther) : null;
+  const rawFormat = select.dataset.editableOtherFormat === "raw";
+  const presetValues = [...select.options].map((option) => option.value);
+  if (presetValues.includes(displayText)) {
+    select.value = displayText;
+    if (otherInput) {
+      otherInput.value = "";
+      otherInput.hidden = true;
+    }
+    return;
+  }
+  select.value = triggerValue;
+  if (otherInput) {
+    if (rawFormat) {
+      otherInput.value = displayText;
+    } else {
+      const prefix = "Others: ";
+      otherInput.value = displayText.startsWith(prefix) ? displayText.slice(prefix.length) : (displayText === "Others" ? "" : displayText);
+    }
+    otherInput.hidden = false;
+  }
+}
+
+function computeEditableOtherValue(select) {
+  const triggerValue = select.dataset.editableOtherTrigger;
+  const otherInput = select.dataset.editableOther ? document.getElementById(select.dataset.editableOther) : null;
+  const rawFormat = select.dataset.editableOtherFormat === "raw";
+  if (select.value === triggerValue && otherInput) {
+    const otherValue = otherInput.value.trim();
+    return rawFormat ? (otherValue || triggerValue) : (otherValue ? `Others: ${otherValue}` : "Others");
+  }
+  return select.value;
+}
+
+function commitEditableOtherSelect(select, display) {
+  display.textContent = computeEditableOtherValue(select);
+}
+
+function getCompoundRole(wrapper, role) {
+  return wrapper.querySelector(`[data-role="${role}"]`);
+}
+
+function formatDurationPart(value, unit) {
+  const amount = Number(value) || 1;
+  const normalizedUnit = String(unit || "Day(s)").toLowerCase().startsWith("month") ? "Month" : "Day";
+  return `${amount} ${normalizedUnit}${amount === 1 ? "" : "s"}`;
+}
+
+function parseDurationValue(text) {
+  const value = String(text || "").trim();
+  const rangeMatch = value.match(/(\d+)\s*(day|days|month|months)?\s*-\s*(\d+)\s*(day|days|month|months)?/i);
+  if (rangeMatch) {
+    const minUnit = /month/i.test(rangeMatch[2] || rangeMatch[4] || "") ? "Month(s)" : "Day(s)";
+    const maxUnit = /month/i.test(rangeMatch[4] || rangeMatch[2] || "") ? "Month(s)" : "Day(s)";
+    return { type: "Date range", min: rangeMatch[1], minUnit, max: rangeMatch[3], maxUnit };
+  }
+  const fixedMatch = value.match(/(\d+)\s*(day|days|month|months)?/i);
+  const unit = /month/i.test(fixedMatch?.[2] || "") ? "Month(s)" : "Day(s)";
+  return { type: "Fixed days", value: fixedMatch?.[1] || "14", unit };
+}
+
+function toggleDurationRows(wrapper) {
+  const isRange = getCompoundRole(wrapper, "durationType").value === "Date range";
+  wrapper.querySelectorAll('[data-visibility="fixed"]').forEach((el) => { el.hidden = isRange; });
+  wrapper.querySelectorAll('[data-visibility="range"]').forEach((el) => { el.hidden = !isRange; });
+}
+
+function syncDurationCompound(wrapper, display) {
+  const data = parseDurationValue(display.textContent);
+  getCompoundRole(wrapper, "durationType").value = data.type;
+  if (data.type === "Date range") {
+    getCompoundRole(wrapper, "durationMin").value = data.min;
+    getCompoundRole(wrapper, "durationMinUnit").value = data.minUnit;
+    getCompoundRole(wrapper, "durationMax").value = data.max;
+    getCompoundRole(wrapper, "durationMaxUnit").value = data.maxUnit;
+  } else {
+    getCompoundRole(wrapper, "durationValue").value = data.value;
+    getCompoundRole(wrapper, "durationUnit").value = data.unit;
+  }
+  toggleDurationRows(wrapper);
+}
+
+function computeDurationValue(wrapper) {
+  const isRange = getCompoundRole(wrapper, "durationType").value === "Date range";
+  if (isRange) {
+    const min = formatDurationPart(getCompoundRole(wrapper, "durationMin").value, getCompoundRole(wrapper, "durationMinUnit").value);
+    const max = formatDurationPart(getCompoundRole(wrapper, "durationMax").value, getCompoundRole(wrapper, "durationMaxUnit").value);
+    return `${min} - ${max}`;
+  }
+  return formatDurationPart(getCompoundRole(wrapper, "durationValue").value, getCompoundRole(wrapper, "durationUnit").value);
+}
+
+function commitDurationCompound(wrapper, display) {
+  display.textContent = computeDurationValue(wrapper);
+}
+
+function parseFeeValue(text) {
+  const value = String(text || "").trim();
+  const matches = [...value.matchAll(/([A-Za-z]{2,4})\s*([\d,]+(?:\.\d+)?)/g)];
+  const currency = matches[0]?.[1] || "RM";
+  if (matches.length >= 2) {
+    return { type: "Fee range", min: matches[0][2].replace(/,/g, ""), max: matches[1][2].replace(/,/g, ""), currency };
+  }
+  return { type: "Fixed fee", value: matches[0]?.[2].replace(/,/g, "") || "0", currency };
+}
+
+function toggleFeeRows(wrapper) {
+  const isRange = getCompoundRole(wrapper, "feeType").value === "Fee range";
+  wrapper.querySelectorAll('[data-visibility="fixed"]').forEach((el) => { el.hidden = isRange; });
+  wrapper.querySelectorAll('[data-visibility="range"]').forEach((el) => { el.hidden = !isRange; });
+}
+
+function syncFeeCompound(wrapper, display) {
+  const data = parseFeeValue(display.textContent);
+  wrapper.dataset.currency = data.currency;
+  getCompoundRole(wrapper, "feeType").value = data.type;
+  if (data.type === "Fee range") {
+    getCompoundRole(wrapper, "feeMin").value = data.min;
+    getCompoundRole(wrapper, "feeMax").value = data.max;
+  } else {
+    getCompoundRole(wrapper, "feeValue").value = data.value;
+  }
+  toggleFeeRows(wrapper);
+}
+
+function computeFeeValue(wrapper) {
+  const currency = wrapper.dataset.currency || "RM";
+  const isRange = getCompoundRole(wrapper, "feeType").value === "Fee range";
+  if (isRange) {
+    const min = Number(getCompoundRole(wrapper, "feeMin").value) || 0;
+    const max = Number(getCompoundRole(wrapper, "feeMax").value) || 0;
+    return `${currency} ${min.toLocaleString()} - ${currency} ${max.toLocaleString()}`;
+  }
+  const amount = Number(getCompoundRole(wrapper, "feeValue").value) || 0;
+  return `${currency} ${amount.toLocaleString()}`;
+}
+
+function commitFeeCompound(wrapper, display) {
+  display.textContent = computeFeeValue(wrapper);
+}
+
+function parseParticipantsLimit(text) {
+  const match = String(text || "").match(/(\d+)\s*-\s*(\d+)\s*participants/i);
+  return match ? { limitType: "Set min/max", min: match[1], max: match[2] } : { limitType: "No limit", min: "10", max: "40" };
+}
+
+function parseParticipantsWaiver(text) {
+  const match = String(text || "").match(/(\d+)\s*participants?\s*waived\s*for\s*every\s*(\d+)\s*participants/i);
+  return match ? { waiverType: "Set waiver", waived: match[1], every: match[2] } : { waiverType: "No waiver", waived: "1", every: "20" };
+}
+
+function toggleParticipantsRows(wrapper) {
+  const showLimit = getCompoundRole(wrapper, "participantLimitType").value === "Set min/max";
+  const showWaiver = getCompoundRole(wrapper, "participantWaiverType").value === "Set waiver";
+  wrapper.querySelectorAll('[data-visibility="limit"]').forEach((el) => { el.hidden = !showLimit; });
+  wrapper.querySelectorAll('[data-visibility="waiver"]').forEach((el) => { el.hidden = !showWaiver; });
+}
+
+function syncParticipantsCompound(wrapper, limitDisplay, waiverDisplay) {
+  const limitData = parseParticipantsLimit(limitDisplay.textContent);
+  const waiverData = parseParticipantsWaiver(waiverDisplay.textContent);
+  getCompoundRole(wrapper, "participantLimitType").value = limitData.limitType;
+  getCompoundRole(wrapper, "participantMin").value = limitData.min;
+  getCompoundRole(wrapper, "participantMax").value = limitData.max;
+  getCompoundRole(wrapper, "participantWaiverType").value = waiverData.waiverType;
+  getCompoundRole(wrapper, "participantWaived").value = waiverData.waived;
+  getCompoundRole(wrapper, "participantEvery").value = waiverData.every;
+  toggleParticipantsRows(wrapper);
+}
+
+function computeParticipantsLimitValue(wrapper) {
+  const limitType = getCompoundRole(wrapper, "participantLimitType").value;
+  return limitType === "Set min/max"
+    ? `${getCompoundRole(wrapper, "participantMin").value || "10"} - ${getCompoundRole(wrapper, "participantMax").value || "40"} participants`
+    : "No participant limit";
+}
+
+function computeParticipantsWaiverValue(wrapper) {
+  const waiverType = getCompoundRole(wrapper, "participantWaiverType").value;
+  if (waiverType !== "Set waiver") return "No participant waiver";
+  const waived = Number(getCompoundRole(wrapper, "participantWaived").value) || 1;
+  const every = Number(getCompoundRole(wrapper, "participantEvery").value) || 20;
+  return `${waived} participant${waived === 1 ? "" : "s"} waived for every ${every} participants`;
+}
+
+function commitParticipantsCompound(wrapper, limitDisplay, waiverDisplay) {
+  limitDisplay.textContent = computeParticipantsLimitValue(wrapper);
+  waiverDisplay.textContent = computeParticipantsWaiverValue(wrapper);
+}
+
+function syncListCompound(wrapper, display) {
+  const container = getCompoundRole(wrapper, "listInputs");
+  if (!container) return;
+  const label = wrapper.dataset.listLabel || "Item";
+  const items = String(display.dataset.value || "").split(",").map((item) => item.trim()).filter(Boolean);
+  container.innerHTML = "";
+  (items.length ? items : [""]).forEach((value) => {
+    addStackedInput(container, label);
+    const lastInput = container.querySelector("label:last-child input");
+    if (lastInput) lastInput.value = value;
+  });
+}
+
+function computeListValue(wrapper) {
+  const container = getCompoundRole(wrapper, "listInputs");
+  if (!container) return "";
+  return [...container.querySelectorAll("input")].map((input) => input.value.trim()).filter(Boolean).join(", ");
+}
+
+function commitListCompound(wrapper, display) {
+  setListField(`#${display.id}`, computeListValue(wrapper), "");
+}
+
+const PROGRAMME_COMPOUND_FIELD_HANDLERS = {
+  duration: { sync: syncDurationCompound, commit: commitDurationCompound, toggle: toggleDurationRows },
+  fee: { sync: syncFeeCompound, commit: commitFeeCompound, toggle: toggleFeeRows },
+  list: { sync: syncListCompound, commit: commitListCompound }
+};
+
+function hasProgrammeEditsChanged() {
+  let changed = false;
+  const differs = (a, b) => String(a || "").trim().toLowerCase() !== String(b || "").trim().toLowerCase();
+  getEditableProgrammePanels().forEach((panel) => {
+    panel.querySelectorAll("[data-editable-target]").forEach((input) => {
+      const display = document.getElementById(input.dataset.editableTarget);
+      if (!display) return;
+      const newValue = input.dataset.editableOther ? computeEditableOtherValue(input) : input.value.trim();
+      if (differs(newValue, display.textContent)) changed = true;
+    });
+    panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
+      const type = wrapper.dataset.editableCompound;
+      if (type === "participants") {
+        const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
+        const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
+        if (!limitDisplay || !waiverDisplay) return;
+        if (differs(computeParticipantsLimitValue(wrapper), limitDisplay.textContent)) changed = true;
+        if (differs(computeParticipantsWaiverValue(wrapper), waiverDisplay.textContent)) changed = true;
+        return;
+      }
+      const display = document.getElementById(wrapper.dataset.editableDisplay);
+      if (!display) return;
+      if (type === "list") {
+        if (differs(computeListValue(wrapper), display.dataset.value)) changed = true;
+        return;
+      }
+      if (type === "duration" && differs(computeDurationValue(wrapper), display.textContent)) changed = true;
+      if (type === "fee" && differs(computeFeeValue(wrapper), display.textContent)) changed = true;
+    });
+  });
+  return changed;
+}
+
+function syncProgrammeEditableFields(panel) {
+  panel.querySelectorAll("[data-editable-target]").forEach((input) => {
+    const display = document.getElementById(input.dataset.editableTarget);
+    if (!display) return;
+    if (input.dataset.editableOther) {
+      syncEditableOtherSelect(input, display);
+    } else {
+      input.value = display.textContent.trim();
+    }
+    display.hidden = true;
+    input.hidden = false;
+  });
+  panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
+    if (wrapper.dataset.editableCompound === "participants") {
+      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
+      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
+      if (!limitDisplay || !waiverDisplay) return;
+      syncParticipantsCompound(wrapper, limitDisplay, waiverDisplay);
+      limitDisplay.hidden = true;
+      waiverDisplay.hidden = true;
+      wrapper.hidden = false;
+      return;
+    }
+    const display = document.getElementById(wrapper.dataset.editableDisplay);
+    const handler = PROGRAMME_COMPOUND_FIELD_HANDLERS[wrapper.dataset.editableCompound];
+    if (!display || !handler) return;
+    handler.sync(wrapper, display);
+    display.hidden = true;
+    wrapper.hidden = false;
+  });
+}
+
+function commitProgrammeEditableFields(panel) {
+  panel.querySelectorAll("[data-editable-target]").forEach((input) => {
+    const display = document.getElementById(input.dataset.editableTarget);
+    if (!display) return;
+    if (input.dataset.editableOther) {
+      commitEditableOtherSelect(input, display);
+    } else {
+      display.textContent = input.value.trim();
+    }
+  });
+  panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
+    if (wrapper.dataset.editableCompound === "participants") {
+      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
+      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
+      if (!limitDisplay || !waiverDisplay) return;
+      commitParticipantsCompound(wrapper, limitDisplay, waiverDisplay);
+      return;
+    }
+    const display = document.getElementById(wrapper.dataset.editableDisplay);
+    const handler = PROGRAMME_COMPOUND_FIELD_HANDLERS[wrapper.dataset.editableCompound];
+    if (!display || !handler) return;
+    handler.commit(wrapper, display);
+  });
+}
+
+function resetProgrammeEditableFields(panel) {
+  panel.querySelectorAll("[data-editable-target]").forEach((input) => {
+    const display = document.getElementById(input.dataset.editableTarget);
+    input.hidden = true;
+    if (display) display.hidden = false;
+  });
+  panel.querySelectorAll(".editable-other-input").forEach((otherInput) => {
+    otherInput.hidden = true;
+  });
+  panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
+    wrapper.hidden = true;
+    if (wrapper.dataset.editableCompound === "participants") {
+      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
+      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
+      if (limitDisplay) limitDisplay.hidden = false;
+      if (waiverDisplay) waiverDisplay.hidden = false;
+      return;
+    }
+    const display = document.getElementById(wrapper.dataset.editableDisplay);
+    if (display) display.hidden = false;
+  });
 }
 
 function setProgrammeDetailsEditing(isEditing, status = programmeDetail?.dataset.programmeStatus || "") {
   const editable = canEditProgrammeDetails(status);
-  const detailsPanel = document.querySelector("#programmeDetail .programme-tab-panel[data-programme-panel='details']");
+  const editablePanels = getEditableProgrammePanels();
   const activeEditing = editable && isEditing;
   if (programmeDetail) programmeDetail.dataset.programmeStatus = status;
-  detailsPanel?.classList.toggle("is-editing", activeEditing);
-  detailsPanel?.querySelectorAll(".detail-fields strong").forEach((field) => {
-    field.contentEditable = activeEditing ? "true" : "false";
-    field.spellcheck = activeEditing;
+  editablePanels.forEach((panel) => {
+    panel.classList.toggle("is-editing", activeEditing);
+    panel.querySelectorAll(".detail-fields strong:not(.editable-display), .programme-scope-list strong").forEach((field) => {
+      if (field.closest(".programme-approval-panel")) return;
+      field.contentEditable = activeEditing ? "true" : "false";
+      field.spellcheck = activeEditing;
+    });
+    if (activeEditing) {
+      syncProgrammeEditableFields(panel);
+    } else {
+      resetProgrammeEditableFields(panel);
+    }
   });
-  if (editProgrammeDetails) editProgrammeDetails.hidden = !editable || activeEditing;
+  const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "";
+  if (activeEditing) {
+    pendingProgrammeDetailsGalleryImages = getProgrammeGalleryImages(programmeName);
+    renderProgrammeDetailsGalleryGrid(pendingProgrammeDetailsGalleryImages, true);
+  } else {
+    renderProgrammeDetailsGalleryGrid(getProgrammeGalleryImages(programmeName), false);
+  }
+  if (addProgrammeDetailsGalleryImage) addProgrammeDetailsGalleryImage.hidden = !activeEditing;
+  if (editProgrammeDetails) editProgrammeDetails.hidden = !editable || activeEditing || status === "draft";
   if (cancelProgrammeDetailsEdit) cancelProgrammeDetailsEdit.hidden = !activeEditing;
   if (saveProgrammeDetails) saveProgrammeDetails.hidden = !activeEditing;
 }
 
+function commitProgrammeDetailsGallery() {
+  const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "";
+  programmeGalleryImages.set(programmeName, pendingProgrammeDetailsGalleryImages.map((image) => ({ ...image })));
+}
+
+function hasProgrammeGalleryChanged() {
+  const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "";
+  const original = getProgrammeGalleryImages(programmeName);
+  if (original.length !== pendingProgrammeDetailsGalleryImages.length) return true;
+  return original.some((image, index) => {
+    const current = pendingProgrammeDetailsGalleryImages[index];
+    return !current || image.url !== current.url || image.context !== current.context;
+  });
+}
+
+let programmeChangesCountdownTimer = null;
+
+function startProgrammeChangesCountdown() {
+  if (!proceedProgrammeChanges) return;
+  clearInterval(programmeChangesCountdownTimer);
+  let remaining = 10;
+  proceedProgrammeChanges.disabled = true;
+  proceedProgrammeChanges.textContent = `Please wait (${remaining}s)`;
+  programmeChangesCountdownTimer = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      clearInterval(programmeChangesCountdownTimer);
+      programmeChangesCountdownTimer = null;
+      proceedProgrammeChanges.disabled = false;
+      proceedProgrammeChanges.textContent = "Proceed with changes";
+      return;
+    }
+    proceedProgrammeChanges.textContent = `Please wait (${remaining}s)`;
+  }, 1000);
+}
+
+function stopProgrammeChangesCountdown() {
+  clearInterval(programmeChangesCountdownTimer);
+  programmeChangesCountdownTimer = null;
+  if (proceedProgrammeChanges) {
+    proceedProgrammeChanges.disabled = false;
+    proceedProgrammeChanges.textContent = "Proceed with changes";
+  }
+}
+
 function openProgrammeChangesModal() {
   if (programmeChangesModal) programmeChangesModal.hidden = false;
+  startProgrammeChangesCountdown();
 }
 
 function closeProgrammeChangesModal() {
   if (programmeChangesModal) programmeChangesModal.hidden = true;
+  stopProgrammeChangesCountdown();
+}
+
+const PROGRAMME_FIELD_ISSUES = [
+  {
+    key: "target",
+    displayId: "programmeDetailTargetIssue",
+    default: "Target group must match the programme audience submitted to KPT.",
+    rejected: "Rejected reason: Target group and activities were not aligned with the programme objectives."
+  },
+  {
+    key: "duration",
+    displayId: "programmeDetailDurationIssue",
+    default: "Duration needs clarification. KPT requested a clearer programme duration.",
+    rejected: "Rejected reason: Duration did not match the approved programme scope."
+  },
+  {
+    key: "fee",
+    displayId: "programmeDetailFeeIssue",
+    default: "Fee needs clarification. KPT requested a clearer fee amount and currency.",
+    rejected: "Rejected reason: Fee justification was not strong enough for the submitted scope."
+  },
+  {
+    key: "participants",
+    displayId: "programmeDetailParticipantsIssue",
+    default: "Participant limits and waivers must match what KPT reviewed.",
+    rejected: "Rejected reason: Participant limits and waivers were not clearly justified."
+  },
+  {
+    key: "learning",
+    displayId: "programmeDetailsOutcomeIssue",
+    default: "Learning outcomes are too broad. Add a measurable outcome for participants.",
+    rejected: "Rejected reason: Learning outcomes did not show measurable academic value."
+  }
+];
+
+function getProgrammeFieldIssueText(key, rejected) {
+  const issue = PROGRAMME_FIELD_ISSUES.find((item) => item.key === key);
+  if (!issue) return "";
+  return rejected ? issue.rejected : issue.default;
+}
+
+function renderProgrammeFieldIssues(status) {
+  const active = ["changes requested", "rejected"].includes(status);
+  const rejected = status === "rejected";
+  PROGRAMME_FIELD_ISSUES.forEach((issue) => {
+    const el = document.getElementById(issue.displayId);
+    if (!el) return;
+    el.hidden = !active;
+    if (active) el.textContent = rejected ? issue.rejected : issue.default;
+  });
+}
+
+const PROGRAMME_FIELD_ISSUE_LABELS = {
+  target: "Target Group",
+  duration: "Duration",
+  fee: "Fee",
+  participants: "Participants",
+  learning: "Learning Outcome"
+};
+
+function getUnresolvedProgrammeFieldIssues(status) {
+  if (!["changes requested", "rejected"].includes(status)) return [];
+  const differs = (a, b) => String(a || "").trim().toLowerCase() !== String(b || "").trim().toLowerCase();
+  const unresolved = [];
+
+  const targetSelect = document.querySelector('#programmeDetail [data-editable-target="programmeDetailTarget"]');
+  const targetDisplay = document.getElementById("programmeDetailTarget");
+  if (targetSelect && targetDisplay && !differs(computeEditableOtherValue(targetSelect), targetDisplay.textContent)) {
+    unresolved.push("target");
+  }
+
+  const durationWrapper = document.querySelector('#programmeDetail [data-editable-compound="duration"]');
+  const durationDisplay = document.getElementById("programmeDetailDuration");
+  if (durationWrapper && durationDisplay && !differs(computeDurationValue(durationWrapper), durationDisplay.textContent)) {
+    unresolved.push("duration");
+  }
+
+  const feeWrapper = document.querySelector('#programmeDetail [data-editable-compound="fee"]');
+  const feeDisplay = document.getElementById("programmeDetailFee");
+  if (feeWrapper && feeDisplay && !differs(computeFeeValue(feeWrapper), feeDisplay.textContent)) {
+    unresolved.push("fee");
+  }
+
+  const participantsWrapper = document.querySelector('#programmeDetail [data-editable-compound="participants"]');
+  const limitDisplay = document.getElementById("programmeDetailParticipantsLimit");
+  const waiverDisplay = document.getElementById("programmeDetailParticipantsWaiver");
+  if (participantsWrapper && limitDisplay && waiverDisplay) {
+    const limitChanged = differs(computeParticipantsLimitValue(participantsWrapper), limitDisplay.textContent);
+    const waiverChanged = differs(computeParticipantsWaiverValue(participantsWrapper), waiverDisplay.textContent);
+    if (!limitChanged && !waiverChanged) unresolved.push("participants");
+  }
+
+  const learningWrapper = document.querySelector('#programmeDetail [data-editable-compound="list"][data-editable-display="programmeDetailsOutcome"]');
+  const learningDisplay = document.getElementById("programmeDetailsOutcome");
+  if (learningWrapper && learningDisplay && !differs(computeListValue(learningWrapper), learningDisplay.dataset.value)) {
+    unresolved.push("learning");
+  }
+
+  return unresolved;
+}
+
+function openProgrammeRequiredChangesWarning(unresolvedKeys) {
+  const list = unresolvedKeys.map((key) => PROGRAMME_FIELD_ISSUE_LABELS[key] || key).join(", ");
+  openProgrammeActionConfirm(
+    "Required changes not made",
+    `KPT requested changes to: ${list}. Please update ${unresolvedKeys.length === 1 ? "this field" : "these fields"} before it can be sent back to KPT.`,
+    () => {},
+    "Got it"
+  );
 }
 
 function openRequestedChangesModal(mode = "changes requested") {
   const rejected = mode === "rejected";
   if (requestedChangesTitle) requestedChangesTitle.textContent = rejected ? "Edit rejected programme" : "Edit requested changes";
-  if (requestedProgrammeFeeNote) requestedProgrammeFeeNote.textContent = rejected ? "Rejected reason: Fee justification was not strong enough for the submitted scope." : "Fee needs clarification. KPT requested a clearer fee amount and currency.";
-  if (requestedProgrammeLearningNote) requestedProgrammeLearningNote.textContent = rejected ? "Rejected reason: Learning outcomes did not show measurable academic value." : "Learning outcomes are too broad. Add a measurable outcome for participants.";
-  if (requestedProgrammeTargetNote) requestedProgrammeTargetNote.textContent = rejected ? "Rejected reason: Target group and activities were not aligned with the programme objectives." : "Target group must match the programme audience submitted to KPT.";
-  if (requestedProgrammeFee) requestedProgrammeFee.value = document.querySelector("#programmeDetailFee")?.textContent.trim() || "";
-  if (requestedProgrammeLearning) requestedProgrammeLearning.value = document.querySelector("#programmeDetailOutcome")?.textContent.trim() || "";
+  if (requestedProgrammeFeeNote) requestedProgrammeFeeNote.textContent = getProgrammeFieldIssueText("fee", rejected);
+  if (requestedProgrammeLearningNote) requestedProgrammeLearningNote.textContent = getProgrammeFieldIssueText("learning", rejected);
+  if (requestedProgrammeTargetNote) requestedProgrammeTargetNote.textContent = getProgrammeFieldIssueText("target", rejected);
+  if (requestedProgrammeDurationNote) requestedProgrammeDurationNote.textContent = getProgrammeFieldIssueText("duration", rejected);
+  if (requestedProgrammeParticipantsNote) requestedProgrammeParticipantsNote.textContent = getProgrammeFieldIssueText("participants", rejected);
+  if (requestedProgrammeDurationCompound && requestedProgrammeDurationDisplay) {
+    requestedProgrammeDurationDisplay.textContent = document.querySelector("#programmeDetailDuration")?.textContent.trim() || "";
+    syncDurationCompound(requestedProgrammeDurationCompound, requestedProgrammeDurationDisplay);
+  }
+  if (requestedProgrammeFeeCompound && requestedProgrammeFeeDisplay) {
+    requestedProgrammeFeeDisplay.textContent = document.querySelector("#programmeDetailFee")?.textContent.trim() || "";
+    syncFeeCompound(requestedProgrammeFeeCompound, requestedProgrammeFeeDisplay);
+  }
+  if (requestedProgrammeParticipantsCompound && requestedProgrammeParticipantsLimitDisplay && requestedProgrammeParticipantsWaiverDisplay) {
+    requestedProgrammeParticipantsLimitDisplay.textContent = document.querySelector("#programmeDetailParticipantsLimit")?.textContent.trim() || "";
+    requestedProgrammeParticipantsWaiverDisplay.textContent = document.querySelector("#programmeDetailParticipantsWaiver")?.textContent.trim() || "";
+    syncParticipantsCompound(requestedProgrammeParticipantsCompound, requestedProgrammeParticipantsLimitDisplay, requestedProgrammeParticipantsWaiverDisplay);
+  }
+  if (requestedProgrammeLearning) requestedProgrammeLearning.value = document.querySelector("#programmeDetailsOutcome")?.dataset.value || "";
   if (requestedProgrammeTarget) requestedProgrammeTarget.value = document.querySelector("#programmeDetailTarget")?.textContent.trim() || "General Public (including student)";
   if (requestedChangesModal) requestedChangesModal.dataset.mode = mode;
   if (requestedChangesModal) requestedChangesModal.hidden = false;
@@ -1102,20 +2009,6 @@ function openRequestedChangesModal(mode = "changes requested") {
 
 function closeRequestedChangesModal() {
   if (requestedChangesModal) requestedChangesModal.hidden = true;
-}
-
-function openDraftProgrammeModal() {
-  if (draftProgrammeName) draftProgrammeName.value = document.querySelector("#programmeDetailName")?.textContent.trim() || "";
-  if (draftProgrammeOverview) draftProgrammeOverview.value = document.querySelector("#programmeDetailsOverview")?.textContent.trim() || "";
-  if (draftProgrammeDuration) draftProgrammeDuration.value = document.querySelector("#programmeDetailDuration")?.textContent.trim() || "";
-  if (draftProgrammeFee) draftProgrammeFee.value = document.querySelector("#programmeDetailFee")?.textContent.trim() || "";
-  if (draftProgrammeTarget) draftProgrammeTarget.value = document.querySelector("#programmeDetailTarget")?.textContent.trim() || "General Public (including student)";
-  if (draftProgrammeLearning) draftProgrammeLearning.value = document.querySelector("#programmeDetailOutcome")?.textContent.trim() || "";
-  if (draftProgrammeModal) draftProgrammeModal.hidden = false;
-}
-
-function closeDraftProgrammeModal() {
-  if (draftProgrammeModal) draftProgrammeModal.hidden = true;
 }
 
 function openKptNoticeModal(status) {
@@ -1198,7 +2091,7 @@ function setActiveProgrammeTab(tabName = "overview") {
 }
 
 function renderProgrammeDetailTabs(status) {
-  const postApproval = ["approved", "live", "archived", "resubmitted"].includes(status);
+  const postApproval = ["published", "unpublish"].includes(status);
   programmeDetailTabButtons.forEach((button) => {
     const tab = button.dataset.programmeTab;
     const visible = tab === "overview" || tab === "details" || (status === "resubmitted" ? ["approval", "applications", "history"].includes(tab) : (postApproval ? ["applications", "history"].includes(tab) : tab === "approval"));
@@ -1364,8 +2257,7 @@ function renderProgrammeStatusNotice(status) {
   const notices = {
     "pending kpt approval": {
       title: "This programme is waiting for KPT approval.",
-      body: "No applicant applications can open until KPT has approved this programme.",
-      action: "View submission"
+      body: "No applicant applications can open until KPT has approved this programme."
     },
     "changes requested": {
       title: "KPT has requested changes before this programme can be approved.",
@@ -1394,14 +2286,33 @@ function renderProgrammeStatusNotice(status) {
   if (!item) return;
   title.textContent = item.title;
   body.textContent = item.body;
-  action.textContent = item.action;
-  action.dataset.noticeAction = ["changes requested", "draft"].includes(status) ? status : "";
-  action.dataset.noticeStatus = status;
+  action.hidden = !item.action;
+  if (item.action) {
+    action.textContent = item.action;
+    action.dataset.noticeAction = ["changes requested", "draft"].includes(status) ? status : "";
+    action.dataset.noticeStatus = status;
+  }
 }
 
-createProgramme?.addEventListener("click", showProgrammeCreateForm);
-cancelProgrammeCreate?.addEventListener("click", showProgrammesList);
-backToProgrammes?.addEventListener("click", showProgrammesList);
+function cancelProgrammeCreateForm() {
+  const row = editingDraftRow;
+  editingDraftRow = null;
+  if (row) {
+    showProgrammeDetail(row);
+    return;
+  }
+  showProgrammesList();
+}
+createProgramme?.addEventListener("click", () => {
+  editingDraftRow = null;
+  resetProgrammeCreateForm();
+  if (programmeCreateHeading) programmeCreateHeading.textContent = "Create New Programme";
+  if (programmeCreateSubheading) programmeCreateSubheading.textContent = "Add a new Edutourism programme for international students.";
+  if (saveProgrammeDraft) saveProgrammeDraft.textContent = "Save Draft";
+  showProgrammeCreateForm();
+});
+cancelProgrammeCreate?.addEventListener("click", cancelProgrammeCreateForm);
+backToProgrammes?.addEventListener("click", cancelProgrammeCreateForm);
 backToProgrammesFromDetail?.addEventListener("click", showProgrammesList);
 programmeDetailTabButtons.forEach((button) => {
   button.addEventListener("click", () => setActiveProgrammeTab(button.dataset.programmeTab));
@@ -1564,21 +2475,74 @@ editProgrammeDetails?.addEventListener("click", () => {
   setProgrammeDetailsEditing(true);
   if (programmeEditWarning) programmeEditWarning.hidden = true;
 });
+function handleCompoundToggleChange(event) {
+  const select = event.target.closest("select[data-editable-other]");
+  if (select) {
+    const otherInput = document.getElementById(select.dataset.editableOther);
+    if (otherInput) otherInput.hidden = select.value !== select.dataset.editableOtherTrigger;
+    return;
+  }
+  const compoundWrapper = event.target.closest("[data-editable-compound]");
+  if (compoundWrapper) {
+    if (compoundWrapper.dataset.editableCompound === "participants") {
+      toggleParticipantsRows(compoundWrapper);
+      return;
+    }
+    PROGRAMME_COMPOUND_FIELD_HANDLERS[compoundWrapper.dataset.editableCompound]?.toggle?.(compoundWrapper);
+  }
+}
+programmeDetail?.addEventListener("change", handleCompoundToggleChange);
+requestedChangesModal?.addEventListener("change", handleCompoundToggleChange);
+programmeDetail?.addEventListener("click", (event) => {
+  const addButton = event.target.closest('[data-role="listAddButton"]');
+  if (addButton) {
+    const wrapper = addButton.closest("[data-editable-compound]");
+    const container = wrapper ? getCompoundRole(wrapper, "listInputs") : null;
+    if (container) addStackedInput(container, wrapper.dataset.listLabel || "Item");
+    return;
+  }
+  removeStackedInput(event);
+});
 cancelProgrammeDetailsEdit?.addEventListener("click", () => {
   setProgrammeDetailsEditing(false);
   if (programmeEditWarning) programmeEditWarning.hidden = true;
 });
 saveProgrammeDetails?.addEventListener("click", () => {
+  const status = programmeDetail?.dataset.programmeStatus || "";
+  const unresolvedIssues = getUnresolvedProgrammeFieldIssues(status);
+  if (unresolvedIssues.length) {
+    openProgrammeRequiredChangesWarning(unresolvedIssues);
+    return;
+  }
+  if (!hasProgrammeEditsChanged() && !hasProgrammeGalleryChanged()) {
+    setProgrammeDetailsEditing(false);
+    return;
+  }
   openProgrammeChangesModal();
 });
 closeProgrammeChanges?.addEventListener("click", closeProgrammeChangesModal);
 cancelProgrammeChanges?.addEventListener("click", closeProgrammeChangesModal);
 proceedProgrammeChanges?.addEventListener("click", () => {
   closeProgrammeChangesModal();
-  setProgrammeDetailsEditing(false);
-  if (programmeEditWarning) programmeEditWarning.hidden = false;
-  updateActiveProgrammeStatus("Resubmitted", "status-chip blue");
-  addAuditRecord({ action: `Edited approved programme details for ${getProgrammeAuditName()}`, entity: "Programme" });
+  const applyProgrammeEdits = () => {
+    getEditableProgrammePanels().forEach((panel) => commitProgrammeEditableFields(panel));
+    commitProgrammeDetailsGallery();
+    setProgrammeDetailsEditing(false);
+    if (programmeEditWarning) programmeEditWarning.hidden = false;
+    updateActiveProgrammeStatus("Resubmitted", "status-chip blue");
+    addAuditRecord({ action: `Edited approved programme details for ${getProgrammeAuditName()}`, entity: "Programme" });
+  };
+  const normalizedStatus = programmeDetail?.dataset.programmeStatus || "";
+  if (["published", "unpublish"].includes(normalizedStatus)) {
+    openProgrammeActionConfirm(
+      "Confirm submission to KPT?",
+      "This programme will be taken off the public listing until KPT reviews and re-approves these changes. Are you sure you want to continue?",
+      applyProgrammeEdits,
+      "Yes, submit for approval"
+    );
+    return;
+  }
+  applyProgrammeEdits();
 });
 confirmProgrammeChanges?.addEventListener("click", () => {
   if (programmeEditWarning) programmeEditWarning.hidden = true;
@@ -1590,7 +2554,7 @@ programmeStatusNoticeAction?.addEventListener("click", () => {
     return;
   }
   if (action === "draft") {
-    openDraftProgrammeModal();
+    openDraftProgrammeEditor(activeProgrammeRow);
     return;
   }
   openKptNoticeModal(programmeStatusNoticeAction.dataset.noticeStatus || "");
@@ -1605,37 +2569,58 @@ submitRequestedChanges?.addEventListener("click", () => {
     "Submit"
   );
 });
-closeDraftProgramme?.addEventListener("click", closeDraftProgrammeModal);
-cancelDraftProgramme?.addEventListener("click", closeDraftProgrammeModal);
-saveDraftProgramme?.addEventListener("click", () => {
-  openProgrammeActionConfirm(
-    "Save draft changes?",
-    "This will update the draft programme details in the prototype.",
-    applyDraftProgrammeEdits,
-    "Save"
-  );
-});
-submitDraftProgramme?.addEventListener("click", () => {
-  openProgrammeActionConfirm(
-    "Submit draft to KPT?",
-    "This will save the draft details and move the programme to Pending KPT Approval.",
-    () => {
-      applyDraftProgrammeEdits();
-      updateActiveProgrammeStatus("Pending KPT Approval", "status-chip amber");
-    },
-    "Submit"
-  );
-});
 closeKptNotice?.addEventListener("click", closeKptNoticeModal);
 doneKptNotice?.addEventListener("click", closeKptNoticeModal);
 
-document.querySelector(".programme-gallery-grid")?.addEventListener("click", (event) => {
-  const button = event.target.closest("button");
+programmeDetailsGalleryGrid?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-gallery-action]");
   if (!button) return;
-  const card = button.closest("div");
-  const title = card?.querySelector("strong")?.textContent.trim() || "Programme image";
-  const action = button.dataset.galleryAction === "replace" ? "replace programme gallery image" : "programme gallery";
-  openPreviewModal(title, action);
+  const index = Number(button.dataset.index);
+  const action = button.dataset.galleryAction;
+  if (action === "view") {
+    const title = pendingProgrammeDetailsGalleryImages[index]?.context || "Programme image";
+    openPreviewModal(title, "programme gallery");
+    return;
+  }
+  if (action === "replace") {
+    programmeDetailsGalleryReplaceIndex = index;
+    if (programmeDetailsGalleryInput) {
+      programmeDetailsGalleryInput.multiple = false;
+      programmeDetailsGalleryInput.click();
+    }
+    return;
+  }
+  if (action === "remove") {
+    const image = pendingProgrammeDetailsGalleryImages[index];
+    if (image?.url) URL.revokeObjectURL(image.url);
+    pendingProgrammeDetailsGalleryImages.splice(index, 1);
+    renderProgrammeDetailsGalleryGrid(pendingProgrammeDetailsGalleryImages, true);
+  }
+});
+addProgrammeDetailsGalleryImage?.addEventListener("click", () => {
+  programmeDetailsGalleryReplaceIndex = null;
+  if (programmeDetailsGalleryInput) {
+    programmeDetailsGalleryInput.multiple = true;
+    programmeDetailsGalleryInput.click();
+  }
+});
+programmeDetailsGalleryInput?.addEventListener("change", () => {
+  const files = [...(programmeDetailsGalleryInput.files || [])];
+  if (!files.length) return;
+  if (programmeDetailsGalleryReplaceIndex !== null) {
+    const index = programmeDetailsGalleryReplaceIndex;
+    const previous = pendingProgrammeDetailsGalleryImages[index];
+    if (previous?.url) URL.revokeObjectURL(previous.url);
+    pendingProgrammeDetailsGalleryImages[index] = { url: URL.createObjectURL(files[0]), context: files[0].name };
+    programmeDetailsGalleryReplaceIndex = null;
+  } else {
+    const availableSlots = Math.max(0, 10 - pendingProgrammeDetailsGalleryImages.length);
+    files.slice(0, availableSlots).forEach((file) => {
+      pendingProgrammeDetailsGalleryImages.push({ url: URL.createObjectURL(file), context: file.name });
+    });
+  }
+  programmeDetailsGalleryInput.value = "";
+  renderProgrammeDetailsGalleryGrid(pendingProgrammeDetailsGalleryImages, true);
 });
 
 function addStackedInput(container, labelPrefix) {
@@ -1645,7 +2630,7 @@ function addStackedInput(container, labelPrefix) {
   const input = document.createElement("input");
   const button = document.createElement("button");
   input.type = "text";
-  input.value = `${labelPrefix} ${nextNumber}`;
+  input.placeholder = `${labelPrefix} ${nextNumber}`;
   input.setAttribute("aria-label", `${labelPrefix} ${nextNumber}`);
   button.type = "button";
   button.textContent = "X";
@@ -1655,25 +2640,117 @@ function addStackedInput(container, labelPrefix) {
   container.appendChild(label);
 }
 
+function addBlankStackedInput(container, labelPrefix) {
+  if (!container) return;
+  const nextNumber = container.querySelectorAll("label").length + 1;
+  const label = document.createElement("label");
+  const input = document.createElement("input");
+  const button = document.createElement("button");
+  input.type = "text";
+  input.placeholder = `${labelPrefix} ${nextNumber}`;
+  input.setAttribute("aria-label", `${labelPrefix} ${nextNumber}`);
+  button.type = "button";
+  button.textContent = "X";
+  button.dataset.removeItem = "";
+  button.setAttribute("aria-label", `Remove ${labelPrefix.toLowerCase()}`);
+  label.append(input, button);
+  container.appendChild(label);
+}
+
+function syncProgrammeCreateConditionalFields() {
+  const usesDurationRange = createProgrammeDurationType?.value === "Date range";
+  const usesFeeRange = createProgrammeFeeType?.value === "Fee range";
+  const usesOtherTarget = createProgrammeTarget?.value === "Others";
+  const usesParticipantLimit = createProgrammeParticipantLimitType?.value === "Set min/max";
+  const usesParticipantWaiver = createProgrammeWaiverType?.value === "Set waiver";
+  const usesOtherCredit = createProgrammeCredit?.querySelector('input[name="createProgrammeCredit"]:checked')?.value === "Others";
+  const usesTravelAgency = createProgrammeTravelTour?.value === "Registered Travel Agency";
+  const usesOtherCertificate = createProgrammeCertificateType?.value === "Others";
+  if (createProgrammeDuration) {
+    createProgrammeDuration.closest(".request-textbox").hidden = usesDurationRange;
+  }
+  if (createProgrammeDurationRangeFields) createProgrammeDurationRangeFields.hidden = !usesDurationRange;
+  if (createProgrammeFee) {
+    createProgrammeFee.closest(".request-textbox").hidden = usesFeeRange;
+  }
+  if (createProgrammeFeeRangeFields) createProgrammeFeeRangeFields.hidden = !usesFeeRange;
+  if (createProgrammeTargetOtherField) createProgrammeTargetOtherField.hidden = !usesOtherTarget;
+  if (createProgrammeParticipantLimitFields) createProgrammeParticipantLimitFields.hidden = !usesParticipantLimit;
+  if (createProgrammeWaiverFields) createProgrammeWaiverFields.hidden = !usesParticipantWaiver;
+  if (createProgrammeCreditOther) createProgrammeCreditOther.hidden = !usesOtherCredit;
+  if (createProgrammeTravelAgencyField) createProgrammeTravelAgencyField.hidden = !usesTravelAgency;
+  if (createProgrammeCertificateOtherField) createProgrammeCertificateOtherField.hidden = !usesOtherCertificate;
+  updateProgrammeWaiverPreview();
+}
+
 function removeStackedInput(event) {
   const button = event.target.closest("[data-remove-item]");
   if (!button) return;
   const container = button.closest(".stacked-inputs");
-  if (container?.querySelectorAll("label").length > 1) {
+  const minimumItems = Number(container?.dataset.minimumItems || "1");
+  if (container?.querySelectorAll("label").length > minimumItems) {
     button.closest("label")?.remove();
   }
 }
 
 addProgrammeActivity?.addEventListener("click", () => addStackedInput(programmeActivities, "Activity"));
 addProgrammeLearningScope?.addEventListener("click", () => addStackedInput(programmeLearningScopes, "Learning outcome"));
+addProgrammeInclusion?.addEventListener("click", () => addBlankStackedInput(programmeInclusions, "Included item"));
 programmeActivities?.addEventListener("click", removeStackedInput);
 programmeLearningScopes?.addEventListener("click", removeStackedInput);
+programmeInclusions?.addEventListener("click", removeStackedInput);
+createProgrammeDurationType?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeFeeType?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeTarget?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeParticipantLimitType?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeWaiverType?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeWaivedParticipants?.addEventListener("input", updateProgrammeWaiverPreview);
+createProgrammeWaiverEveryParticipants?.addEventListener("input", updateProgrammeWaiverPreview);
+createProgrammeCredit?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeTravelTour?.addEventListener("change", syncProgrammeCreateConditionalFields);
+createProgrammeCertificateType?.addEventListener("change", syncProgrammeCreateConditionalFields);
 browseProgrammeGallery?.addEventListener("click", () => createProgrammeGallery?.click());
 createProgrammeGallery?.addEventListener("change", () => {
-  const count = createProgrammeGallery.files?.length || 0;
-  if (programmeGalleryCount) programmeGalleryCount.textContent = count ? `${count} image${count === 1 ? "" : "s"} selected` : "No images selected";
+  const files = [...(createProgrammeGallery.files || [])];
+  const availableSlots = Math.max(0, 10 - pendingProgrammeGalleryImages.length);
+  files.slice(0, availableSlots).forEach((file) => {
+    pendingProgrammeGalleryImages.push({
+      name: file.name,
+      url: URL.createObjectURL(file),
+      context: ""
+    });
+  });
+  createProgrammeGallery.value = "";
+  renderCreateProgrammeGallery();
+});
+programmeGalleryPreview?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-gallery-remove]");
+  if (!button) return;
+  const index = Number(button.dataset.galleryRemove);
+  const [removed] = pendingProgrammeGalleryImages.splice(index, 1);
+  if (removed) URL.revokeObjectURL(removed.url);
+  renderCreateProgrammeGallery();
+});
+programmeGalleryPreview?.addEventListener("input", (event) => {
+  const input = event.target.closest("[data-gallery-context]");
+  if (!input) return;
+  const image = pendingProgrammeGalleryImages[Number(input.dataset.galleryContext)];
+  if (image) image.context = input.value;
 });
 saveProgrammeDraft?.addEventListener("click", () => {
+  if (editingDraftRow) {
+    const row = editingDraftRow;
+    openProgrammeActionConfirm(
+      "Save changes to this draft?",
+      "This will update the draft programme with your changes. It will not be submitted to KPT yet.",
+      () => {
+        updateProgrammeRowFromForm(row, "Draft");
+        editingDraftRow = null;
+      },
+      "Save"
+    );
+    return;
+  }
   openProgrammeActionConfirm(
     "Save this programme as draft?",
     "This will add the programme to the table as a draft. It will not be submitted to KPT yet.",
@@ -1682,6 +2759,19 @@ saveProgrammeDraft?.addEventListener("click", () => {
   );
 });
 submitProgrammeKpt?.addEventListener("click", () => {
+  if (editingDraftRow) {
+    const row = editingDraftRow;
+    openProgrammeActionConfirm(
+      "Submit this draft to KPT?",
+      "This will submit the programme and mark it as Pending KPT Approval.",
+      () => {
+        updateProgrammeRowFromForm(row, "Pending KPT Approval");
+        editingDraftRow = null;
+      },
+      "Submit"
+    );
+    return;
+  }
   openProgrammeActionConfirm(
     "Submit this programme to KPT?",
     "This will add the programme to the table and mark it as Pending KPT Approval.",
@@ -1699,7 +2789,7 @@ function resetProgrammePage() {
   updateProgrammeRows();
 }
 
-[programmePublicStatusFilter, programmesPerPage].forEach((control) => {
+[programmePublicStatusFilter, programmeCategoryFilter, programmesPerPage].forEach((control) => {
   control?.addEventListener("change", resetProgrammePage);
 });
 
@@ -1959,6 +3049,35 @@ applicationSortButtons.forEach((button) => {
   });
 });
 
+function getProgrammeSortValue(row, key) {
+  if (key === "category") return row.dataset.programmeCategory || "";
+  if (key === "status") return row.dataset.publicStatus || "";
+  return "";
+}
+
+programmeSortButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.sortKey;
+    const direction = programmeSort.key === key && programmeSort.direction === "asc" ? "desc" : "asc";
+    const tbody = button.closest("table")?.querySelector("tbody");
+    if (!tbody) return;
+
+    programmeSort = { key, direction };
+    currentProgrammePage = 1;
+    const rows = [...tbody.querySelectorAll("tr")];
+    rows.sort((first, second) => {
+      const firstValue = getProgrammeSortValue(first, key);
+      const secondValue = getProgrammeSortValue(second, key);
+      return direction === "asc"
+        ? firstValue.localeCompare(secondValue)
+        : secondValue.localeCompare(firstValue);
+    });
+    rows.forEach((row) => tbody.appendChild(row));
+    programmeRows = document.querySelectorAll(".programmes-table tbody tr");
+    updateProgrammeRows();
+  });
+});
+
 updateApplicationRows();
 updateVisibleColumns();
 updateProgrammeRows();
@@ -2007,21 +3126,37 @@ applicationRows.forEach((row) => {
 });
 
 const programmeMeta = {
-  "digital entrepreneurship bootcamp": { category: "Business & Innovation", fee: "RM 4,200" },
-  "malaysian heritage experience": { category: "Culture & Heritage", fee: "RM 2,100" },
-  "applied ai for tourism": { category: "Technology", fee: "RM 4,800" },
-  "marine conservation lab": { category: "Nature & Environment", fee: "RM 3,700" },
-  "bahasa for healthcare professionals": { category: "Language & Culture", fee: "RM 2,400" },
-  "fintech innovation studio": { category: "Business & Innovation", fee: "RM 4,500" },
-  "smart mobility lab": { category: "Urban Studies", fee: "RM 3,300" },
-  "ai heritage storytelling lab": { category: "Technology", fee: "RM 3,800" },
-  "rainforest research field school": { category: "Nature & Environment", fee: "RM 4,100" },
-  "borneo culture immersion": { category: "Language & Culture", fee: "RM 2,700" }
+  "digital entrepreneurship bootcamp": { category: "Business and Entrepreneurship (BAE)", fee: "RM 4,200" },
+  "malaysian heritage experience": { category: "Food, Culture & Heritage (FCH)", fee: "RM 2,100" },
+  "applied ai for tourism": { category: "Science and Technology (SAT)", fee: "RM 4,800" },
+  "marine conservation lab": { category: "Environmental and Health Science (EAH)", fee: "RM 3,700" },
+  "bahasa for healthcare professionals": { category: "Environmental and Health Science (EAH)", fee: "RM 2,400" },
+  "fintech innovation studio": { category: "Business and Entrepreneurship (BAE)", fee: "RM 4,500" },
+  "smart mobility lab": { category: "Sports (SPT)", fee: "RM 3,300" },
+  "ai heritage storytelling lab": { category: "Science and Technology (SAT)", fee: "RM 3,800" },
+  "rainforest research field school": { category: "Nature and Adventure (NAA)", fee: "RM 4,100" },
+  "borneo culture immersion": { category: "Arts & Social Science (ANS)", fee: "RM 2,700" }
 };
 
 function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element) element.textContent = value;
+}
+
+function renderProgrammeParticipants(participantsText) {
+  const value = String(participantsText || "").trim();
+  const [limitPart, waiverPart] = value.includes(";") ? value.split(";").map((part) => part.trim()) : [value, ""];
+  setText("#programmeDetailParticipantsLimit", limitPart || "Not specified");
+  setText("#programmeDetailParticipantsWaiver", waiverPart || "No participant waiver");
+}
+
+function setListField(selector, value, fallback) {
+  const element = document.querySelector(selector);
+  if (!element) return;
+  const items = String(value || fallback || "").split(",").map((item) => item.trim()).filter(Boolean);
+  const finalItems = items.length ? items : [fallback || ""];
+  element.dataset.value = finalItems.join(", ");
+  element.innerHTML = finalItems.map((item) => `<li>${escapeAttribute(item)}</li>`).join("");
 }
 
 function getDemoDate() {
@@ -2302,7 +3437,7 @@ function renderApplicationSidePanel(row, preferredTab = getActiveApplicationSide
   const status = row.dataset.applicationStatus || "submitted";
   const statusInfo = statusMeta[status] || statusMeta.submitted;
   const applicantType = getApplicantType(row);
-  const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Short Mobility", fee: "RM 3,000" };
+  const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Science and Technology (SAT)", fee: "RM 3,000" };
   const requiresStudentPass = applicantType.toLowerCase().includes("student pass");
   const currentStage = getApplicationStage(status);
   const activityItems = buildSideActivity(row, status, statusInfo, applied, updated);
@@ -3016,7 +4151,7 @@ function showApplicantDetail(row, options = {}) {
   const updated = row.children[6]?.textContent.trim() || "";
   const status = row.dataset.applicationStatus || "submitted";
   const statusInfo = statusMeta[status] || statusMeta.submitted;
-  const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Short Mobility", fee: "RM 3,000" };
+  const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Science and Technology (SAT)", fee: "RM 3,000" };
   const applicantType = getApplicantType(row);
   const requiresStudentPass = applicantType.toLowerCase().includes("student pass");
 
@@ -3350,7 +4485,6 @@ if (resetDemo) {
     closeStatusConfirmModal();
     closeProgrammeChangesModal();
     closeRequestedChangesModal();
-    closeDraftProgrammeModal();
     closeKptNoticeModal();
     closeNotificationsPanel();
   });
