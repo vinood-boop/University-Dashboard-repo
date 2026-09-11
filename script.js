@@ -86,9 +86,8 @@ const createProgrammeDuration = document.querySelector("#createProgrammeDuration
 const createProgrammeDurationUnit = document.querySelector("#createProgrammeDurationUnit");
 const createProgrammeDurationRangeFields = document.querySelector("#createProgrammeDurationRangeFields");
 const createProgrammeDurationMin = document.querySelector("#createProgrammeDurationMin");
-const createProgrammeDurationMinUnit = document.querySelector("#createProgrammeDurationMinUnit");
 const createProgrammeDurationMax = document.querySelector("#createProgrammeDurationMax");
-const createProgrammeDurationMaxUnit = document.querySelector("#createProgrammeDurationMaxUnit");
+const createProgrammeDurationRangeUnit = document.querySelector("#createProgrammeDurationRangeUnit");
 const createProgrammeFeeType = document.querySelector("#createProgrammeFeeType");
 const createProgrammeFee = document.querySelector("#createProgrammeFee");
 const createProgrammeFeeRangeFields = document.querySelector("#createProgrammeFeeRangeFields");
@@ -775,9 +774,8 @@ function resetProgrammeCreateForm() {
   if (createProgrammeDuration) createProgrammeDuration.value = "";
   if (createProgrammeDurationUnit) createProgrammeDurationUnit.value = "Day(s)";
   if (createProgrammeDurationMin) createProgrammeDurationMin.value = "";
-  if (createProgrammeDurationMinUnit) createProgrammeDurationMinUnit.value = "Day(s)";
   if (createProgrammeDurationMax) createProgrammeDurationMax.value = "";
-  if (createProgrammeDurationMaxUnit) createProgrammeDurationMaxUnit.value = "Day(s)";
+  if (createProgrammeDurationRangeUnit) createProgrammeDurationRangeUnit.value = "Day(s)";
   if (createProgrammeFeeType) createProgrammeFeeType.value = "Fixed fee";
   if (createProgrammeFee) createProgrammeFee.value = "";
   if (createProgrammeFeeMin) createProgrammeFeeMin.value = "";
@@ -908,9 +906,8 @@ function populateCreateFormFromRow(row) {
   if (createProgrammeDurationType) createProgrammeDurationType.value = durationData.type;
   if (durationData.type === "Date range") {
     if (createProgrammeDurationMin) createProgrammeDurationMin.value = durationData.min;
-    if (createProgrammeDurationMinUnit) createProgrammeDurationMinUnit.value = durationData.minUnit;
     if (createProgrammeDurationMax) createProgrammeDurationMax.value = durationData.max;
-    if (createProgrammeDurationMaxUnit) createProgrammeDurationMaxUnit.value = durationData.maxUnit;
+    if (createProgrammeDurationRangeUnit) createProgrammeDurationRangeUnit.value = durationData.unit;
   } else {
     if (createProgrammeDuration) createProgrammeDuration.value = durationData.value;
     if (createProgrammeDurationUnit) createProgrammeDurationUnit.value = durationData.unit;
@@ -1088,7 +1085,7 @@ function updateProgrammeWaiverPreview() {
 
 function formatProgrammeDuration(value, unit) {
   const amount = Number(value) || 1;
-  const normalizedUnit = unit === "Month(s)" ? "month" : "day";
+  const normalizedUnit = unit === "Month(s)" ? "month" : unit === "Week(s)" ? "week" : "day";
   return `${amount} ${normalizedUnit}${amount === 1 ? "" : "s"}`;
 }
 
@@ -1096,15 +1093,15 @@ function getCreateProgrammeData(status) {
   const feeValue = createProgrammeFee?.value || "0";
   const feeType = createProgrammeFeeType?.value || "Fixed fee";
   const durationType = createProgrammeDurationType?.value || "Fixed days";
-  const durationMin = createProgrammeDurationMin?.value || "7";
-  const durationMax = createProgrammeDurationMax?.value || "14";
+  const durationMin = createProgrammeDurationMin?.value || "10";
+  const durationMax = createProgrammeDurationMax?.value || "20";
   const feeMin = createProgrammeFeeMin?.value || "1000";
   const feeMax = createProgrammeFeeMax?.value || "1500";
   const activities = [...(programmeActivities?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const outcomes = [...(programmeLearningScopes?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const inclusions = [...(programmeInclusions?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const duration = durationType === "Date range"
-    ? `${formatProgrammeDuration(durationMin, createProgrammeDurationMinUnit?.value)} - ${formatProgrammeDuration(durationMax, createProgrammeDurationMaxUnit?.value)}`
+    ? `${formatProgrammeDuration(durationMin, createProgrammeDurationRangeUnit?.value)} - ${formatProgrammeDuration(durationMax, createProgrammeDurationRangeUnit?.value)}`
     : formatProgrammeDuration(createProgrammeDuration?.value || "14", createProgrammeDurationUnit?.value);
   const fee = feeType === "Fee range"
     ? `USD ${feeMin} - USD ${feeMax}`
@@ -1497,20 +1494,26 @@ function getCompoundRole(wrapper, role) {
 
 function formatDurationPart(value, unit) {
   const amount = Number(value) || 1;
-  const normalizedUnit = String(unit || "Day(s)").toLowerCase().startsWith("month") ? "Month" : "Day";
+  const normalizedUnitText = String(unit || "Day(s)").toLowerCase();
+  const normalizedUnit = normalizedUnitText.startsWith("month") ? "Month" : normalizedUnitText.startsWith("week") ? "Week" : "Day";
   return `${amount} ${normalizedUnit}${amount === 1 ? "" : "s"}`;
+}
+
+function parseDurationUnit(text) {
+  if (/month/i.test(text || "")) return "Month(s)";
+  if (/week/i.test(text || "")) return "Week(s)";
+  return "Day(s)";
 }
 
 function parseDurationValue(text) {
   const value = String(text || "").trim();
-  const rangeMatch = value.match(/(\d+)\s*(day|days|month|months)?\s*-\s*(\d+)\s*(day|days|month|months)?/i);
+  const rangeMatch = value.match(/(\d+)\s*(day|days|week|weeks|month|months)?\s*-\s*(\d+)\s*(day|days|week|weeks|month|months)?/i);
   if (rangeMatch) {
-    const minUnit = /month/i.test(rangeMatch[2] || rangeMatch[4] || "") ? "Month(s)" : "Day(s)";
-    const maxUnit = /month/i.test(rangeMatch[4] || rangeMatch[2] || "") ? "Month(s)" : "Day(s)";
-    return { type: "Date range", min: rangeMatch[1], minUnit, max: rangeMatch[3], maxUnit };
+    const unit = parseDurationUnit(rangeMatch[2] || rangeMatch[4]);
+    return { type: "Date range", min: rangeMatch[1], max: rangeMatch[3], unit };
   }
-  const fixedMatch = value.match(/(\d+)\s*(day|days|month|months)?/i);
-  const unit = /month/i.test(fixedMatch?.[2] || "") ? "Month(s)" : "Day(s)";
+  const fixedMatch = value.match(/(\d+)\s*(day|days|week|weeks|month|months)?/i);
+  const unit = parseDurationUnit(fixedMatch?.[2]);
   return { type: "Fixed days", value: fixedMatch?.[1] || "14", unit };
 }
 
@@ -1525,9 +1528,8 @@ function syncDurationCompound(wrapper, display) {
   getCompoundRole(wrapper, "durationType").value = data.type;
   if (data.type === "Date range") {
     getCompoundRole(wrapper, "durationMin").value = data.min;
-    getCompoundRole(wrapper, "durationMinUnit").value = data.minUnit;
     getCompoundRole(wrapper, "durationMax").value = data.max;
-    getCompoundRole(wrapper, "durationMaxUnit").value = data.maxUnit;
+    getCompoundRole(wrapper, "durationRangeUnit").value = data.unit;
   } else {
     getCompoundRole(wrapper, "durationValue").value = data.value;
     getCompoundRole(wrapper, "durationUnit").value = data.unit;
@@ -1538,8 +1540,9 @@ function syncDurationCompound(wrapper, display) {
 function computeDurationValue(wrapper) {
   const isRange = getCompoundRole(wrapper, "durationType").value === "Date range";
   if (isRange) {
-    const min = formatDurationPart(getCompoundRole(wrapper, "durationMin").value, getCompoundRole(wrapper, "durationMinUnit").value);
-    const max = formatDurationPart(getCompoundRole(wrapper, "durationMax").value, getCompoundRole(wrapper, "durationMaxUnit").value);
+    const rangeUnit = getCompoundRole(wrapper, "durationRangeUnit").value;
+    const min = formatDurationPart(getCompoundRole(wrapper, "durationMin").value, rangeUnit);
+    const max = formatDurationPart(getCompoundRole(wrapper, "durationMax").value, rangeUnit);
     return `${min} - ${max}`;
   }
   return formatDurationPart(getCompoundRole(wrapper, "durationValue").value, getCompoundRole(wrapper, "durationUnit").value);

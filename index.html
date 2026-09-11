@@ -1072,16 +1072,14 @@
                           <input type="number" class="editable-input" data-role="durationValue" data-visibility="fixed" min="1" placeholder="e.g., 14" aria-label="Edit duration value">
                           <select class="editable-input" data-role="durationUnit" data-visibility="fixed" aria-label="Edit duration unit">
                             <option>Day(s)</option>
+                            <option>Week(s)</option>
                             <option>Month(s)</option>
                           </select>
-                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 7" aria-label="Edit minimum duration value" hidden>
-                          <select class="editable-input" data-role="durationMinUnit" data-visibility="range" aria-label="Edit minimum duration unit" hidden>
+                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 10" aria-label="Edit minimum duration value" hidden>
+                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 20" aria-label="Edit maximum duration value" hidden>
+                          <select class="editable-input" data-role="durationRangeUnit" data-visibility="range" aria-label="Edit duration range unit" hidden>
                             <option>Day(s)</option>
-                            <option>Month(s)</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 14" aria-label="Edit maximum duration value" hidden>
-                          <select class="editable-input" data-role="durationMaxUnit" data-visibility="range" aria-label="Edit maximum duration unit" hidden>
-                            <option>Day(s)</option>
+                            <option>Week(s)</option>
                             <option>Month(s)</option>
                           </select>
                         </div>
@@ -1254,16 +1252,14 @@
                           <input type="number" class="editable-input" data-role="durationValue" data-visibility="fixed" min="1" placeholder="e.g., 14" aria-label="Requested duration value">
                           <select class="editable-input" data-role="durationUnit" data-visibility="fixed" aria-label="Requested duration unit">
                             <option>Day(s)</option>
+                            <option>Week(s)</option>
                             <option>Month(s)</option>
                           </select>
-                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 7" aria-label="Requested minimum duration value" hidden>
-                          <select class="editable-input" data-role="durationMinUnit" data-visibility="range" aria-label="Requested minimum duration unit" hidden>
+                          <input type="number" class="editable-input" data-role="durationMin" data-visibility="range" min="1" placeholder="Min e.g., 10" aria-label="Requested minimum duration value" hidden>
+                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 20" aria-label="Requested maximum duration value" hidden>
+                          <select class="editable-input" data-role="durationRangeUnit" data-visibility="range" aria-label="Requested duration range unit" hidden>
                             <option>Day(s)</option>
-                            <option>Month(s)</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="durationMax" data-visibility="range" min="1" placeholder="Max e.g., 14" aria-label="Requested maximum duration value" hidden>
-                          <select class="editable-input" data-role="durationMaxUnit" data-visibility="range" aria-label="Requested maximum duration unit" hidden>
-                            <option>Day(s)</option>
+                            <option>Week(s)</option>
                             <option>Month(s)</option>
                           </select>
                         </div>
@@ -1541,27 +1537,23 @@
                           <input type="number" id="createProgrammeDuration" min="1" placeholder="e.g., 14" aria-label="Programme fixed duration value">
                           <select class="range-select" id="createProgrammeDurationUnit" aria-label="Programme fixed duration unit">
                             <option>Day(s)</option>
+                            <option>Week(s)</option>
                             <option>Month(s)</option>
                           </select>
                         </div>
                       </label>
                       <label class="request-textbox" id="createProgrammeDurationRangeFields" hidden>
                         <span>Duration Range *</span>
-                        <div class="dual-input-row">
-                          <div class="duration-value-row">
-                            <input type="number" id="createProgrammeDurationMin" min="1" placeholder="Min e.g., 7" aria-label="Minimum duration value">
-                            <select class="range-select" id="createProgrammeDurationMinUnit" aria-label="Minimum duration unit">
-                              <option>Day(s)</option>
-                              <option>Month(s)</option>
-                            </select>
+                        <div class="duration-value-row">
+                          <div class="dual-input-row">
+                            <input type="number" id="createProgrammeDurationMin" min="1" placeholder="Min e.g., 10" aria-label="Minimum duration value">
+                            <input type="number" id="createProgrammeDurationMax" min="1" placeholder="Max e.g., 20" aria-label="Maximum duration value">
                           </div>
-                          <div class="duration-value-row">
-                            <input type="number" id="createProgrammeDurationMax" min="1" placeholder="Max e.g., 14" aria-label="Maximum duration value">
-                            <select class="range-select" id="createProgrammeDurationMaxUnit" aria-label="Maximum duration unit">
-                              <option>Day(s)</option>
-                              <option>Month(s)</option>
-                            </select>
-                          </div>
+                          <select class="range-select" id="createProgrammeDurationRangeUnit" aria-label="Duration range unit">
+                            <option>Day(s)</option>
+                            <option>Week(s)</option>
+                            <option>Month(s)</option>
+                          </select>
                         </div>
                       </label>
                     </div>
