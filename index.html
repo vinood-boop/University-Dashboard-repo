@@ -97,8 +97,8 @@
                     <small>Audit - Today, 9:40 AM</small>
                   </button>
                   <button class="notification-item unread" type="button" data-notification-target="reports" data-default-unread="true">
-                    <strong>Revenue report updated</strong>
-                    <span>Programme revenue and application volume are ready for review.</span>
+                    <strong>Performance report updated</strong>
+                    <span>Programme acceptance rate and application volume are ready for review.</span>
                     <small>Reports - Yesterday</small>
                   </button>
                 </div>
@@ -111,23 +111,23 @@
         <section class="metrics" aria-label="Dashboard summary">
           <article class="metric mint" data-keywords="active programmes live archived">
             <span>Active programmes</span>
-            <strong>3</strong>
-            <small>3 live, KPT launched</small>
+            <strong data-dashboard-metric="active-programmes">0</strong>
+            <small data-dashboard-note="active-programmes">0 under KPT review</small>
           </article>
           <article class="metric lavender" data-keywords="total applications applicants volume">
             <span>Total applications</span>
-            <strong>214</strong>
-            <small>18 new this week</small>
+            <strong data-dashboard-metric="total-applications">0</strong>
+            <small data-dashboard-note="total-applications">0 approved applicants</small>
           </article>
           <article class="metric peach" data-keywords="pending reviews submitted documents action">
             <span>Pending reviews</span>
-            <strong>27</strong>
-            <small>9 over 48 hours</small>
+            <strong data-dashboard-metric="pending-reviews">0</strong>
+            <small data-dashboard-note="pending-reviews">0 awaiting applicant documents</small>
           </article>
           <article class="metric sky" data-keywords="offers issued pre approvals pass follow up">
             <span>Offers issued</span>
-            <strong>46</strong>
-            <small>6 need follow-up</small>
+            <strong data-dashboard-metric="offers-issued">0</strong>
+            <small data-dashboard-note="offers-issued">0 withdrawn or rejected applications</small>
           </article>
         </section>
 
@@ -173,12 +173,12 @@
               </select>
             </div>
             <div class="donut-wrap">
-              <div class="donut" id="applicationDonut" aria-label="Application status donut chart"><span id="applicationTotal">16 total</span></div>
+              <div class="donut" id="applicationDonut" aria-label="Application status donut chart"><span id="applicationTotal">0 total</span></div>
               <div class="legend">
-                <span><i class="c1"></i>New Application <b data-status-count="submitted">6</b></span>
-                <span><i class="c2"></i>Under review <b data-status-count="review">4</b></span>
-                <span><i class="c3"></i>Approved <b data-status-count="approved">3</b></span>
-                <span><i class="c4"></i>Other <b data-status-count="other">3</b></span>
+                <span><i class="c1"></i>New Application <b data-status-count="submitted">0</b></span>
+                <span><i class="c2"></i>Under review <b data-status-count="review">0</b></span>
+                <span><i class="c3"></i>Approved <b data-status-count="approved">0</b></span>
+                <span><i class="c4"></i>Other <b data-status-count="other">0</b></span>
               </div>
             </div>
           </article>
@@ -189,30 +189,16 @@
                 <h2>Programme pipeline</h2>
                 <p>KPT review and publishing progress.</p>
               </div>
-              <span class="soft-pill">30 total</span>
+              <span class="soft-pill" id="dashboardProgrammePipelineTotal">0 total</span>
             </div>
             <div class="pipeline-flow" aria-label="Programme pipeline chart">
-              <div class="pipeline-stages">
-                <div><span><i class="draft"></i>Draft</span><strong>6</strong><small>20%</small></div>
-                <div><span><i class="review"></i>KPT review</span><strong>8</strong><small>27%</small></div>
-                <div><span><i class="changes"></i>Changes</span><strong>3</strong><small>10%</small></div>
-                <div><span><i class="live"></i>Live</span><strong>13</strong><small>43%</small></div>
-              </div>
-              <div class="pipeline-stack" aria-hidden="true">
-                <i class="draft"></i>
-                <i class="review"></i>
-                <i class="changes"></i>
-                <i class="live"></i>
-              </div>
-              <div class="pipeline-attention">
-                <div><span>3 change requests open</span><b>Action</b></div>
-                <div><span>5 reviews older than 7 days</span><b>Watch</b></div>
-              </div>
+              <div class="pipeline-stages" id="dashboardProgrammePipelineStages"></div>
+              <div class="pipeline-stack" id="dashboardProgrammePipelineStack" aria-hidden="true"></div>
             </div>
           </article>
         </section>
 
-        <section class="grid">
+        <section class="grid dashboard-legacy-panels" hidden>
           <article class="panel recent-panel" data-keywords="recent applications applicants submitted under review approved tracking nationality programme">
             <div class="panel-head">
               <div>
@@ -265,7 +251,7 @@
                     <td><a class="applicant-link" href="#"><span class="applicant-name">Sofia Martinez</span><small>EDT-2026-001866</small></a></td>
                     <td>Spain</td>
                     <td><span class="programme-name">Sustainable Cities Programme</span><small>Applied 10 Aug 2026</small></td>
-                    <td><span class="status-chip blue">Req. Documents Submitted</span></td>
+                    <td><span class="status-chip blue">Req Documents Submitted</span></td>
                     <td><span class="action-chip yes">Yes</span></td>
                     <td>13 Aug 2026</td>
                     <td><button type="button">View</button></td>
@@ -319,7 +305,7 @@
                     <td><a class="applicant-link" href="#"><span class="applicant-name">Sara Al-Khalid</span><small>EDT-2026-001879</small></a></td>
                     <td>Jordan</td>
                     <td><span class="programme-name">Tropical Biodiversity Programme</span><small>Applied 12 Aug 2026</small></td>
-                    <td><span class="status-chip blue">Req. Documents Submitted</span></td>
+                    <td><span class="status-chip blue">Req Documents Submitted</span></td>
                     <td><span class="action-chip yes">Yes</span></td>
                     <td>13 Aug 2026</td>
                     <td><button type="button">View</button></td>
@@ -433,6 +419,42 @@
             </div>
           </article>
         </section>
+
+        <section class="report-top-grid dashboard-report-grid">
+          <article class="panel" data-keywords="applications per programme accepted pending rejected withdrawn">
+            <div class="panel-head">
+              <div>
+                <h2>Applications per Programme</h2>
+                <p>Total applications by current status.</p>
+              </div>
+              <div class="dashboard-programme-filter">
+                <button type="button" class="range-select dashboard-programme-filter-toggle" id="dashboardProgrammeReportFilterToggle" aria-expanded="false" aria-controls="dashboardProgrammeReportFilterMenu">Top 10 programmes</button>
+                <div class="dashboard-programme-filter-menu" id="dashboardProgrammeReportFilterMenu" hidden>
+                  <div class="dashboard-programme-filter-actions">
+                    <button type="button" data-dashboard-programme-selection="top">Top 10</button>
+                    <button type="button" data-dashboard-programme-selection="all">All</button>
+                    <button type="button" data-dashboard-programme-selection="clear">Clear</button>
+                  </div>
+                  <div class="dashboard-programme-filter-options" id="dashboardProgrammeReportOptions"></div>
+                </div>
+              </div>
+            </div>
+            <div class="grouped-bars" id="dashboardApplicationsByProgramme" aria-label="Applications per programme"></div>
+            <div class="report-legend"><span><i class="accepted"></i>Approved</span><span><i class="pending"></i>Pending</span><span><i class="rejected"></i>Closed</span></div>
+          </article>
+
+          <article class="panel" data-keywords="top countries application volume nationality">
+            <div class="panel-head">
+              <div>
+                <h2>Countries by Volume</h2>
+                <p>All countries with applications.</p>
+              </div>
+              <span class="soft-pill" id="dashboardTopCountriesTotal">0 total</span>
+            </div>
+            <div class="horizontal-bars" id="dashboardTopCountries" aria-label="All countries by application volume"></div>
+          </article>
+        </section>
+
         </div>
 
         <div class="view-panel" data-view="applications" aria-label="Applications content">
@@ -476,75 +498,52 @@
                     <option value="all">All</option>
                   </select>
                 </label>
+                <button class="apply-btn applications-download-btn" type="button" id="downloadApplicationsList">Download Full List</button>
               </div>
 
             </section>
 
             <section class="panel table-options-panel application-status-panel" aria-label="Application status groups">
-              <div class="application-status-panel-head" id="statusFilterAccordion" role="button" tabindex="0" aria-expanded="false" aria-controls="applicationStatusGroups">
-                <span class="status-filter-title">Status filters <span class="accordion-caret" aria-hidden="true">+</span>
+              <div class="application-status-panel-head">
+                <div class="application-status-head-controls">
                   <span class="info-tooltip status-filter-tooltip" tabindex="0" aria-label="Application workflow" data-tooltip-trigger>?
                     <span class="tooltip-panel status-flow-tooltip-panel" role="tooltip">
                       <span class="status-flow-title">Application workflow</span>
                       <span class="status-flow-diagram" aria-label="Application status workflow">
-                        <span class="flow-step university flow-new"><b>New Application</b><em>University</em><i>Review and either pre-approve or request documents.</i></span>
+                        <span class="flow-step university flow-new"><b>New Application</b><em>University</em><i>Review the application and the documents submitted by the applicant.</i></span>
                         <span class="flow-grid-arrow flow-right flow-main-a" aria-hidden="true"></span>
-                        <span class="flow-step applicant flow-pre"><b>Pre-Approved</b><em>Applicant</em><i>Offer sent; submit final documents or corrections.</i></span>
-                        <span class="flow-grid-arrow flow-right flow-main-b" aria-hidden="true"></span>
-                        <span class="flow-step university flow-final"><b>Final Documents Submitted</b><em>University</em><i>Check payment, signed offer letter, and visa/pass when required.</i></span>
-                        <span class="flow-grid-arrow flow-right flow-main-c" aria-hidden="true"></span>
-                        <span class="flow-step closed flow-approved"><b>Approved</b><em>Closed</em><i>Application complete.</i></span>
-                        <span class="flow-grid-arrow flow-final-loop flow-final-branch-a" aria-hidden="true"></span>
-                        <span class="flow-step applicant flow-final-required"><b>Final Documents Required</b><em>Applicant</em><i>Upload final corrections, clearer proof, or missing signed/visa documents.</i></span>
-                        <span class="flow-grid-arrow flow-down flow-branch-a" aria-hidden="true"></span>
-                        <span class="flow-step applicant flow-required"><b>Documents Required</b><em>Applicant</em><i>Upload missing documents or corrections.</i></span>
-                        <span class="flow-grid-arrow flow-right flow-branch-b" aria-hidden="true"></span>
-                        <span class="flow-step university flow-submitted"><b>Req. Documents Submitted</b><em>University</em><i>Review the submitted documents.</i></span>
-                        <span class="flow-grid-arrow flow-up flow-branch-c" aria-hidden="true"></span>
-                      </span>
-                      <span class="status-exit-flow">
-                        <strong>At any stage</strong>
-                        <span class="exit-chip university"><b>Rejected</b><em>University</em><small>University declines the application and closes it.</small></span>
-                        <span class="exit-chip university"><b>On Hold</b><em>University</em><small>University pauses the review, for example when seats are full or a decision is pending.</small></span>
-                        <span class="exit-chip applicant"><b>Withdrawn</b><em>Applicant</em><small>Applicant removes their own application from consideration.</small></span>
-                      </span>
-                      <span class="status-flow-notes">
-                        <span><strong>Need Action</strong> These applications are back with the university. Staff should review, request changes, issue an offer, approve, hold, or reject.</span>
-                        <span><strong>Awaiting Response</strong> These applications are waiting for the applicant to upload requested documents, final documents, or final corrections. The university normally waits or follows up.</span>
-                        <span><strong>Closed / Exit</strong> These applications are no longer in active processing. Approved is complete; rejected, on hold, and withdrawn leave the normal workflow.</span>
+                        <span class="flow-step university flow-approved"><b>Approved</b><em>University</em><i>The application meets the requirements and is accepted.</i></span>
+                        <span class="flow-grid-arrow flow-down flow-optional-down" aria-hidden="true"></span>
+                        <span class="flow-step applicant flow-required"><b>Documents Required</b><em>University</em><i>Request additional or corrected documents before approval.</i></span>
+                        <span class="flow-grid-arrow flow-up flow-optional-up" aria-hidden="true"></span>
                       </span>
                     </span>
                   </span>
-                </span>
-                <div class="application-status-head-actions">
+                  <div class="application-status-head-actions">
                   <label><input type="checkbox" id="allStatusFilters" checked> All</label>
                   <button type="button" id="clearStatusFilters">Clear</button>
+                  </div>
                 </div>
               </div>
-              <div class="application-status-groups" id="applicationStatusGroups" hidden>
+              <div class="application-status-groups" id="applicationStatusGroups">
                 <div class="application-status-group">
-                  <strong>Need Action <span class="section-tooltip status-group-help" tabindex="0" aria-label="Need action explanation">?<span>These are back with the university. Staff should review, request corrections, send an offer letter, or make a final decision. Escalated means KPT/EMGS has flagged the application for urgent university review.</span></span></strong>
+                  <strong>Need Action <span class="section-tooltip status-group-help" tabindex="0" aria-label="Need action explanation">?<span>These are back with the university. Staff should review, request corrections, send an offer letter, or make a final decision.</span></span></strong>
                   <div class="status-group-options">
                     <label><input type="checkbox" data-status-group="submitted" checked> New Application</label>
-                    <label><input type="checkbox" data-status-group="documents submitted" checked> Req. Documents Submitted</label>
-                    <label><input type="checkbox" data-status-group="final documents submitted" checked> Final Documents Submitted</label>
-                    <label class="escalated-filter"><input type="checkbox" data-status-group="escalated" checked> <span>Escalated</span></label>
+                    <label><input type="checkbox" data-status-group="documents submitted" checked> Req Documents Submitted</label>
                   </div>
                 </div>
                 <div class="application-status-group">
-                  <strong>Awaiting Response <span class="section-tooltip status-group-help" tabindex="0" aria-label="Awaiting response explanation">?<span>These are waiting for the applicant to reply, upload requested documents, or submit final approval documents. The university can follow up, but usually waits.</span></span></strong>
+                  <strong>Awaiting Response <span class="section-tooltip status-group-help" tabindex="0" aria-label="Awaiting response explanation">?<span>These are waiting for the applicant to upload requested documents. The university can follow up, but usually waits.</span></span></strong>
                   <div class="status-group-options">
                     <label><input type="checkbox" data-status-group="documents required" checked> Documents Required</label>
-                    <label><input type="checkbox" data-status-group="pre-approved" checked> Pre-Approved</label>
-                    <label><input type="checkbox" data-status-group="final documents required" checked> Final Documents Required</label>
                   </div>
                 </div>
                 <div class="application-status-group">
-                  <strong>Closed <span class="section-tooltip status-group-help" tabindex="0" aria-label="Closed status explanation">?<span>These are no longer part of active review. Approved is complete, while rejected, on hold, and withdrawn are exit or paused states.</span></span></strong>
+                  <strong>Closed <span class="section-tooltip status-group-help" tabindex="0" aria-label="Closed status explanation">?<span>These are no longer part of active review. Approved is complete, while rejected and withdrawn are exit states.</span></span></strong>
                   <div class="status-group-options">
                     <label><input type="checkbox" data-status-group="approved" checked> Approved</label>
                     <label><input type="checkbox" data-status-group="rejected" checked> Rejected</label>
-                    <label><input type="checkbox" data-status-group="on hold" checked> On Hold</label>
                     <label><input type="checkbox" data-status-group="withdrawn" checked> Withdrawn</label>
                   </div>
                 </div>
@@ -562,55 +561,23 @@
                     <th>
                       <span class="status-header">
                         <button class="sort-btn" type="button" data-sort-key="status">Status<span aria-hidden="true">&#8597;</span></button>
-                        <span class="info-tooltip" tabindex="0" aria-label="Status definitions" data-tooltip-trigger>?
-                          <span class="tooltip-panel" role="tooltip">
-                            <span class="tooltip-column">
-                              <strong>New Application</strong> New applicant submission received, not yet reviewed.
-                              <strong>Documents Required</strong> Applicant must correct or upload missing documents.
-                              <strong>Req. Documents Submitted</strong> Applicant has uploaded documents for verification.
-                              <strong>Pre-Approved</strong> Offer has been sent; waiting for final documents before approval.
-                              <strong>Final Documents Required</strong> Applicant must correct or upload final approval documents.
-                              <strong>Final Documents Submitted</strong> Applicant has submitted proof/payment documents; university must check final approval.
-                            </span>
-                            <span class="tooltip-column">
-                              <strong>Approved</strong> Fully accepted.
-                              <strong>Rejected</strong> Declined by the university.
-                              <strong>Withdrawn</strong> Removed from consideration by the applicant.
-                              <strong>On Hold</strong> Temporarily paused by the university; can resume later.
-                            </span>
-                            <span class="tooltip-flow">
-                              <strong>Flow</strong>
-                              New Application -> Documents Required -> Req. Documents Submitted -> Pre-Approved -> Final Documents Submitted -> Approved. If final documents need correction, it moves to Final Documents Required until the applicant resubmits. Rejected and Withdrawn are exit states; On Hold pauses the review.
-                            </span>
-                          </span>
-                        </span>
                       </span>
                     </th>
                     <th>Submission</th>
                     <th><button class="sort-btn nowrap" type="button" data-sort-key="updated">Last updated<span aria-hidden="true">&#8597;</span></button></th>
-                    <th>
-                      <span class="status-header age-header">
-                        <button class="sort-btn" type="button" data-sort-key="age">Age<span aria-hidden="true">&#8597;</span></button>
-                        <span class="info-tooltip age-tooltip" tabindex="0" aria-label="Age definition" data-tooltip-trigger>?
-                          <span class="tooltip-panel age-tooltip-panel" role="tooltip">
-                            Age is counted from the application's last recorded action. Closed applications are shown as "-". A high age value can become a KPT/EMGS review signal for delayed applicant or institution follow-up.
-                          </span>
-                        </span>
-                      </span>
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-application-status="pre-approved" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Priya Sharma</span><small>EDT-2026-001847</small></a></td><td>India</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>12 Aug 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Priya Sharma</span><small>EDT-2026-001847</small></a></td><td>India</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>12 Aug 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="malaysian heritage experience" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Ahmad Firdaus</span><small>EDT-2026-001851</small></a></td><td>Malaysia</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>13 Aug 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="applied ai for tourism" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Kenji Tanaka</span><small>EDT-2026-001860</small></a></td><td>Japan</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>3 Aug 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="spain"><td><a class="applicant-link" href="#"><span class="applicant-name">Sofia Martinez</span><small>EDT-2026-001866</small></a></td><td>Spain</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>10 Aug 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
-                  <tr data-application-status="final documents submitted" data-programme="fintech innovation studio" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Chen Wei</span><small>EDT-2026-001872</small></a></td><td>China</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>9 Aug 2026</td><td><span class="status-chip purple">Final Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="spain"><td><a class="applicant-link" href="#"><span class="applicant-name">Sofia Martinez</span><small>EDT-2026-001866</small></a></td><td>Spain</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>10 Aug 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="fintech innovation studio" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Chen Wei</span><small>EDT-2026-001872</small></a></td><td>China</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>9 Aug 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="fintech innovation studio" data-applicant-type="international - student pass required" data-nationality="nigeria"><td><a class="applicant-link" href="#"><span class="applicant-name">Aisha Bello</span><small>EDT-2026-001875</small></a></td><td>Nigeria</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>11 Aug 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="smart mobility lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Lim Mei Xin</span><small>EDT-2026-001876</small></a></td><td>Malaysia</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>8 Aug 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="ai heritage storytelling lab" data-applicant-type="international - visitor/tourist" data-nationality="germany"><td><a class="applicant-link" href="#"><span class="applicant-name">Oliver Schmidt</span><small>EDT-2026-001877</small></a></td><td>Germany</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>13 Aug 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="indonesia"><td><a class="applicant-link" href="#"><span class="applicant-name">Nadia Putri</span><small>EDT-2026-001878</small></a></td><td>Indonesia</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>7 Aug 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="jordan"><td><a class="applicant-link" href="#"><span class="applicant-name">Sara Al-Khalid</span><small>EDT-2026-001879</small></a></td><td>Jordan</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>12 Aug 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="indonesia"><td><a class="applicant-link" href="#"><span class="applicant-name">Nadia Putri</span><small>EDT-2026-001878</small></a></td><td>Indonesia</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>7 Aug 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="jordan"><td><a class="applicant-link" href="#"><span class="applicant-name">Sara Al-Khalid</span><small>EDT-2026-001879</small></a></td><td>Jordan</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>12 Aug 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="rejected" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - visitor/tourist" data-nationality="australia"><td><a class="applicant-link" href="#"><span class="applicant-name">Daniel Brown</span><small>EDT-2026-001880</small></a></td><td>Australia</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>5 Aug 2026</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="malaysian heritage experience" data-applicant-type="international - existing student pass" data-nationality="south korea"><td><a class="applicant-link" href="#"><span class="applicant-name">Hana Lee</span><small>EDT-2026-001881</small></a></td><td>South Korea</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>13 Aug 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="applied ai for tourism" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Ravi Nair</span><small>EDT-2026-001882</small></a></td><td>Malaysia</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>2 Aug 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
@@ -618,10 +585,10 @@
                   <tr data-application-status="submitted" data-programme="smart mobility lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Arjun Mehta</span><small>EDT-2026-001884</small></a></td><td>India</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>31 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>13 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="fintech innovation studio" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Li Na</span><small>EDT-2026-001885</small></a></td><td>China</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>30 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="smart mobility lab" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Yuki Sato</span><small>EDT-2026-001886</small></a></td><td>Japan</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>30 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="ai heritage storytelling lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Siti Aminah</span><small>EDT-2026-001887</small></a></td><td>Malaysia</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>29 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="ai heritage storytelling lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Siti Aminah</span><small>EDT-2026-001887</small></a></td><td>Malaysia</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>29 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="rainforest research field school" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Meera Kapoor</span><small>EDT-2026-001888</small></a></td><td>India</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>28 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
-                  <tr data-application-status="final documents required" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Zhang Rui</span><small>EDT-2026-001889</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>28 Jul 2026</td><td><span class="status-chip amber">Final Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Aoi Nakamura</span><small>EDT-2026-001890</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>27 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Zhang Rui</span><small>EDT-2026-001889</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>28 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Aoi Nakamura</span><small>EDT-2026-001890</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>27 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>12 Aug 2026</td></tr>
                   <tr data-application-status="rejected" data-programme="malaysian heritage experience" data-applicant-type="international - existing student pass" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Tan Wei Jie</span><small>EDT-2026-001891</small></a></td><td>Malaysia</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>27 Jul 2026</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>11 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="applied ai for tourism" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Kavya Rao</span><small>EDT-2026-001892</small></a></td><td>India</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>26 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>11 Aug 2026</td></tr>
                   <tr data-application-status="withdrawn" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Haruto Mori</span><small>EDT-2026-001893</small></a></td><td>Japan</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>26 Jul 2026</td><td><span class="status-chip neutral">Withdrawn</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>11 Aug 2026</td></tr>
@@ -629,46 +596,46 @@
                   <tr data-application-status="approved" data-programme="fintech innovation studio" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Wang Lei</span><small>EDT-2026-001895</small></a></td><td>China</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>24 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="smart mobility lab" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Rina Kobayashi</span><small>EDT-2026-001896</small></a></td><td>Japan</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>24 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="ai heritage storytelling lab" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Neha Iyer</span><small>EDT-2026-001897</small></a></td><td>India</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>23 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="rainforest research field school" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Farah Zain</span><small>EDT-2026-001898</small></a></td><td>Malaysia</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>22 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Liu Fang</span><small>EDT-2026-001899</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>22 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Kenta Ito</span><small>EDT-2026-001900</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>21 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="rainforest research field school" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Farah Zain</span><small>EDT-2026-001898</small></a></td><td>Malaysia</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>22 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Liu Fang</span><small>EDT-2026-001899</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>22 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Kenta Ito</span><small>EDT-2026-001900</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>21 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="malaysian heritage experience" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Dev Patel</span><small>EDT-2026-001901</small></a></td><td>India</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>20 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="applied ai for tourism" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Adam Hakim</span><small>EDT-2026-001902</small></a></td><td>Malaysia</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>19 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Aug 2026</td></tr>
                   <tr data-application-status="rejected" data-programme="marine conservation lab" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Sun Wei</span><small>EDT-2026-001903</small></a></td><td>China</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>18 Jul 2026</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>8 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="rainforest research field school" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Mika Tanabe</span><small>EDT-2026-001904</small></a></td><td>Japan</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>18 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>8 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="fintech innovation studio" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Anika Das</span><small>EDT-2026-001905</small></a></td><td>India</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>17 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>8 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="fintech innovation studio" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Anika Das</span><small>EDT-2026-001905</small></a></td><td>India</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>17 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>8 Aug 2026</td></tr>
                   <tr data-application-status="withdrawn" data-programme="smart mobility lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Jason Lim</span><small>EDT-2026-001906</small></a></td><td>Malaysia</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>16 Jul 2026</td><td><span class="status-chip neutral">Withdrawn</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>8 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="ai heritage storytelling lab" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Chen Lihua</span><small>EDT-2026-001907</small></a></td><td>China</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>15 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>7 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="ai heritage storytelling lab" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Chen Lihua</span><small>EDT-2026-001907</small></a></td><td>China</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>15 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>7 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="rainforest research field school" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Naomi Fujita</span><small>EDT-2026-001908</small></a></td><td>Japan</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>15 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>7 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Ishaan Verma</span><small>EDT-2026-001909</small></a></td><td>India</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>14 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>7 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Guo Min</span><small>EDT-2026-001910</small></a></td><td>China</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>14 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>7 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="malaysian heritage experience" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Danish Azmi</span><small>EDT-2026-001911</small></a></td><td>Malaysia</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>13 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="applied ai for tourism" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Sora Yamamoto</span><small>EDT-2026-001912</small></a></td><td>Japan</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>12 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Rohan Sen</span><small>EDT-2026-001913</small></a></td><td>India</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>12 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="applied ai for tourism" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Sora Yamamoto</span><small>EDT-2026-001912</small></a></td><td>Japan</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>12 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Rohan Sen</span><small>EDT-2026-001913</small></a></td><td>India</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>12 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Pooja Menon</span><small>EDT-2026-001914</small></a></td><td>India</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>11 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="fintech innovation studio" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Qian Yu</span><small>EDT-2026-001915</small></a></td><td>China</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>10 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="smart mobility lab" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Ren Takahashi</span><small>EDT-2026-001916</small></a></td><td>Japan</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>10 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="ai heritage storytelling lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Haziq Rahman</span><small>EDT-2026-001917</small></a></td><td>Malaysia</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>9 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Aug 2026</td></tr>
-                  <tr data-application-status="final documents submitted" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Tara Singh</span><small>EDT-2026-001918</small></a></td><td>India</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>8 Jul 2026</td><td><span class="status-chip purple">Final Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="borneo culture immersion" data-applicant-type="international - visitor/tourist" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Lin Xia</span><small>EDT-2026-001919</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>8 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="digital entrepreneurship bootcamp" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Amira Salleh</span><small>EDT-2026-001920</small></a></td><td>Malaysia</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>7 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Tara Singh</span><small>EDT-2026-001918</small></a></td><td>India</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>8 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="borneo culture immersion" data-applicant-type="international - visitor/tourist" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Lin Xia</span><small>EDT-2026-001919</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>8 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="digital entrepreneurship bootcamp" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Amira Salleh</span><small>EDT-2026-001920</small></a></td><td>Malaysia</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>7 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
                   <tr data-application-status="rejected" data-programme="malaysian heritage experience" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Daichi Watanabe</span><small>EDT-2026-001921</small></a></td><td>Japan</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>7 Jul 2026</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
                   <tr data-application-status="withdrawn" data-programme="applied ai for tourism" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Mei Chen</span><small>EDT-2026-001922</small></a></td><td>China</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>6 Jul 2026</td><td><span class="status-chip neutral">Withdrawn</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>4 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="marine conservation lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Sanjay Pillai</span><small>EDT-2026-001923</small></a></td><td>India</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>6 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>3 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="marine conservation lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Nadia Hassan</span><small>EDT-2026-001924</small></a></td><td>Malaysia</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>5 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>3 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="fintech innovation studio" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Emi Kato</span><small>EDT-2026-001925</small></a></td><td>Japan</td><td><span class="programme-name">Fintech Innovation Studio</span></td><td>5 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>3 Aug 2026</td></tr>
                   <tr data-application-status="documents required" data-programme="smart mobility lab" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Han Yue</span><small>EDT-2026-001926</small></a></td><td>China</td><td><span class="programme-name">Smart Mobility Lab</span></td><td>4 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>2 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="ai heritage storytelling lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Kabir Shah</span><small>EDT-2026-001927</small></a></td><td>India</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>4 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>2 Aug 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Yuna Suzuki</span><small>EDT-2026-001928</small></a></td><td>Japan</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>3 Jul 2026</td><td><span class="status-chip green">Pre-Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>2 Aug 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Iqbal Nordin</span><small>EDT-2026-001929</small></a></td><td>Malaysia</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>3 Jul 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>1 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="ai heritage storytelling lab" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Kabir Shah</span><small>EDT-2026-001927</small></a></td><td>India</td><td><span class="programme-name">AI Heritage Storytelling Lab</span></td><td>4 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>2 Aug 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Yuna Suzuki</span><small>EDT-2026-001928</small></a></td><td>Japan</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>3 Jul 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>2 Aug 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="borneo culture immersion" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Iqbal Nordin</span><small>EDT-2026-001929</small></a></td><td>Malaysia</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>3 Jul 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>1 Aug 2026</td></tr>
                   <tr data-application-status="rejected" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - existing student pass" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Bai Ling</span><small>EDT-2026-001930</small></a></td><td>China</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>2 Jul 2026</td><td><span class="status-chip red">Rejected</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>1 Aug 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="malaysian heritage experience" data-applicant-type="international - visitor/tourist" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Riya Malhotra</span><small>EDT-2026-001931</small></a></td><td>India</td><td><span class="programme-name">Malaysian Heritage Experience</span></td><td>2 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>1 Aug 2026</td></tr>
                   <tr data-application-status="approved" data-programme="applied ai for tourism" data-applicant-type="international - existing student pass" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Tomo Hayashi</span><small>EDT-2026-001932</small></a></td><td>Japan</td><td><span class="programme-name">Applied AI for Tourism</span></td><td>1 Jul 2026</td><td><span class="status-chip green">Approved</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>31 Jul 2026</td></tr>
                   <tr data-application-status="submitted" data-programme="marine conservation lab" data-applicant-type="malaysian" data-nationality="malaysia"><td><a class="applicant-link" href="#"><span class="applicant-name">Hakim Musa</span><small>EDT-2026-001933</small></a></td><td>Malaysia</td><td><span class="programme-name">Marine Conservation Lab</span></td><td>1 Jul 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>31 Jul 2026</td></tr>
-                  <tr data-application-status="submitted" data-escalated="true" data-programme="tropical biodiversity programme" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Anjali Rao</span><small>EDT-2026-001934</small></a></td><td>India</td><td><span class="programme-name">Tropical Biodiversity Programme</span></td><td>2 Jun 2026</td><td><span class="status-chip blue">New Application</span> <span class="status-chip red escalated-chip">Escalated</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Jun 2026</td></tr>
-                  <tr data-application-status="documents submitted" data-escalated="true" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Haruto Mori</span><small>EDT-2026-001935</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>31 May 2026</td><td><span class="status-chip blue">Req. Documents Submitted</span> <span class="status-chip red escalated-chip">Escalated</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Jun 2026</td></tr>
-                  <tr data-application-status="pre-approved" data-escalated="true" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Wu Jia</span><small>EDT-2026-001936</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>28 May 2026</td><td><span class="status-chip green">Pre-Approved</span> <span class="status-chip red escalated-chip">Escalated</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Jun 2026</td></tr>
-                  <tr data-application-status="final documents submitted" data-escalated="true" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="nigeria"><td><a class="applicant-link" href="#"><span class="applicant-name">Chinedu Okafor</span><small>EDT-2026-001937</small></a></td><td>Nigeria</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>25 May 2026</td><td><span class="status-chip purple">Final Documents Submitted</span> <span class="status-chip red escalated-chip">Escalated</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Jun 2026</td></tr>
+                  <tr data-application-status="submitted" data-programme="tropical biodiversity programme" data-applicant-type="international - student pass required" data-nationality="india"><td><a class="applicant-link" href="#"><span class="applicant-name">Anjali Rao</span><small>EDT-2026-001934</small></a></td><td>India</td><td><span class="programme-name">Tropical Biodiversity Programme</span></td><td>2 Jun 2026</td><td><span class="status-chip blue">New Application</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>10 Jun 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="digital entrepreneurship bootcamp" data-applicant-type="international - visitor/tourist" data-nationality="japan"><td><a class="applicant-link" href="#"><span class="applicant-name">Haruto Mori</span><small>EDT-2026-001935</small></a></td><td>Japan</td><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span></td><td>31 May 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>9 Jun 2026</td></tr>
+                  <tr data-application-status="documents required" data-programme="borneo culture immersion" data-applicant-type="international - student pass required" data-nationality="china"><td><a class="applicant-link" href="#"><span class="applicant-name">Wu Jia</span><small>EDT-2026-001936</small></a></td><td>China</td><td><span class="programme-name">Borneo Culture Immersion</span></td><td>28 May 2026</td><td><span class="status-chip amber">Documents Required</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>6 Jun 2026</td></tr>
+                  <tr data-application-status="documents submitted" data-programme="rainforest research field school" data-applicant-type="international - student pass required" data-nationality="nigeria"><td><a class="applicant-link" href="#"><span class="applicant-name">Chinedu Okafor</span><small>EDT-2026-001937</small></a></td><td>Nigeria</td><td><span class="programme-name">Rainforest Research Field School</span></td><td>25 May 2026</td><td><span class="status-chip blue">Req Documents Submitted</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>5 Jun 2026</td></tr>
                 </tbody>
               </table>
             </div>
@@ -681,6 +648,52 @@
               </div>
             </div>
 
+            <div class="request-modal" id="applicationExportModal" hidden>
+              <div class="request-modal-card wide-modal-card" role="dialog" aria-modal="true" aria-labelledby="applicationExportTitle">
+                <div class="request-modal-head">
+                  <h3 id="applicationExportTitle">Download full applicant list</h3>
+                  <button class="modal-close" type="button" id="closeApplicationExport" aria-label="Close download options">X</button>
+                </div>
+                <p class="confirm-message">Choose one or more application statuses, a nationality, and the columns to include in the Excel workbook.</p>
+                <div class="application-export-filters">
+                  <label class="request-textbox">
+                    <span>Nationality</span>
+                    <select class="range-select" id="applicationExportNationality" aria-label="Export nationality">
+                      <option value="">Any nationality</option>
+                    </select>
+                  </label>
+                </div>
+                <fieldset class="application-export-statuses">
+                  <legend>Application status</legend>
+                  <div class="column-options">
+                    <label><input type="checkbox" data-export-status="submitted" checked> New Application</label>
+                    <label><input type="checkbox" data-export-status="documents submitted" checked> Req Documents Submitted</label>
+                    <label><input type="checkbox" data-export-status="documents required" checked> Documents Required</label>
+                    <label><input type="checkbox" data-export-status="approved" checked> Approved</label>
+                    <label><input type="checkbox" data-export-status="rejected" checked> Rejected</label>
+                    <label><input type="checkbox" data-export-status="withdrawn" checked> Withdrawn</label>
+                  </div>
+                </fieldset>
+                <fieldset class="application-export-columns">
+                  <legend>Columns to include</legend>
+                  <div class="column-options">
+                    <label><input type="checkbox" data-export-column="0" checked> Applicant</label>
+                    <label><input type="checkbox" data-export-column="1" checked> Nationality</label>
+                    <label><input type="checkbox" data-export-column="2" checked> Programme</label>
+                    <label><input type="checkbox" data-export-column="3" checked> Applied date</label>
+                    <label><input type="checkbox" data-export-column="4" checked> Status</label>
+                    <label><input type="checkbox" data-export-column="5" checked> Submission</label>
+                    <label><input type="checkbox" data-export-column="6" checked> Last updated</label>
+                  </div>
+                </fieldset>
+                <div class="modal-actions">
+                  <button type="button" id="cancelApplicationExport">Cancel</button>
+                  <button class="primary" type="button" id="confirmApplicationExport">Download XLSX</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="application-side-backdrop" id="applicationSideBackdrop" hidden aria-hidden="true"></div>
             <aside class="application-side-panel" id="applicationSidePanel" hidden aria-label="Application quick view">
               <div class="side-review-empty">Select an applicant to preview the submission.</div>
             </aside>
@@ -851,6 +864,7 @@
                 </div>
               </div>
             </section>
+
           </section>
         </div>
 
@@ -925,6 +939,10 @@
                 </tbody>
               </table>
             </div>
+            <div class="application-side-backdrop programme-side-backdrop" id="programmeSideBackdrop" hidden aria-hidden="true"></div>
+            <aside class="application-side-panel programme-side-panel" id="programmeSidePanel" hidden aria-label="Programme quick view">
+              <div class="side-review-empty">Select a programme to preview its details.</div>
+            </aside>
             <div class="pagination-row programme-pagination-row" aria-label="Programmes pagination">
               <span id="programmePaginationSummary">Showing 1-10 of 14</span>
               <div class="pagination-controls">
@@ -977,7 +995,15 @@
               <div class="programme-overview-grid">
                 <article class="panel detail-panel programme-info-panel accent-mint">
                   <h3>Basic Information</h3>
-                  <div class="detail-fields">
+                  <div class="detail-fields programme-basic-fields">
+                    <div class="programme-overview-wide">
+                      <span>Programme Name</span>
+                      <strong id="programmeDetailOverviewName" class="editable-display">Tropical Biodiversity Programme</strong>
+                    </div>
+                    <div class="programme-overview-wide">
+                      <span>Overview</span>
+                      <strong id="programmeDetailOverview" class="editable-display">Programme overview appears here.</strong>
+                    </div>
                     <div>
                       <span>Category</span>
                       <strong id="programmeDetailCategory" class="editable-display">Nature and Adventure (NAA)</strong>
@@ -1012,14 +1038,6 @@
                   </div>
                 </article>
 
-                <article class="panel detail-panel programme-info-panel programme-approval-panel">
-                  <h3>Approval Status</h3>
-                  <div class="detail-fields">
-                    <div><span>Status</span><strong id="programmeDetailStatusText">Pending KPT Approval</strong></div>
-                    <div><span>Last Updated</span><strong>13 Aug 2026</strong></div>
-                  </div>
-                </article>
-
                 <article class="panel detail-panel programme-info-panel programme-overview-wide accent-lavender">
                   <h3>Audience, Duration &amp; Fees</h3>
                   <div class="detail-fields">
@@ -1036,7 +1054,7 @@
                       <input type="text" class="editable-input editable-other-input" id="programmeDetailTargetOtherInput" placeholder="Describe target group" aria-label="Other target group" hidden>
                       <small class="field-issue-note" id="programmeDetailTargetIssue" hidden></small>
                     </div>
-                    <div>
+                    <div hidden>
                       <span>Participants</span>
                       <strong id="programmeDetailParticipantsLimit" class="editable-display">Not specified</strong>
                       <strong id="programmeDetailParticipantsWaiver" class="editable-display">No participant waiver</strong>
@@ -1436,17 +1454,7 @@
                     </label>
                     <label class="request-textbox">
                       <span>Language Proficiency *</span>
-                      <select class="range-select" id="createProgrammeLanguage" aria-label="Language proficiency">
-                        <option>Select required language proficiency</option>
-                        <option>None</option>
-                        <option>English: Beginner</option>
-                        <option>English: Intermediate</option>
-                        <option>English: Advanced</option>
-                        <option>Malay: Beginner</option>
-                        <option>Malay: Intermediate</option>
-                        <option>Malay: Advanced</option>
-                        <option>Other</option>
-                      </select>
+                      <input class="range-select" type="text" id="createProgrammeLanguage" aria-label="Language proficiency" placeholder="e.g., English: Intermediate">
                     </label>
                   </div>
                   <div class="programme-form-wide programme-section-divider divider-lavender">
@@ -1456,12 +1464,8 @@
                     <label class="request-textbox">
                       <span>Target Group *</span>
                       <select class="range-select" id="createProgrammeTarget" aria-label="Target group">
-                        <option>Select target group</option>
-                        <option>Individual</option>
-                        <option>Group</option>
                         <option>General Public (including student)</option>
-                        <option>Student only</option>
-                        <option>Others</option>
+                        <option>Students</option>
                       </select>
                     </label>
                     <label class="request-textbox" id="createProgrammeTargetOtherField" hidden>
@@ -1469,7 +1473,7 @@
                       <input type="text" id="createProgrammeTargetOther" placeholder="Describe target group" aria-label="Other target group">
                     </label>
                   </div>
-                  <div class="programme-setting-row programme-form-wide">
+                  <div class="programme-setting-row programme-form-wide" id="createProgrammeParticipantsSection" hidden>
                     <div>
                       <strong>Participants</strong>
                       <span>Set participant limits only when the programme requires a minimum or maximum group size.</span>
@@ -1599,6 +1603,17 @@
                       <input type="text" id="createProgrammeCreditOther" placeholder="Explain other credit transfer arrangement" aria-label="Other credit transfer explanation" hidden>
                     </div>
                   </div>
+                  <div class="programme-form-wide programme-section-divider divider-lavender">
+                    <h3>Conditional Questions</h3>
+                  </div>
+                  <div class="request-textbox programme-form-wide">
+                    <span>Questions to Ask Applicants</span>
+                    <div class="stacked-inputs" id="programmeConditionalQuestions">
+                      <label><input type="text" placeholder="e.g., Are you between the age of 15-40?" aria-label="Conditional question 1"><button type="button" aria-label="Remove conditional question" data-remove-item>X</button></label>
+                      <label><input type="text" placeholder="e.g., Do you have any health issues?" aria-label="Conditional question 2"><button type="button" aria-label="Remove conditional question" data-remove-item>X</button></label>
+                    </div>
+                    <button class="inline-add-btn" type="button" id="addProgrammeConditionalQuestion">+ Add Conditional Question</button>
+                  </div>
                   <div class="programme-form-wide programme-section-divider divider-peach">
                     <h3>Programme Content</h3>
                   </div>
@@ -1688,6 +1703,10 @@
                       <span>Main contact for KPT correspondence and programme coordination.</span>
                     </div>
                     <div class="programme-setting-controls">
+                      <label class="programme-default-contact programme-form-wide">
+                        <input type="checkbox" id="createProgrammePicDefault">
+                        <span>Use default contact person from University Profile</span>
+                      </label>
                       <label class="request-textbox">
                         <span>PIC Name *</span>
                         <input type="text" id="createProgrammePicName" placeholder="e.g., Dr. Aisyah Rahman" aria-label="PIC name">
@@ -1700,10 +1719,6 @@
                         <span>PIC Email *</span>
                         <input type="email" id="createProgrammePicEmail" placeholder="e.g., pic@university.edu.my" aria-label="PIC email">
                       </label>
-                      <label class="request-textbox">
-                        <span>PIC Fax Number</span>
-                        <input type="text" id="createProgrammePicFax" placeholder="e.g., +60 3-1234 5678" aria-label="PIC fax number">
-                      </label>
                     </div>
                   </div>
                 </div>
@@ -1714,115 +1729,88 @@
                 </div>
               </article>
             </section>
+
           </section>
         </div>
 
         <div class="view-panel" data-view="reports" aria-label="Reports content">
           <section class="reports-page">
-            <section class="metrics report-metrics" aria-label="Report summary">
-              <article class="metric mint" data-keywords="reports revenue collected finance">
-                <span>Total revenue</span>
-                <strong>RM 318,600</strong>
-                <small>Confirmed payments</small>
-              </article>
-              <article class="metric lavender" data-keywords="reports applications volume">
-                <span>Applications tracked</span>
-                <strong>64</strong>
-                <small>Across live programmes</small>
-              </article>
-              <article class="metric peach" data-keywords="reports pending payment receivable">
-                <span>Pending collection</span>
-                <strong>RM 74,200</strong>
-                <small>21 applicants</small>
-              </article>
-              <article class="metric sky" data-keywords="reports offer letters">
-                <span>Offer letters</span>
-                <strong>46</strong>
-                <small>8 pending issue</small>
-              </article>
-            </section>
-
-            <section class="report-top-grid">
-              <article class="panel" data-keywords="applications per programme accepted pending rejected">
-                <div class="panel-head">
-                  <div>
-                    <h2>Applications per Programme</h2>
-                    <p>Total received by status for each programme.</p>
-                  </div>
-                </div>
-                <div class="grouped-bars" aria-label="Applications per programme">
-                  <div><i style="--accepted: 32; --pending: 6; --rejected: 5"></i><span class="bar-values"><b>32</b><b>6</b><b>5</b></span><span>Digital Entrepreneurship</span></div>
-                  <div><i style="--accepted: 24; --pending: 5; --rejected: 8"></i><span class="bar-values"><b>24</b><b>5</b><b>8</b></span><span>Heritage Experience</span></div>
-                  <div><i style="--accepted: 20; --pending: 7; --rejected: 4"></i><span class="bar-values"><b>20</b><b>7</b><b>4</b></span><span>Marine Conservation</span></div>
-                  <div><i style="--accepted: 18; --pending: 4; --rejected: 6"></i><span class="bar-values"><b>18</b><b>4</b><b>6</b></span><span>Applied AI Tourism</span></div>
-                  <div><i style="--accepted: 10; --pending: 3; --rejected: 3"></i><span class="bar-values"><b>10</b><b>3</b><b>3</b></span><span>Borneo Immersion</span></div>
-                </div>
-                <div class="report-legend"><span><i class="accepted"></i>Accepted</span><span><i class="pending"></i>Pending</span><span><i class="rejected"></i>Rejected</span></div>
-              </article>
-
-              <article class="panel" data-keywords="financial report revenue programme">
-                <div class="panel-head">
-                  <div>
-                    <h2>Revenue by Programme</h2>
-                    <p>Confirmed tuition and programme fees.</p>
-                  </div>
-                </div>
-                <div class="report-bars" aria-label="Revenue by programme">
-                  <div style="--bar: 92%"><span>Digital Entrepreneurship</span><strong>RM 130,200</strong><i></i></div>
-                  <div style="--bar: 74%"><span>Heritage Experience</span><strong>RM 88,200</strong><i></i></div>
-                  <div style="--bar: 58%"><span>Marine Conservation</span><strong>RM 51,800</strong><i></i></div>
-                  <div style="--bar: 43%"><span>Applied AI Tourism</span><strong>RM 32,400</strong><i></i></div>
-                  <div style="--bar: 26%"><span>Borneo Immersion</span><strong>RM 16,000</strong><i></i></div>
-                </div>
-              </article>
-
-              <article class="panel" data-keywords="top countries application volume">
-                <div class="panel-head">
-                  <div>
-                    <h2>Top Countries by Volume</h2>
-                    <p>Countries sending the most applications.</p>
-                  </div>
-                </div>
-                <div class="horizontal-bars">
-                  <div style="--bar: 100%"><span>China</span><i></i><strong>35</strong></div>
-                  <div style="--bar: 80%"><span>India</span><i></i><strong>28</strong></div>
-                  <div style="--bar: 63%"><span>United Kingdom</span><i></i><strong>22</strong></div>
-                  <div style="--bar: 51%"><span>United States</span><i></i><strong>18</strong></div>
-                  <div style="--bar: 43%"><span>Malaysia</span><i></i><strong>15</strong></div>
-                  <div style="--bar: 34%"><span>Indonesia</span><i></i><strong>12</strong></div>
-                </div>
-              </article>
-            </section>
-
-            <article class="panel report-wide" data-keywords="programme performance metrics">
+            <section class="panel reports-filter-panel" data-keywords="reports application filters">
               <div class="panel-head">
                 <div>
-                  <h2>Programme Performance</h2>
-                  <p>Detailed metrics for high-impact programmes.</p>
+                  <h2>Application report</h2>
+                  <p>Filter application records and prepare the report for export.</p>
                 </div>
+                <button class="apply-btn" type="button" id="reportResetFilters">Reset filters</button>
+              </div>
+              <div class="report-filters">
+                <input type="search" id="reportSearch" placeholder="Search applicant, tracking code, programme" aria-label="Search report records">
+                <select class="range-select" id="reportProgrammeFilter" aria-label="Report programme">
+                  <option value="">All programmes</option>
+                </select>
+                <select class="range-select" id="reportStatusFilter" aria-label="Report status">
+                  <option value="">All statuses</option>
+                  <option value="submitted">New Application</option>
+                  <option value="documents required">Documents Required</option>
+                  <option value="documents submitted">Req Documents Submitted</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="withdrawn">Withdrawn</option>
+                </select>
+                <select class="range-select" id="reportNationalityFilter" aria-label="Report nationality">
+                  <option value="">All nationalities</option>
+                </select>
+                <select class="range-select" id="reportDateFilter" aria-label="Report date range">
+                  <option value="All time">All time</option>
+                  <option value="Last 7 days">Last 7 days</option>
+                  <option value="Last 30 days">Last 30 days</option>
+                  <option value="Last 3 months">Last 3 months</option>
+                  <option value="Last 6 months">Last 6 months</option>
+                </select>
+                <label class="page-size-control">
+                  <span>Show</span>
+                  <select class="range-select" id="reportPageSize" aria-label="Report records per page">
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel report-table-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Application records</h2>
+                  <p>Applicant, programme, status, and submission dates.</p>
+                </div>
+                <span class="soft-pill" id="reportTotalCount">0 records</span>
               </div>
               <div class="recent-table-wrap">
                 <table class="recent-table reports-table">
                   <thead>
-                    <tr><th>Programme</th><th>Total Apps</th><th>Acceptance Rate</th><th>Avg Processing</th><th>Offer Letters</th><th>Revenue</th></tr>
+                    <tr><th>Applicant</th><th>Nationality</th><th>Programme</th><th>Applied Date</th><th>Status</th><th>Last Updated</th></tr>
                   </thead>
-                  <tbody>
-                    <tr><td><span class="programme-name">Digital Entrepreneurship Bootcamp</span><small>Business and Entrepreneurship (BAE)</small></td><td><span class="status-chip blue">45</span></td><td>71%</td><td>5 days</td><td><span class="status-chip green">32</span></td><td>RM 130,200</td></tr>
-                    <tr><td><span class="programme-name">Malaysian Heritage Experience</span><small>Food, Culture &amp; Heritage (FCH)</small></td><td><span class="status-chip blue">38</span></td><td>63%</td><td>4 days</td><td><span class="status-chip green">24</span></td><td>RM 88,200</td></tr>
-                    <tr><td><span class="programme-name">Marine Conservation Lab</span><small>Environmental and Health Science (EAH)</small></td><td><span class="status-chip blue">32</span></td><td>62%</td><td>6 days</td><td><span class="status-chip green">20</span></td><td>RM 51,800</td></tr>
-                    <tr><td><span class="programme-name">Applied AI for Tourism</span><small>Science and Technology (SAT)</small></td><td><span class="status-chip blue">25</span></td><td>72%</td><td>3 days</td><td><span class="status-chip green">18</span></td><td>RM 32,400</td></tr>
-                    <tr><td><span class="programme-name">Borneo Culture Immersion</span><small>Arts &amp; Social Science (ANS)</small></td><td><span class="status-chip blue">16</span></td><td>62%</td><td>7 days</td><td><span class="status-chip green">10</span></td><td>RM 16,000</td></tr>
-                  </tbody>
+                  <tbody id="reportTableBody"></tbody>
                 </table>
               </div>
-            </article>
+              <div class="pagination-row" aria-label="Reports pagination">
+                <span id="reportPaginationSummary">Showing 0-0 of 0</span>
+                <div class="pagination-controls">
+                  <button type="button" id="prevReportPage">Previous</button>
+                  <strong id="reportPageIndicator">Page 1 of 1</strong>
+                  <button type="button" id="nextReportPage">Next</button>
+                </div>
+              </div>
+            </section>
           </section>
         </div>
 
         <div class="view-panel" data-view="university-profile" aria-label="University profile content">
           <section class="profile-page">
             <div class="detail-tabs profile-tabs" aria-label="University profile tabs">
-              <button class="active" type="button" data-profile-tab="profile">Profile &amp; Compliance</button>
+              <button class="active" type="button" data-profile-tab="profile">Profile</button>
               <button type="button" data-profile-tab="offer-template">Offer Letter Template</button>
             </div>
             <div class="profile-tab-panel active" data-profile-panel="profile">
@@ -1855,19 +1843,11 @@
                 <label class="request-textbox"><span>Registration Number</span><input type="text" value="DU018(B)" disabled></label>
                 <label class="request-textbox"><span>Official Email</span><input type="text" value="contact@cyberjaya.edu.my" disabled></label>
                 <label class="request-textbox"><span>Phone Number</span><input type="text" value="+60 3-8313 7000" disabled></label>
-                <label class="request-textbox"><span>Website</span><input type="text" value="https://cyberjaya.edu.my" disabled></label>
-                <label class="request-textbox"><span>Participation Status</span><input type="text" value="Approved" disabled></label>
+                <label class="request-textbox profile-field-span-2"><span>Website</span><input type="text" value="https://cyberjaya.edu.my" disabled></label>
                 <label class="request-textbox programme-form-wide"><span>Complete Address</span><textarea rows="3" disabled>Persiaran Bestari, Cyber 11
 63000 Cyberjaya
 Selangor, Malaysia</textarea></label>
                 <label class="request-textbox programme-form-wide"><span>About University</span><textarea rows="4" disabled>University of Cyberjaya offers health sciences, business, technology, and professional learning pathways with industry-linked academic programmes.</textarea></label>
-              </div>
-              <div class="profile-section-title">EduTourism Participation</div>
-              <div class="detail-fields profile-detail-fields">
-                <div><span>Approved By</span><strong>KPT</strong></div>
-                <div><span>Approval Date</span><strong>15 January 2026</strong></div>
-                <div><span>Reference</span><strong>EDU-UOC-2026-014</strong></div>
-                <div><span>Programme Access</span><strong>Enabled</strong></div>
               </div>
               <div class="modal-actions programme-form-actions profile-edit-actions" data-profile-actions="university" hidden>
                 <button type="button" id="cancelUniversityProfile">Cancel</button>
@@ -1884,10 +1864,10 @@ Selangor, Malaysia</textarea></label>
                 <button class="submission-view-btn" type="button" id="editProfileContact">Edit contact</button>
               </div>
               <div class="programme-form-grid profile-form-grid" id="profileContactFields">
-                <label class="request-textbox"><span>Full Name</span><input type="text" value="Nur Aisyah Rahman" disabled></label>
+                <label class="request-textbox"><span>Full Name</span><input type="text" id="profileContactName" value="Nur Aisyah Rahman" disabled></label>
                 <label class="request-textbox"><span>Job Title</span><input type="text" value="Programme Coordinator" disabled></label>
-                <label class="request-textbox"><span>Email</span><input type="text" value="edutourism@cyberjaya.edu.my" disabled></label>
-                <label class="request-textbox"><span>Phone</span><input type="text" value="+60 3-5555 0100" disabled></label>
+                <label class="request-textbox"><span>Email</span><input type="text" id="profileContactEmail" value="edutourism@cyberjaya.edu.my" disabled></label>
+                <label class="request-textbox"><span>Phone</span><input type="text" id="profileContactPhone" value="+60 3-5555 0100" disabled></label>
               </div>
               <div class="modal-actions programme-form-actions profile-edit-actions" data-profile-actions="contact" hidden>
                 <button type="button" id="cancelProfileContact">Cancel</button>
@@ -1895,51 +1875,6 @@ Selangor, Malaysia</textarea></label>
               </div>
             </article>
 
-            <article class="panel profile-form-panel" data-keywords="kpt compliance requests credentials clarification university profile">
-              <div class="panel-head">
-                <div>
-                  <h2>KPT Requests & Compliance</h2>
-                  <p>Credential requests, clarification history, and university-level compliance items from KPT.</p>
-                </div>
-                <span class="status-chip amber" id="universityComplianceStatus">Action Required</span>
-              </div>
-              <div class="detail-fields profile-detail-fields">
-                <div><span>Compliance State</span><strong>Watch</strong></div>
-                <div><span>Open KPT Requests</span><strong id="openKptRequestCount">2</strong></div>
-                <div><span>Average Response Time</span><strong>3 days</strong></div>
-                <div><span>Next Deadline</span><strong>20 Aug 2026</strong></div>
-              </div>
-              <div class="recent-table-wrap kpt-requests-wrap">
-                <table class="recent-table kpt-requests-table">
-                  <thead>
-                    <tr><th>Request</th><th>Required From University</th><th>Due Date</th><th>Status</th><th>Action</th></tr>
-                  </thead>
-                  <tbody id="kptRequestRows">
-                    <tr>
-                      <td><strong>Official representative letter</strong><small>Requested by KPT on 17 Aug 2026</small></td>
-                      <td>Upload an updated representative letter signed by registrar office.</td>
-                      <td>20 Aug 2026</td>
-                      <td><span class="status-chip amber">Pending Reply</span></td>
-                      <td><button class="submission-view-btn" type="button" data-kpt-request-action="reply">Reply / Upload</button></td>
-                    </tr>
-                    <tr>
-                      <td><strong>Participation declaration clarification</strong><small>Requested by KPT on 15 Aug 2026</small></td>
-                      <td>Clarify the official contact listed in the participation declaration.</td>
-                      <td>19 Aug 2026</td>
-                      <td><span class="status-chip blue">Under Review</span></td>
-                      <td><button class="submission-view-btn" type="button" data-kpt-request-action="view">View Reply</button></td>
-                    </tr>
-                    <tr>
-                      <td><strong>MOHE registration certificate</strong><small>Verified by KPT on 13 Aug 2026</small></td>
-                      <td>No action required.</td>
-                      <td>-</td>
-                      <td><span class="status-chip green">Resolved</span></td>
-                      <td><button class="submission-view-btn" type="button" data-kpt-request-action="view">View</button></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </article>
             </div>
 
             <div class="profile-tab-panel" data-profile-panel="offer-template" hidden>
@@ -2151,7 +2086,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                 <div class="help-summary-grid">
                   <div class="help-summary-item"><strong>Applications</strong><span>Review applicants, request documents, issue offer letters, and complete final approval.</span></div>
                   <div class="help-summary-item"><strong>Programmes</strong><span>Create, submit, update, pause, archive, or relaunch approved programmes.</span></div>
-                  <div class="help-summary-item"><strong>Reports</strong><span>Track revenue, application volume, country demand, and programme performance.</span></div>
+                  <div class="help-summary-item"><strong>Reports</strong><span>Track application volume, country demand, and programme performance.</span></div>
                   <div class="help-summary-item"><strong>Administration</strong><span>Maintain university profile, users, audit history, notifications, and security.</span></div>
                 </div>
               </article>
@@ -2168,7 +2103,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                     <tbody>
                       <tr><td>Review a new applicant</td><td>Applications</td><td>Open applicant, check documents, request correction or verify documents and send the automatic offer letter.</td></tr>
                       <tr><td>Create programme</td><td>Programmes</td><td>Create New Programme, complete required fields, save draft or submit to KPT.</td></tr>
-                      <tr><td>Check performance</td><td>Reports</td><td>Review applications, revenue, countries, and programme performance.</td></tr>
+                      <tr><td>Check performance</td><td>Reports</td><td>Review applications, countries, and programme performance.</td></tr>
                       <tr><td>Update access</td><td>User Management</td><td>Super Admin opens Edit to change role or account status.</td></tr>
                     </tbody>
                   </table>
@@ -2191,7 +2126,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                       <tr><td>Dashboard</td><td>Overview of active programmes, recent applications, deadlines, and activity.</td><td>Use as the daily landing view for priorities.</td></tr>
                       <tr><td>Applications</td><td>Full applicant list with filters, status tracking, and applicant detail pages.</td><td>Review documents, send requests, send automatic offer letters, and approve or reject.</td></tr>
                       <tr><td>Programmes</td><td>Programme list, KPT status, live status, application count, and programme details.</td><td>Create, submit, edit approved details, pause, archive, or go live.</td></tr>
-                      <tr><td>Reports</td><td>Financial and performance reporting for Super Admin users.</td><td>Check revenue, applications by programme, top countries, and acceptance performance.</td></tr>
+                      <tr><td>Reports</td><td>Application and performance reporting for Super Admin users.</td><td>Check applications by programme, top countries, and acceptance performance.</td></tr>
                       <tr><td>University Profile</td><td>Institution details, logo, contact person, and EduTourism participation details.</td><td>Edit profile or contact fields separately, then confirm changes.</td></tr>
                       <tr><td>User Management</td><td>Staff access, role assignment, and account status.</td><td>Only Super Admin can add users or edit role/status.</td></tr>
                       <tr><td>Audit Log</td><td>Administrative history across sessions and users.</td><td>Search and filter by user, action, entity, or date.</td></tr>
@@ -2346,6 +2281,16 @@ Pre-approval reference: {{tracking_code}}</textarea>
                     <button type="button" id="revokeSessionButton">Revoke</button>
                   </div>
                 </div>
+              </article>
+
+              <article class="panel settings-card settings-preference-card">
+                <label class="settings-toggle-row compact settings-visibility-row" for="helpSupportVisibilityToggle">
+                  <span>
+                    <strong>Show Help &amp; Support</strong>
+                    <small>When unchecked, hide the Help &amp; Support menu item and its content.</small>
+                  </span>
+                  <input class="settings-checkbox" type="checkbox" id="helpSupportVisibilityToggle" checked>
+                </label>
               </article>
             </section>
           </section>

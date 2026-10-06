@@ -7,16 +7,51 @@ const notificationSummary = document.querySelector("#notificationSummary");
 const markNotificationsRead = document.querySelector("#markNotificationsRead");
 const navViewLinks = document.querySelectorAll("[data-view-link]");
 const viewPanels = document.querySelectorAll("[data-view]");
+const helpSupportNavLink = document.querySelector('[data-view-link="help-support"]');
+const helpSupportViewPanel = document.querySelector('[data-view="help-support"]');
+const helpSupportVisibilityToggle = document.querySelector("#helpSupportVisibilityToggle");
 const pageTitle = document.querySelector(".top-title h1");
 const applicationSearch = document.querySelector("#applicationSearch");
 const programmeFilter = document.querySelector("#programmeFilter");
 const applicantTypeFilter = document.querySelector("#applicantTypeFilter");
 const nationalityFilter = document.querySelector("#nationalityFilter");
 const applicantsPerPage = document.querySelector("#applicantsPerPage");
+const downloadApplicationsList = document.querySelector("#downloadApplicationsList");
+const applicationExportModal = document.querySelector("#applicationExportModal");
+const closeApplicationExport = document.querySelector("#closeApplicationExport");
+const cancelApplicationExport = document.querySelector("#cancelApplicationExport");
+const confirmApplicationExport = document.querySelector("#confirmApplicationExport");
+const applicationExportNationality = document.querySelector("#applicationExportNationality");
+const applicationExportStatusToggles = document.querySelectorAll("[data-export-status]");
+const applicationExportColumns = document.querySelectorAll("[data-export-column]");
 const programmePublicStatusFilter = document.querySelector("#programmePublicStatusFilter");
 const programmeCategoryFilter = document.querySelector("#programmeCategoryFilter");
 const programmesPerPage = document.querySelector("#programmesPerPage");
 const programmesSummary = document.querySelector("#programmesSummary");
+const dashboardProgrammeReportFilterToggle = document.querySelector("#dashboardProgrammeReportFilterToggle");
+const dashboardProgrammeReportFilterMenu = document.querySelector("#dashboardProgrammeReportFilterMenu");
+const dashboardProgrammeReportOptions = document.querySelector("#dashboardProgrammeReportOptions");
+const dashboardApplicationsByProgramme = document.querySelector("#dashboardApplicationsByProgramme");
+const dashboardTopCountries = document.querySelector("#dashboardTopCountries");
+const dashboardTopCountriesTotal = document.querySelector("#dashboardTopCountriesTotal");
+const dashboardProgrammePipelineTotal = document.querySelector("#dashboardProgrammePipelineTotal");
+const dashboardProgrammePipelineStages = document.querySelector("#dashboardProgrammePipelineStages");
+const dashboardProgrammePipelineStack = document.querySelector("#dashboardProgrammePipelineStack");
+const reportSearch = document.querySelector("#reportSearch");
+const reportProgrammeFilter = document.querySelector("#reportProgrammeFilter");
+const reportStatusFilter = document.querySelector("#reportStatusFilter");
+const reportNationalityFilter = document.querySelector("#reportNationalityFilter");
+const reportDateFilter = document.querySelector("#reportDateFilter");
+const reportPageSize = document.querySelector("#reportPageSize");
+const reportResetFilters = document.querySelector("#reportResetFilters");
+const reportTableBody = document.querySelector("#reportTableBody");
+const reportTotalCount = document.querySelector("#reportTotalCount");
+const reportPaginationSummary = document.querySelector("#reportPaginationSummary");
+const reportPageIndicator = document.querySelector("#reportPageIndicator");
+const prevReportPage = document.querySelector("#prevReportPage");
+const nextReportPage = document.querySelector("#nextReportPage");
+let dashboardProgrammeReportMode = "top";
+let dashboardSelectedProgrammes = new Set();
 const programmesTableBody = document.querySelector(".programmes-table tbody");
 let programmeRows = document.querySelectorAll(".programmes-table tbody tr");
 const programmeSortButtons = document.querySelectorAll(".programmes-table [data-sort-key]");
@@ -74,6 +109,8 @@ const programmesTableWrap = document.querySelector(".programmes-table-wrap");
 const programmePaginationRow = document.querySelector(".programme-pagination-row");
 const programmeActivities = document.querySelector("#programmeActivities");
 const addProgrammeActivity = document.querySelector("#addProgrammeActivity");
+const programmeConditionalQuestions = document.querySelector("#programmeConditionalQuestions");
+const addProgrammeConditionalQuestion = document.querySelector("#addProgrammeConditionalQuestion");
 const programmeLearningScopes = document.querySelector("#programmeLearningScopes");
 const addProgrammeLearningScope = document.querySelector("#addProgrammeLearningScope");
 const programmeCreateHeading = document.querySelector("#programmeCreateHeading");
@@ -108,7 +145,7 @@ const createProgrammeCertificateOther = document.querySelector("#createProgramme
 const createProgrammePicName = document.querySelector("#createProgrammePicName");
 const createProgrammePicPhone = document.querySelector("#createProgrammePicPhone");
 const createProgrammePicEmail = document.querySelector("#createProgrammePicEmail");
-const createProgrammePicFax = document.querySelector("#createProgrammePicFax");
+const createProgrammePicDefault = document.querySelector("#createProgrammePicDefault");
 const createProgrammeParticipantLimitType = document.querySelector("#createProgrammeParticipantLimitType");
 const createProgrammeParticipantLimitFields = document.querySelector("#createProgrammeParticipantLimitFields");
 const createProgrammeMinParticipants = document.querySelector("#createProgrammeMinParticipants");
@@ -133,9 +170,11 @@ const columnToggles = document.querySelectorAll("[data-column-toggle]");
 const statusGroupToggles = document.querySelectorAll("[data-status-group]");
 const allStatusFilters = document.querySelector("#allStatusFilters");
 const clearStatusFilters = document.querySelector("#clearStatusFilters");
-const statusFilterAccordion = document.querySelector("#statusFilterAccordion");
-const applicationStatusGroups = document.querySelector("#applicationStatusGroups");
-const applicationRows = document.querySelectorAll("[data-application-status]");
+let applicationRows = document.querySelectorAll("[data-application-status]");
+generateAdditionalDemoApplications();
+generateAdditionalDemoProgrammes();
+applicationRows = document.querySelectorAll(".applications-table tbody [data-application-status]");
+programmeRows = document.querySelectorAll(".programmes-table tbody tr");
 const applicationSortButtons = document.querySelectorAll(".applications-table [data-sort-key]");
 const paginationSummary = document.querySelector("#paginationSummary");
 const pageIndicator = document.querySelector("#pageIndicator");
@@ -155,6 +194,9 @@ const profileLogoImage = document.querySelector("#profileLogoImage");
 const brandLogo = document.querySelector(".brand-logo");
 const editProfileContact = document.querySelector("#editProfileContact");
 const cancelProfileContact = document.querySelector("#cancelProfileContact");
+const profileContactName = document.querySelector("#profileContactName");
+const profileContactEmail = document.querySelector("#profileContactEmail");
+const profileContactPhone = document.querySelector("#profileContactPhone");
 const kptComplianceReplyModal = document.querySelector("#kptComplianceReplyModal");
 const closeKptComplianceReply = document.querySelector("#closeKptComplianceReply");
 const cancelKptComplianceReply = document.querySelector("#cancelKptComplianceReply");
@@ -188,7 +230,7 @@ const supportMessage = document.querySelector("#supportMessage");
 const submitSupportRequest = document.querySelector("#submitSupportRequest");
 const settingsTabButtons = document.querySelectorAll("[data-settings-tab]");
 const settingsPanels = document.querySelectorAll("[data-settings-panel]");
-const settingsToggles = document.querySelectorAll(".settings-page input[type='checkbox']");
+const settingsToggles = document.querySelectorAll(".settings-page input[type='checkbox']:not(#helpSupportVisibilityToggle)");
 const settingsPasswordInputs = document.querySelectorAll(".settings-password-grid input");
 const updatePasswordButton = document.querySelector("#updatePasswordButton");
 const sessionList = document.querySelector(".session-list");
@@ -203,6 +245,9 @@ const applicationsPage = document.querySelector(".applications-page");
 const applicationsFilterPanel = document.querySelector(".applications-filter-panel");
 const applicationTableWrap = document.querySelector(".applications-table-wrap");
 const applicationSidePanel = document.querySelector("#applicationSidePanel");
+const applicationSideBackdrop = document.querySelector("#applicationSideBackdrop");
+const programmeSidePanel = document.querySelector("#programmeSidePanel");
+const programmeSideBackdrop = document.querySelector("#programmeSideBackdrop");
 const paginationRow = document.querySelector(".pagination-row");
 const tableOptionsPanel = document.querySelector(".table-options-panel");
 const detailTabButtons = document.querySelectorAll("[data-detail-tab]");
@@ -237,10 +282,13 @@ let applicationSort = { key: "", direction: "asc" };
 let programmeSort = { key: "", direction: "asc" };
 let currentApplicationPage = 1;
 let currentProgrammePage = 1;
+let currentReportPage = 1;
 let activeApplicantRow = null;
+let applicationSidePanelCloseTimer = null;
 let currentApplicationOrder = [];
 let editingDraftRow = null;
 let activeProgrammeRow = null;
+let programmeSidePanelCloseTimer = null;
 const programmeGalleryImages = new Map();
 let pendingProgrammeGalleryImages = [];
 let pendingProgrammeDetailsGalleryImages = [];
@@ -254,6 +302,7 @@ const initialSettingsToggles = [...settingsToggles].map((toggle) => toggle.check
 const initialSessionListHtml = sessionList?.innerHTML || "";
 const initialProgrammeCreateFields = {
   activities: programmeActivities?.innerHTML || "",
+  conditionalQuestions: programmeConditionalQuestions?.innerHTML || "",
   learningScopes: programmeLearningScopes?.innerHTML || "",
   inclusions: programmeInclusions?.innerHTML || ""
 };
@@ -261,6 +310,143 @@ let pendingProgrammeStatusChange = null;
 let pendingProgrammeDelete = null;
 let pendingProgrammeAction = null;
 let pendingProgrammeActionAudit = null;
+
+function generateAdditionalDemoApplications() {
+  const tbody = document.querySelector(".applications-table tbody");
+  if (!tbody || tbody.querySelector("[data-demo-applicant]") || !tbody.children.length) return;
+
+  const names = [
+    "Amara Okafor", "Lucas Meyer", "Nhi Nguyen", "Camila Santos", "Hugo Laurent",
+    "Zanele Dlamini", "Rafael Torres", "Priyanka Sen", "Omar Haddad", "Elena Rossi",
+    "Mateo Garcia", "Sofia Petrova", "Noah Williams", "Fatima Zahra", "Ethan Wilson",
+    "Mina Park", "Diego Alvarez", "Amina Yusuf", "Chloe Martin", "Tariq Rahman",
+    "Isabella Costa", "Jun Ho Kim", "Grace Mensah", "Nour El-Sayed", "Liam O'Brien",
+    "Ananya Iyer", "Marco Bianchi", "Leila Benali", "Samuel Adeyemi", "Hana Suzuki",
+    "Victoria Chen", "Andrei Popescu", "Mariam Bello", "Thomas Nguyen", "Aya Hassan",
+    "Benjamin Clark", "Lina Haddad", "Kofi Boateng", "Clara Dubois", "Adrian Silva",
+    "Sakura Watanabe", "Yasmin Ali", "Felix Schneider", "Maya Patel", "Daniel Kim",
+    "Ana Maria Cruz", "Oliver Jensen", "Siti Nurhaliza", "Youssef Karim", "Emily Brown"
+  ];
+  const countries = [
+    "Brazil", "Germany", "Vietnam", "France", "Philippines", "South Africa", "Mexico", "Bangladesh", "Turkey", "Italy",
+    "Canada", "Nepal", "United Arab Emirates", "Ghana", "Portugal", "South Korea", "Egypt", "New Zealand", "Nigeria", "Spain"
+  ];
+  const programmes = [
+    "Digital Entrepreneurship Bootcamp", "Malaysian Heritage Experience", "Applied AI for Tourism", "Marine Conservation Lab",
+    "Fintech Innovation Studio", "Smart Mobility Lab", "AI Heritage Storytelling Lab", "Rainforest Research Field School", "Borneo Culture Immersion", "Malay Language & Culture"
+  ];
+  const statuses = ["submitted", "approved", "documents required", "documents submitted", "approved", "rejected", "withdrawn", "submitted", "documents required", "documents submitted"];
+  const applicantTypes = ["International - Visitor/Tourist", "International - Existing Student Pass", "International - Student Pass Required"];
+  const statusLabels = {
+    submitted: ["New Application", "blue"],
+    approved: ["Approved", "green"],
+    "documents required": ["Documents Required", "amber"],
+    "documents submitted": ["Req Documents Submitted", "blue"],
+    rejected: ["Rejected", "red"],
+    withdrawn: ["Withdrawn", "neutral"]
+  };
+
+  names.forEach((name, index) => {
+    const status = statuses[index % statuses.length];
+    const country = countries[index % countries.length];
+    const programme = programmes[index % programmes.length];
+    const code = `EDT-2026-${String(1901 + index).padStart(6, "0")}`;
+    const appliedDate = `${String((index % 28) + 1).padStart(2, "0")} Aug 2026`;
+    const updatedDate = `${String(13 - (index % 5)).padStart(2, "0")} Aug 2026`;
+    const applicantType = applicantTypes[index % applicantTypes.length];
+    const [statusLabel, chipClass] = statusLabels[status];
+    const row = document.createElement("tr");
+    row.dataset.demoApplicant = "true";
+    row.dataset.applicationStatus = status;
+    row.dataset.programme = programme.toLowerCase();
+    row.dataset.applicantType = applicantType.toLowerCase();
+    row.dataset.nationality = country.toLowerCase();
+    row.innerHTML = `<td><a class="applicant-link" href="#"><span class="applicant-name">${escapeAttribute(name)}</span><small>${code}</small></a></td><td>${escapeAttribute(country)}</td><td><span class="programme-name">${escapeAttribute(programme)}</span></td><td>${appliedDate}</td><td><span class="status-chip ${chipClass}">${statusLabel}</span></td><td><button class="submission-view-btn" type="button" aria-label="View application">View</button></td><td>${updatedDate}</td>`;
+    tbody.appendChild(row);
+  });
+}
+
+function generateAdditionalDemoProgrammes() {
+  const tbody = document.querySelector(".programmes-table tbody");
+  if (!tbody || tbody.querySelector("[data-demo-programme]") || !tbody.children.length) return;
+
+  const programmes = [
+    { name: "Coastal Resilience & Blue Economy", category: "Environmental and Health Science (EAH)", status: "published", duration: "18 Days", fee: "RM 3,900", overview: "A field-based programme exploring coastal resilience, marine livelihoods, and blue economy solutions through community projects.", language: "English: Intermediate", target: "General Public (including student)", credit: "Eligible", participants: "15 - 30 participants; No participant waiver", inclusions: "Field equipment, Local transport, Meals", activities: "Coastal mapping, Mangrove restoration, Blue economy workshop, Community presentation", outcome: "Participants can describe coastal risks and propose a practical blue economy initiative.", travelTour: "Coastal Discovery Malaysia", certificate: "Certificate of Completion", picName: "Dr. Nur Hidayah Karim", picPhone: "+60 12-456 7821", picEmail: "nurhidayah@university.demo" },
+    { name: "Sustainable Food Innovation Lab", category: "Culinary and Hospitality (CAH)", status: "published", duration: "14 Days", fee: "RM 3,200", overview: "A practical lab covering sustainable food systems, product development, and responsible hospitality operations.", language: "English: Advanced", target: "Student only", credit: "Eligible", participants: "10 - 25 participants; 1 participant waived for every 15 participants", inclusions: "Kitchen access, Ingredients, Course materials", activities: "Food systems seminar, Product design sprint, Kitchen practicum, Tasting showcase", outcome: "Participants can design a sustainable food product and explain its market and environmental impact.", travelTour: "N/A", certificate: "Certificate of Achievement", picName: "Chef Daniel Wong", picPhone: "+60 13-778 4201", picEmail: "daniel.wong@university.demo" },
+    { name: "Digital Media & Creative Industries", category: "Arts & Social Science (ANS)", status: "published", duration: "21 Days", fee: "RM 3,800", overview: "Participants develop digital media concepts for creative industries through storytelling, production, and audience strategy.", language: "English: Intermediate", target: "General Public (including student)", credit: "Not eligible", participants: "12 - 24 participants; No participant waiver", inclusions: "Studio access, Software licences, Production materials", activities: "Story development, Content production, Audience research, Showcase screening", outcome: "Participants can create and pitch a digital media project for a defined audience.", travelTour: "Creative City Tours", certificate: "Certificate of Completion", picName: "Ms. Alicia Tan", picPhone: "+60 17-432 1198", picEmail: "alicia.tan@university.demo" },
+    { name: "Global Public Health Fieldwork", category: "Environmental and Health Science (EAH)", status: "published", duration: "20 Days", fee: "RM 4,600", overview: "An applied public health field school focused on community health assessment, prevention, and health communication.", language: "English: Advanced", target: "Student only", credit: "Eligible", participants: "8 - 20 participants; No participant waiver", inclusions: "Field kits, Accommodation, Meals", activities: "Community health survey, Prevention workshop, Data analysis, Health campaign design", outcome: "Participants can conduct a basic health assessment and design an evidence-informed campaign.", travelTour: "Community Health Partners", certificate: "Certificate of Participation", picName: "Dr. Farah Ismail", picPhone: "+60 19-228 7740", picEmail: "farah.ismail@university.demo" },
+    { name: "Renewable Energy Systems Workshop", category: "Science and Technology (SAT)", status: "published", duration: "16 Days", fee: "RM 4,100", overview: "A hands-on workshop introducing renewable energy systems, energy efficiency, and small-scale project planning.", language: "English: Intermediate", target: "Group", credit: "Eligible", participants: "10 - 25 participants; 1 participant waived for every 20 participants", inclusions: "Lab access, Measurement equipment, Materials", activities: "Solar systems lab, Energy audit, Microgrid simulation, Project pitch", outcome: "Participants can compare renewable energy options and prepare a basic implementation plan.", travelTour: "Eco Engineering Tours", certificate: "Certificate of Completion", picName: "Ir. Jason Lim", picPhone: "+60 12-903 6612", picEmail: "jason.lim@university.demo" },
+    { name: "Intercultural Leadership Exchange", category: "Leadership and Management (LAM)", status: "published", duration: "12 Days", fee: "RM 2,900", overview: "A collaborative leadership exchange using Malaysian community and industry settings to develop intercultural teamwork skills.", language: "English: Intermediate", target: "General Public (including student)", credit: "Not eligible", participants: "15 - 35 participants; No participant waiver", inclusions: "Workshop materials, Local transport, Cultural activities", activities: "Leadership labs, Community dialogue, Team challenge, Reflection showcase", outcome: "Participants can lead a diverse team through a structured project and reflection process.", travelTour: "Cultural Exchange Network", certificate: "Certificate of Attendance", picName: "Pn. Aina Rahman", picPhone: "+60 16-220 4718", picEmail: "aina.rahman@university.demo" },
+    { name: "Community Heritage Documentation", category: "Food, Culture & Heritage (FCH)", status: "unpublish", duration: "10 Days", fee: "RM 2,300", overview: "Participants document local heritage stories through interviews, photography, archival research, and community collaboration.", language: "English: Intermediate", target: "Student only", credit: "Eligible", participants: "8 - 18 participants; No participant waiver", inclusions: "Recording equipment, Local transport, Archive access", activities: "Oral history interview, Archive visit, Photo documentation, Community exhibit", outcome: "Participants can create a respectful community heritage documentation project.", travelTour: "Heritage Trails Malaysia", certificate: "Certificate of Participation", picName: "Mr. Hafiz Salleh", picPhone: "+60 11-339 5520", picEmail: "hafiz.salleh@university.demo" },
+    { name: "Applied Robotics for Industry", category: "Science and Technology (SAT)", status: "unpublish", duration: "18 Days", fee: "RM 4,900", overview: "An applied robotics programme covering automation concepts, robot programming, and industry process improvement.", language: "English: Advanced", target: "Group", credit: "Eligible", participants: "10 - 20 participants; No participant waiver", inclusions: "Robotics lab, Components, Safety equipment", activities: "Robot programming, Automation simulation, Process mapping, Industry demo", outcome: "Participants can design a basic automation workflow for an industry use case.", travelTour: "Industry Innovation Hub", certificate: "Certificate of Achievement", picName: "Dr. Kelvin Ong", picPhone: "+60 18-661 0388", picEmail: "kelvin.ong@university.demo" },
+    { name: "Tourism Data Analytics Studio", category: "Business and Entrepreneurship (BAE)", status: "unpublish", duration: "15 Days", fee: "RM 3,600", overview: "A data studio where participants analyse tourism behaviour, destination demand, and visitor experience opportunities.", language: "English: Intermediate", target: "General Public (including student)", credit: "Not eligible", participants: "12 - 25 participants; 1 participant waived for every 20 participants", inclusions: "Software access, Dataset collection, Workshop materials", activities: "Tourism data lab, Dashboard design, Visitor segmentation, Insight presentation", outcome: "Participants can turn tourism data into a clear destination or visitor experience recommendation.", travelTour: "Destination Analytics Partners", certificate: "Certificate of Completion", picName: "Ms. Nurul Huda", picPhone: "+60 14-770 2251", picEmail: "nurul.huda@university.demo" },
+    { name: "Advanced Malay Communication", category: "Language and Communication (LAC)", status: "draft", duration: "14 Days", fee: "RM 2,000", overview: "An advanced Malay communication programme focused on professional interaction, presentations, and workplace language.", language: "Malay: Advanced", target: "Student only", credit: "Pending review", participants: "10 - 25 participants; No participant waiver", inclusions: "Course materials, Language lab", activities: "Presentation practice, Workplace role-play, Media analysis, Assessment interview", outcome: "Participants can communicate confidently in common professional situations in Malay.", travelTour: "N/A", certificate: "Certificate of Attendance", picName: "Pn. Nur Farhana", picPhone: "+60 12-881 3400", picEmail: "nur.farhana@university.demo" },
+    { name: "Climate Policy & Governance", category: "Leadership and Management (LAM)", status: "draft", duration: "17 Days", fee: "RM 3,700", overview: "A policy-focused programme examining climate governance, public decision-making, and practical transition planning.", language: "English: Advanced", target: "General Public (including student)", credit: "Pending review", participants: "12 - 24 participants; No participant waiver", inclusions: "Policy casebooks, Workshop materials, Site visits", activities: "Policy lab, Stakeholder mapping, Climate negotiation, Action plan", outcome: "Participants can evaluate a climate policy challenge and propose a governance response.", travelTour: "Sustainability Policy Network", certificate: "Certificate of Completion", picName: "Dr. Arif Hamdan", picPhone: "+60 13-990 4417", picEmail: "arif.hamdan@university.demo" },
+    { name: "Biomedical Research Methods", category: "Environmental and Health Science (EAH)", status: "pending kpt approval", duration: "22 Days", fee: "RM 5,200", overview: "An introductory biomedical research methods programme covering study design, laboratory practice, and research ethics.", language: "English: Advanced", target: "Student only", credit: "Eligible", participants: "8 - 16 participants; No participant waiver", inclusions: "Laboratory access, Safety equipment, Research materials", activities: "Study design lab, Research ethics seminar, Data methods, Poster presentation", outcome: "Participants can outline a compliant biomedical research project and communicate its methods.", travelTour: "N/A", certificate: "Certificate of Achievement", picName: "Dr. Mei Ling Tan", picPhone: "+60 17-540 8821", picEmail: "meiling.tan@university.demo" },
+    { name: "Social Enterprise Incubator", category: "Business and Entrepreneurship (BAE)", status: "pending kpt approval", duration: "20 Days", fee: "RM 3,900", overview: "An incubator helping participants turn community challenges into sustainable social enterprise concepts.", language: "English: Intermediate", target: "Group", credit: "Eligible", participants: "15 - 30 participants; 1 participant waived for every 15 participants", inclusions: "Mentoring sessions, Co-working space, Pitch materials", activities: "Problem discovery, Business model lab, Impact measurement, Demo day", outcome: "Participants can develop a viable social enterprise concept with a measurable impact plan.", travelTour: "Social Innovation Partners", certificate: "Certificate of Completion", picName: "Mr. Adam Yusuf", picPhone: "+60 16-704 1186", picEmail: "adam.yusuf@university.demo" },
+    { name: "Hospitality Operations Lab", category: "Culinary and Hospitality (CAH)", status: "changes requested", duration: "13 Days", fee: "RM 2,800", overview: "A practical hospitality lab covering guest experience, service operations, and responsible accommodation management.", language: "English: Intermediate", target: "Student only", credit: "Pending review", participants: "10 - 20 participants; No participant waiver", inclusions: "Training kitchen, Hotel simulation, Course materials", activities: "Front office simulation, Service design, Operations audit, Guest experience project", outcome: "Participants can map a hospitality operation and recommend service improvements.", travelTour: "Hospitality Learning Partners", certificate: "Certificate of Attendance", picName: "Ms. Farah Lee", picPhone: "+60 12-667 9044", picEmail: "farah.lee@university.demo" },
+    { name: "Urban Design Futures", category: "Arts and Social Science (ANS)", status: "rejected", duration: "19 Days", fee: "RM 3,400", overview: "A design studio exploring future cities, inclusive public spaces, and community-led urban planning.", language: "English: Advanced", target: "General Public (including student)", credit: "Pending review", participants: "10 - 20 participants; No participant waiver", inclusions: "Studio access, Mapping materials, Site visit", activities: "Urban observation, Design sprint, Community consultation, Final concept review", outcome: "Participants can propose an inclusive urban design concept for a real community setting.", travelTour: "Urban Futures Lab", certificate: "Certificate of Participation", picName: "Ar. Nadia Karim", picPhone: "+60 19-443 7200", picEmail: "nadia.karim@university.demo" }
+  ];
+  const statusLabels = {
+    published: ["Published", "green"],
+    unpublish: ["Unpublish", "neutral"],
+    draft: ["Draft", "neutral"],
+    "pending kpt approval": ["Pending KPT Approval", "amber"],
+    "changes requested": ["Changes Requested", "purple"],
+    rejected: ["Rejected", "red"]
+  };
+  const activeAdditionalProgrammes = programmes.filter((programme) => ["published", "unpublish"].includes(programme.status));
+
+  programmes.forEach((programme) => {
+    const row = document.createElement("tr");
+    const [statusLabel, chipClass] = statusLabels[programme.status];
+    row.dataset.demoProgramme = "true";
+    row.dataset.programmeCategory = programme.category.toLowerCase();
+    row.dataset.publicStatus = programme.status;
+    row.dataset.overview = programme.overview;
+    row.dataset.language = programme.language;
+    row.dataset.target = programme.target;
+    row.dataset.credit = programme.credit;
+    row.dataset.participants = programme.participants;
+    row.dataset.inclusions = programme.inclusions;
+    row.dataset.activities = programme.activities;
+    row.dataset.outcome = programme.outcome;
+    row.dataset.travelTour = programme.travelTour;
+    row.dataset.certificate = programme.certificate;
+    row.dataset.picName = programme.picName;
+    row.dataset.picPhone = programme.picPhone;
+    row.dataset.picEmail = programme.picEmail;
+    row.dataset.picFax = "Not specified";
+    row.innerHTML = `<td><span class="programme-name">${escapeAttribute(programme.name)}</span></td><td>${escapeAttribute(programme.category)}</td><td>${programme.duration}</td><td>${programme.fee}</td><td>${shouldShowProgrammeApplicants(programme.status) ? "0" : "-"}</td><td><span class="status-chip ${chipClass}">${statusLabel}</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td>`;
+    tbody.appendChild(row);
+  });
+
+  const generatedApplicants = [...document.querySelectorAll(".applications-table tbody [data-demo-applicant]")];
+  activeAdditionalProgrammes.forEach((programme, programmeIndex) => {
+    generatedApplicants.slice(programmeIndex * 3, programmeIndex * 3 + 3).forEach((row) => {
+      row.dataset.programme = programme.name.toLowerCase();
+      const programmeName = row.querySelector(".programme-name");
+      if (programmeName) programmeName.textContent = programme.name;
+    });
+  });
+
+  const activeProgrammeNames = [...tbody.querySelectorAll("tr")]
+    .filter((row) => shouldShowProgrammeApplicants(row.dataset.publicStatus || ""))
+    .map((row) => row.querySelector(".programme-name")?.textContent.trim().toLowerCase())
+    .filter(Boolean);
+  const applicationRowsForProgrammeSync = [...document.querySelectorAll(".applications-table tbody [data-application-status]")];
+  let reassignmentIndex = 0;
+  applicationRowsForProgrammeSync.forEach((row) => {
+    if (activeProgrammeNames.includes(row.dataset.programme)) return;
+    const replacement = activeProgrammeNames[reassignmentIndex % activeProgrammeNames.length];
+    reassignmentIndex += 1;
+    row.dataset.programme = replacement;
+    const programmeName = row.querySelector(".programme-name");
+    const programmeRow = [...tbody.querySelectorAll("tr")].find((item) => item.querySelector(".programme-name")?.textContent.trim().toLowerCase() === replacement);
+    if (programmeName && programmeRow) programmeName.textContent = programmeRow.querySelector(".programme-name").textContent.trim();
+  });
+}
+
 let pendingDocumentAction = "";
 let pendingStatusChange = null;
 let pendingReminderAction = null;
@@ -276,11 +462,18 @@ let editingUserRow = null;
   }
 });
 
+[applicationSideBackdrop, applicationSidePanel, programmeSideBackdrop, programmeSidePanel].forEach((element) => {
+  if (element && element.parentElement !== document.body) {
+    document.body.appendChild(element);
+  }
+});
+
 function getSearchableItems() {
   return [...document.querySelectorAll(".view-panel.active [data-keywords]")];
 }
 
 function setActiveView(viewName) {
+  closeProgrammeSidePanel();
   navViewLinks.forEach((link) => {
     link.classList.toggle("active", link.dataset.viewLink === viewName);
   });
@@ -289,6 +482,18 @@ function setActiveView(viewName) {
   });
   if (pageTitle) {
     pageTitle.textContent = viewName === "applications" ? "Applications" : viewName === "programmes" ? "Programmes" : viewName === "reports" ? "Reports" : viewName === "university-profile" ? "University Profile" : viewName === "user-management" ? "User Management" : viewName === "audit-log" ? "Audit Log" : viewName === "help-support" ? "Help & Support" : viewName === "settings" ? "Settings" : "Dashboard";
+  }
+}
+
+function applyHelpSupportVisibility() {
+  const isVisible = helpSupportVisibilityToggle?.checked ?? true;
+  if (helpSupportNavLink) helpSupportNavLink.hidden = !isVisible;
+  if (helpSupportViewPanel) helpSupportViewPanel.hidden = !isVisible;
+
+  if (!isVisible && helpSupportViewPanel?.classList.contains("active")) {
+    setActiveView("dashboard");
+    history.replaceState(null, "", "#dashboard");
+    scrollWorkspaceToTop();
   }
 }
 
@@ -358,6 +563,29 @@ function showApplicationsList() {
   if (tableOptionsPanel) tableOptionsPanel.hidden = false;
   if (applicationsFilterPanel) applicationsFilterPanel.hidden = false;
   applicationsPage?.classList.remove("detail-mode");
+}
+
+function openProgrammeApplications(row) {
+  if (!row) return;
+  const programmeName = row.querySelector(".programme-name")?.textContent.trim() || "";
+  if (!programmeName || !programmeFilter) return;
+  let option = [...programmeFilter.options].find((item) => item.value.toLowerCase() === programmeName.toLowerCase());
+  if (!option) {
+    option = document.createElement("option");
+    option.textContent = programmeName;
+    programmeFilter.appendChild(option);
+  }
+  programmeFilter.value = option.value;
+  if (applicationSearch) applicationSearch.value = "";
+  if (applicantTypeFilter) applicantTypeFilter.value = "All applicant types";
+  if (nationalityFilter) nationalityFilter.value = "Any nationality";
+  statusGroupToggles.forEach((toggle) => { toggle.checked = true; });
+  syncAllStatusFilter();
+  setActiveView("applications");
+  showApplicationsList();
+  resetApplicationPage();
+  history.replaceState(null, "", "#applications");
+  scrollWorkspaceToTop();
 }
 
 function applyCurrentUserRole() {
@@ -562,6 +790,22 @@ function setUniversityProfileEditing(isEditing, scope = "university") {
   if (changeUniversityLogo) changeUniversityLogo.hidden = !isEditing;
 }
 
+function setCreateProgrammeDefaultContact(isDefault, clearValuesWhenUnchecking = false) {
+  const fields = [createProgrammePicName, createProgrammePicEmail, createProgrammePicPhone];
+  if (isDefault) {
+    if (createProgrammePicName) createProgrammePicName.value = profileContactName?.value.trim() || "";
+    if (createProgrammePicEmail) createProgrammePicEmail.value = profileContactEmail?.value.trim() || "";
+    if (createProgrammePicPhone) createProgrammePicPhone.value = profileContactPhone?.value.trim() || "";
+  } else if (clearValuesWhenUnchecking) {
+    fields.forEach((field) => {
+      if (field) field.value = "";
+    });
+  }
+  fields.forEach((field) => {
+    if (field) field.disabled = isDefault;
+  });
+}
+
 function openAddUserModal() {
   if (addUserButton?.dataset.currentRole !== "superadmin") {
     openProgrammeActionConfirm("Super Admin required", "Only Super Admin users can add new staff accounts.", () => {}, "OK");
@@ -690,6 +934,14 @@ if (location.hash === "#applications" || location.hash === "#programmes" || loca
   setActiveView(location.hash.slice(1));
   scrollWorkspaceToTop();
 }
+try {
+  if (helpSupportVisibilityToggle) {
+    helpSupportVisibilityToggle.checked = localStorage.getItem("universityDashboard.helpSupportVisible") !== "false";
+  }
+} catch (error) {
+  // Use the default checked state when browser storage is unavailable.
+}
+applyHelpSupportVisibility();
 applyCurrentUserRole();
 updateAuditRows();
 setActiveHelpTab("overview");
@@ -764,6 +1016,7 @@ function updateProgrammeRows() {
   if (nextProgrammePage) {
     nextProgrammePage.disabled = currentProgrammePage >= totalPages;
   }
+  updateDashboardMetrics();
 }
 
 function resetProgrammeCreateForm() {
@@ -780,10 +1033,10 @@ function resetProgrammeCreateForm() {
   if (createProgrammeFee) createProgrammeFee.value = "";
   if (createProgrammeFeeMin) createProgrammeFeeMin.value = "";
   if (createProgrammeFeeMax) createProgrammeFeeMax.value = "";
-  if (createProgrammeLanguage) createProgrammeLanguage.value = "Select required language proficiency";
+  if (createProgrammeLanguage) createProgrammeLanguage.value = "";
   createProgrammeCredit?.querySelector('input[value="No"]')?.click();
   if (createProgrammeCreditOther) createProgrammeCreditOther.value = "";
-  if (createProgrammeTarget) createProgrammeTarget.value = "Select target group";
+  if (createProgrammeTarget) createProgrammeTarget.value = "General Public (including student)";
   if (createProgrammeTargetOther) createProgrammeTargetOther.value = "";
   if (createProgrammeTravelTour) createProgrammeTravelTour.value = "TBC";
   if (createProgrammeTravelAgency) createProgrammeTravelAgency.value = "";
@@ -792,7 +1045,10 @@ function resetProgrammeCreateForm() {
   if (createProgrammePicName) createProgrammePicName.value = "";
   if (createProgrammePicPhone) createProgrammePicPhone.value = "";
   if (createProgrammePicEmail) createProgrammePicEmail.value = "";
-  if (createProgrammePicFax) createProgrammePicFax.value = "";
+  if (createProgrammePicDefault) {
+    createProgrammePicDefault.checked = false;
+    setCreateProgrammeDefaultContact(false);
+  }
   if (createProgrammeParticipantLimitType) createProgrammeParticipantLimitType.value = "No limit";
   if (createProgrammeMinParticipants) createProgrammeMinParticipants.value = "";
   if (createProgrammeMaxParticipants) createProgrammeMaxParticipants.value = "";
@@ -805,6 +1061,7 @@ function resetProgrammeCreateForm() {
   pendingProgrammeGalleryImages = [];
   renderCreateProgrammeGallery();
   if (programmeActivities) programmeActivities.innerHTML = initialProgrammeCreateFields.activities;
+  if (programmeConditionalQuestions) programmeConditionalQuestions.innerHTML = initialProgrammeCreateFields.conditionalQuestions;
   if (programmeLearningScopes) programmeLearningScopes.innerHTML = initialProgrammeCreateFields.learningScopes;
   if (programmeInclusions) programmeInclusions.innerHTML = initialProgrammeCreateFields.inclusions;
   syncProgrammeCreateConditionalFields();
@@ -872,6 +1129,7 @@ function resetProgrammesDemoState() {
 }
 
 function showProgrammeCreateForm() {
+  closeProgrammeSidePanel();
   if (programmesControlPanel) programmesControlPanel.hidden = true;
   if (programmesTableWrap) programmesTableWrap.hidden = true;
   if (programmePaginationRow) programmePaginationRow.hidden = true;
@@ -900,7 +1158,7 @@ function populateCreateFormFromRow(row) {
   if (createProgrammeName) createProgrammeName.value = name;
   if (createProgrammeOverview) createProgrammeOverview.value = row.dataset.overview || "";
   if (createProgrammeCategory) createProgrammeCategory.value = category || "Select programme category";
-  if (createProgrammeLanguage) createProgrammeLanguage.value = row.dataset.language || "Select required language proficiency";
+  if (createProgrammeLanguage) createProgrammeLanguage.value = row.dataset.language || "";
 
   const durationData = parseDurationValue(durationText);
   if (createProgrammeDurationType) createProgrammeDurationType.value = durationData.type;
@@ -937,14 +1195,15 @@ function populateCreateFormFromRow(row) {
   if (createProgrammeCreditOther) createProgrammeCreditOther.value = creditOtherText;
 
   const targetValue = row.dataset.target || "General Public (including student)";
-  const targetPresets = ["Individual", "Group", "General Public (including student)", "Student only"];
+  const normalizedTargetValue = targetValue === "Student only" ? "Students" : targetValue;
+  const targetPresets = ["General Public (including student)", "Students"];
   if (createProgrammeTarget) {
-    if (targetPresets.includes(targetValue)) {
-      createProgrammeTarget.value = targetValue;
+    if (targetPresets.includes(normalizedTargetValue)) {
+      createProgrammeTarget.value = normalizedTargetValue;
       if (createProgrammeTargetOther) createProgrammeTargetOther.value = "";
     } else {
-      createProgrammeTarget.value = "Others";
-      if (createProgrammeTargetOther) createProgrammeTargetOther.value = targetValue.startsWith("Others: ") ? targetValue.slice(8) : targetValue;
+      createProgrammeTarget.value = "General Public (including student)";
+      if (createProgrammeTargetOther) createProgrammeTargetOther.value = "";
     }
   }
 
@@ -988,10 +1247,14 @@ function populateCreateFormFromRow(row) {
   if (createProgrammePicName) createProgrammePicName.value = row.dataset.picName === "Not specified" ? "" : (row.dataset.picName || "");
   if (createProgrammePicPhone) createProgrammePicPhone.value = row.dataset.picPhone === "Not specified" ? "" : (row.dataset.picPhone || "");
   if (createProgrammePicEmail) createProgrammePicEmail.value = row.dataset.picEmail === "Not specified" ? "" : (row.dataset.picEmail || "");
-  if (createProgrammePicFax) createProgrammePicFax.value = row.dataset.picFax === "Not specified" ? "" : (row.dataset.picFax || "");
+  if (createProgrammePicDefault) {
+    createProgrammePicDefault.checked = false;
+    setCreateProgrammeDefaultContact(false);
+  }
 
   populateStackedInputsFromCsv(programmeInclusions, "Included item", row.dataset.inclusions, "");
   populateStackedInputsFromCsv(programmeActivities, "Activity", row.dataset.activities, "Activity 1, Activity 2");
+  populateStackedInputsFromCsv(programmeConditionalQuestions, "Conditional question", row.dataset.conditionalQuestions, "");
   populateStackedInputsFromCsv(programmeLearningScopes, "Learning outcome", row.dataset.outcome, "Learning outcome 1");
 
   pendingProgrammeGalleryImages.forEach((image) => URL.revokeObjectURL(image.url));
@@ -1017,6 +1280,7 @@ function openDraftProgrammeEditor(row) {
 }
 
 function showProgrammesList() {
+  closeProgrammeSidePanel();
   if (programmesControlPanel) programmesControlPanel.hidden = false;
   if (programmesTableWrap) programmesTableWrap.hidden = false;
   if (programmePaginationRow) programmePaginationRow.hidden = false;
@@ -1026,8 +1290,282 @@ function showProgrammesList() {
 
 function attachProgrammeRowActions(row) {
   row.querySelector('[aria-label="View programme"]')?.addEventListener("click", () => {
-    showProgrammeDetail(row);
+    openProgrammeSidePanel(row);
   });
+}
+
+function getProgrammeSideProgress(status) {
+  const normalized = String(status || "").toLowerCase();
+  let stages = ["Draft", "KPT review", "Published"];
+  let currentIndex = normalized === "published" ? 2 : normalized === "pending kpt approval" ? 1 : 0;
+  let stageLabel = stages[currentIndex];
+  let tone = currentIndex === 2 ? "complete" : currentIndex === 0 ? "current" : "waiting";
+  if (normalized === "changes requested") {
+    stages = ["Draft", "Changes Requested", "KPT review", "Published"];
+    currentIndex = 1;
+    stageLabel = "Changes Requested";
+    tone = "waiting";
+  } else if (normalized === "rejected") {
+    stages = ["Draft", "KPT review", "Rejected"];
+    currentIndex = 2;
+    stageLabel = "Rejected";
+    tone = "closed";
+  } else if (normalized === "resubmitted") {
+    stages = ["Published", "KPT review", "Published"];
+    currentIndex = 1;
+    stageLabel = "KPT review";
+    tone = "waiting";
+  } else if (normalized === "unpublish") {
+    stages = ["Draft", "KPT review", "Published", "Unpublished"];
+    currentIndex = 3;
+    stageLabel = "Unpublished";
+    tone = "waiting";
+  }
+  const summary = normalized === "draft"
+    ? "Complete the programme details before submitting it to KPT."
+    : normalized === "pending kpt approval"
+      ? "The programme has been submitted and is waiting for KPT review."
+      : normalized === "changes requested"
+        ? "Update the requested fields before the programme returns to KPT review."
+        : normalized === "rejected"
+          ? "The programme is closed for this approval cycle. Review the outcome and update it if needed."
+          : normalized === "resubmitted"
+            ? "Changes to the published programme have been sent back to KPT for review."
+          : normalized === "unpublish"
+            ? "The programme was unpublished after approval and is currently unavailable on the public listing."
+            : "The programme is approved and available on the public listing.";
+  return { stages, currentIndex, stageLabel, tone, summary };
+}
+
+function renderProgrammeSideList(value, fallback) {
+  const items = String(value || fallback || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return `<ul class="programme-detail-list">${(items.length ? items : [fallback || "Not specified"]).map((item) => `<li>${escapeAttribute(item)}</li>`).join("")}</ul>`;
+}
+
+function renderProgrammeSideGallery(images) {
+  if (!images.length) return '<p class="programme-gallery-empty">No images uploaded.</p>';
+  return `<div class="programme-gallery-grid">${images.map((image, index) => `
+    <div>
+      <span class="gallery-thumb" aria-hidden="true" style="${image.url ? `background-image:url('${escapeAttribute(image.url)}');background-size:cover;background-position:center;` : ""}"></span>
+      <strong>${escapeAttribute(image.context || `Image ${index + 1}`)}</strong>
+      <small>${image.url ? "Uploaded image" : "Placeholder image"}</small>
+    </div>
+  `).join("")}</div>`;
+}
+
+function getProgrammeSideTabMarkup(activeTab, tab, content) {
+  return `<div data-programme-side-panel="${tab}" ${activeTab === tab ? "" : "hidden"}>${content}</div>`;
+}
+
+function getActiveProgrammeSideTab() {
+  return programmeSidePanel?.querySelector("[data-programme-side-tab].active")?.dataset.programmeSideTab || "overview";
+}
+
+function closeProgrammeSidePanel() {
+  document.documentElement.classList.remove("application-modal-open");
+  document.body.classList.remove("application-modal-open");
+  programmeSideBackdrop?.classList.remove("is-visible");
+  if (programmeSidePanel) {
+    window.clearTimeout(programmeSidePanelCloseTimer);
+    if (!programmeSidePanel.hidden) {
+      programmeSidePanel.classList.remove("is-open");
+      programmeSidePanel.classList.add("is-closing");
+      programmeSidePanelCloseTimer = window.setTimeout(() => {
+        programmeSidePanel.hidden = true;
+        if (programmeSideBackdrop) programmeSideBackdrop.hidden = true;
+        programmeSidePanel.classList.remove("is-closing");
+        programmeSidePanelCloseTimer = null;
+      }, 280);
+    } else {
+      programmeSidePanel.hidden = true;
+      if (programmeSideBackdrop) programmeSideBackdrop.hidden = true;
+      programmeSidePanel.classList.remove("is-open", "is-closing");
+      programmeSidePanelCloseTimer = null;
+    }
+  }
+  programmeRows.forEach((row) => row.classList.remove("selected-row"));
+}
+
+function renderProgrammeSidePanel(row, preferredTab = getActiveProgrammeSideTab()) {
+  if (!row || !programmeSidePanel) return;
+  activeProgrammeRow = row;
+  programmeRows.forEach((item) => item.classList.toggle("selected-row", item === row));
+  const cells = row.children;
+  const name = row.querySelector(".programme-name")?.textContent.trim() || "Programme";
+  const category = cells[1]?.textContent.trim() || "Not specified";
+  const duration = cells[2]?.textContent.trim() || "Not specified";
+  const fee = cells[3]?.textContent.trim() || "Not specified";
+  const applicants = String(getProgrammeApplicantCount(name));
+  const statusChip = cells[5]?.querySelector(".status-chip");
+  const status = statusChip?.textContent.trim() || "Draft";
+  const chip = statusChip?.className.split(" ").pop() || "neutral";
+  const normalizedStatus = status.toLowerCase();
+  const progress = getProgrammeSideProgress(status);
+  const activeTab = ["overview", "details", "approval"].includes(preferredTab) ? preferredTab : "overview";
+  const statusUpdates = {
+    draft: "This programme remains a draft and has not been submitted to KPT.",
+    "pending kpt approval": "The programme was submitted to KPT and is awaiting an approval decision.",
+    "changes requested": "KPT requested updates before the programme can be approved.",
+    published: "The programme has been approved and is currently published.",
+    rejected: "KPT rejected this submission. Review the programme details before making another submission.",
+    unpublish: "The programme is approved, but its public listing is currently unpublished."
+  };
+  const approvalChangeItem = normalizedStatus === "changes requested"
+    ? getProgrammeApprovalTimelineItems(normalizedStatus, name).find((item) => item.title === "KPT requested changes")
+    : null;
+  const approvalUpdate = ["draft", "unpublish"].includes(normalizedStatus)
+    ? ""
+    : `<div><span>Update</span><strong>${escapeAttribute(normalizedStatus === "published" ? "Approved by KPT and published for applications." : (statusUpdates[normalizedStatus] || "Programme status update is available for review."))}</strong></div>`;
+  const approvalNextStep = ["draft", "pending kpt approval", "published", "rejected"].includes(normalizedStatus)
+    ? ""
+    : `<div><span>Next step</span><strong>${escapeAttribute(normalizedStatus === "unpublish" ? "This programme is not available to the public. To republish it, submit it to KPT for approval." : progress.summary)}</strong></div>`;
+  const overviewContent = `
+    <div class="application-side-card-grid">
+      <article class="application-side-card applicant-card">
+        <h4>Basic Information</h4>
+        <div class="application-side-fields">
+          <div><span>Category</span><strong>${escapeAttribute(category)}</strong></div>
+          <div><span>Language</span><strong>${escapeAttribute(row.dataset.language || "Not specified")}</strong></div>
+          <div><span>Total applicants</span><strong>${escapeAttribute(applicants === "-" ? "0" : applicants)}</strong></div>
+        </div>
+      </article>
+      <article class="application-side-card programme-card">
+        <h4>Audience, Duration &amp; Fees</h4>
+        <div class="application-side-fields">
+          <div><span>Target group</span><strong>${escapeAttribute(row.dataset.target || "General Public (including student)")}</strong></div>
+          <div><span>Duration</span><strong>${escapeAttribute(duration)}</strong></div>
+          <div><span>Fee</span><strong>${escapeAttribute(fee)}</strong></div>
+          <div><span>Credit transfer</span><strong>${escapeAttribute(row.dataset.credit || "Not specified")}</strong></div>
+        </div>
+      </article>
+      <article class="application-side-card summary-card">
+        <h4>Travel, Certification &amp; PIC Details</h4>
+        <div class="application-side-fields">
+          <div><span>Travel / tour</span><strong>${escapeAttribute(row.dataset.travelTour || "Not specified")}</strong></div>
+          <div><span>Certificate</span><strong>${escapeAttribute(row.dataset.certificate || "Not specified")}</strong></div>
+          <div><span>PIC</span><strong>${escapeAttribute(row.dataset.picName || "Not specified")}</strong></div>
+          <div><span>Phone</span><strong>${escapeAttribute(row.dataset.picPhone || "Not specified")}</strong></div>
+          <div><span>Email</span><strong>${escapeAttribute(row.dataset.picEmail || "Not specified")}</strong></div>
+        </div>
+      </article>
+    </div>`;
+  const detailsContent = `
+    <div class="application-side-card-grid">
+      <article class="application-side-card summary-card">
+        <h4>Programme Content</h4>
+        <p class="application-side-post-note">${escapeAttribute(row.dataset.overview || "Programme overview appears here.")}</p>
+        <div class="programme-scope-list">
+          <div class="programme-scope-list-wide"><span>Learning Outcome</span>${renderProgrammeSideList(row.dataset.outcome, "Learning outcome 1")}</div>
+          <div class="programme-scope-list-wide"><span>What Is Included</span>${renderProgrammeSideList(row.dataset.inclusions, "No included items added")}</div>
+          <div class="programme-scope-list-wide"><span>Activities</span>${renderProgrammeSideList(row.dataset.activities, "Activity 1, Activity 2, guided site visit")}</div>
+        </div>
+      </article>
+      <article class="application-side-card programme-card">
+        <h4>Conditional Questions</h4>
+        <div class="programme-scope-list">
+          <div class="programme-scope-list-wide">${row.dataset.conditionalQuestions ? renderProgrammeSideList(row.dataset.conditionalQuestions, "No conditional questions added") : '<p class="programme-gallery-empty">No conditional questions added.</p>'}</div>
+        </div>
+      </article>
+      <article class="application-side-card applicant-card">
+        <h4>Gallery</h4>
+        ${renderProgrammeSideGallery(getProgrammeGalleryImages(name))}
+      </article>
+    </div>`;
+  const approvalContent = `
+    <div class="application-side-card-grid">
+      ${approvalChangeItem?.sections?.length ? `
+      <article class="application-side-card summary-card">
+        <h4>Changes Requested</h4>
+        <p class="application-side-post-note">${escapeAttribute(approvalChangeItem.body)}</p>
+        <div class="programme-scope-list">
+          ${approvalChangeItem.sections.map((section) => `<div class="programme-scope-list-wide"><span>${escapeAttribute(section.label)}</span><ul class="programme-detail-list"><li>${escapeAttribute(section.note)}</li></ul></div>`).join("")}
+        </div>
+      </article>` : ""}
+      <article class="application-side-card applicant-card">
+        <h4>Approval &amp; Updates</h4>
+        <div class="application-side-fields">
+          <div><span>Current status</span><strong>${escapeAttribute(status)}</strong></div>
+          <div><span>${normalizedStatus === "published" ? "Published / approved" : "Last updated"}</span><strong>13 Aug 2026</strong></div>
+          ${approvalUpdate}
+          ${approvalNextStep}
+        </div>
+      </article>
+    </div>`;
+  const progressItems = progress.stages.map((stage, index) => `
+    <li class="${index < progress.currentIndex ? "complete" : index === progress.currentIndex ? "current" : "upcoming"}">
+      <span class="application-progress-step-node">${index < progress.currentIndex ? "&#10003;" : ""}</span>
+      <strong>${stage}</strong>
+    </li>`).join("");
+
+  window.clearTimeout(programmeSidePanelCloseTimer);
+  programmeSidePanel.classList.remove("is-closing");
+  document.documentElement.classList.add("application-modal-open");
+  document.body.classList.add("application-modal-open");
+  if (programmeSideBackdrop) {
+    programmeSideBackdrop.hidden = false;
+    programmeSideBackdrop.classList.remove("is-visible");
+  }
+  programmeSidePanel.hidden = false;
+  programmeSidePanel.innerHTML = `
+    <div class="application-side-head programme-side-head">
+      <div>
+        <small>Programme quick view</small>
+        <h3>${escapeAttribute(name)}</h3>
+        <p>${escapeAttribute(category)} ${createStatusChip(status, chip).outerHTML}</p>
+      </div>
+      <div class="application-side-head-actions">
+        <button type="button" data-close-programme-side aria-label="Close programme quick view">X</button>
+      </div>
+    </div>
+    <div class="application-side-status programme-side-summary">
+      <span class="soft-pill">${escapeAttribute(duration)}</span>
+      <span class="soft-pill">${escapeAttribute(fee)}</span>
+      <span class="soft-pill">${escapeAttribute(applicants === "-" ? "0" : applicants)} applicants</span>
+    </div>
+    <div class="application-side-layout programme-side-layout">
+      <div>
+        <div class="detail-tabs application-side-tabs programme-side-tabs" aria-label="Programme quick view tabs">
+          <button class="${activeTab === "overview" ? "active" : ""}" type="button" data-programme-side-tab="overview">Overview</button>
+          <button class="${activeTab === "details" ? "active" : ""}" type="button" data-programme-side-tab="details">Other details</button>
+          <button class="${activeTab === "approval" ? "active" : ""}" type="button" data-programme-side-tab="approval">Approval &amp; Updates</button>
+        </div>
+        ${getProgrammeSideTabMarkup(activeTab, "overview", overviewContent)}
+        ${getProgrammeSideTabMarkup(activeTab, "details", detailsContent)}
+        ${getProgrammeSideTabMarkup(activeTab, "approval", approvalContent)}
+      </div>
+      <div class="application-side-stage-column">
+        <section class="application-current-stage-box ${progress.tone}">
+          <span class="application-current-stage-label">Programme progress</span>
+          <h4>${escapeAttribute(progress.stageLabel)}</h4>
+          <p>${escapeAttribute(progress.summary)}</p>
+          <div class="application-current-stage-summary programme-side-count">
+            <strong>${escapeAttribute(applicants === "-" ? "0" : applicants)}</strong>
+            <span>Total applicants</span>
+          </div>
+          <div class="application-current-stage-progress">
+            <h5>Approval pathway</h5>
+            <ol>${progressItems}</ol>
+          </div>
+          <div class="application-current-stage-actions programme-side-actions">
+            <button type="button" data-programme-side-action="full-page">View full page</button>
+            ${normalizedStatus === "published" ? '<button class="secondary" type="button" data-programme-side-action="view-applicants">View all applicants</button>' : ""}
+            ${normalizedStatus === "unpublish" ? '<button class="secondary" type="button" data-programme-side-action="resubmit">Resubmit to KPT</button>' : ""}
+            <button class="secondary" type="button" data-programme-side-action="edit">Edit programme</button>
+          </div>
+        </section>
+      </div>
+    </div>`;
+  window.requestAnimationFrame(() => {
+    programmeSideBackdrop?.classList.add("is-visible");
+    programmeSidePanel?.classList.add("is-open");
+  });
+}
+
+function openProgrammeSidePanel(row) {
+  renderProgrammeSidePanel(row);
 }
 
 function getCreateProgrammeCreditValue() {
@@ -1039,10 +1577,9 @@ function getCreateProgrammeCreditValue() {
 
 function getCreateProgrammeTargetValue() {
   const selected = createProgrammeTarget?.value || "General Public (including student)";
-  if (selected === "Select target group") return "General Public (including student)";
-  if (selected !== "Others") return selected;
-  const otherValue = createProgrammeTargetOther?.value.trim();
-  return otherValue ? `Others: ${otherValue}` : "Others";
+  return ["General Public (including student)", "Students"].includes(selected)
+    ? selected
+    : "General Public (including student)";
 }
 
 function getCreateProgrammeTravelTourValue() {
@@ -1098,6 +1635,7 @@ function getCreateProgrammeData(status) {
   const feeMin = createProgrammeFeeMin?.value || "1000";
   const feeMax = createProgrammeFeeMax?.value || "1500";
   const activities = [...(programmeActivities?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
+  const conditionalQuestions = [...(programmeConditionalQuestions?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const outcomes = [...(programmeLearningScopes?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const inclusions = [...(programmeInclusions?.querySelectorAll("input") || [])].map((input) => input.value.trim()).filter(Boolean);
   const duration = durationType === "Date range"
@@ -1121,9 +1659,9 @@ function getCreateProgrammeData(status) {
     picName: createProgrammePicName?.value.trim() || "Not specified",
     picPhone: createProgrammePicPhone?.value.trim() || "Not specified",
     picEmail: createProgrammePicEmail?.value.trim() || "Not specified",
-    picFax: createProgrammePicFax?.value.trim() || "Not specified",
     inclusions: inclusions.length ? inclusions.join(", ") : "No included items added",
     activities: activities.length ? activities.join(", ") : "Activity 1, Activity 2",
+    conditionalQuestions: conditionalQuestions.join(", "),
     outcome: outcomes.length ? outcomes.join(", ") : "Learning outcome 1",
     status
   };
@@ -1141,13 +1679,14 @@ function applyProgrammeDataToRow(row, data, status) {
   row.dataset.participants = data.participants;
   row.dataset.inclusions = data.inclusions;
   row.dataset.activities = data.activities;
+  row.dataset.conditionalQuestions = data.conditionalQuestions;
   row.dataset.outcome = data.outcome;
   row.dataset.travelTour = data.travelTour;
   row.dataset.certificate = data.certificate;
   row.dataset.picName = data.picName;
   row.dataset.picPhone = data.picPhone;
   row.dataset.picEmail = data.picEmail;
-  row.dataset.picFax = data.picFax;
+  row.dataset.picFax = row.dataset.picFax || "Not specified";
   row.innerHTML = `<td><span class="programme-name">${data.name}</span></td><td>${data.category}</td><td>${data.duration}</td><td>${data.fee}</td><td>-</td><td><span class="${chipClass}">${status}</span></td><td><button class="submission-view-btn" type="button" aria-label="View programme">View</button></td>`;
 }
 
@@ -1191,6 +1730,7 @@ function updateProgrammeRowFromForm(row, status) {
 
 function showProgrammeDetail(row) {
   if (!row) return;
+  closeProgrammeSidePanel();
   activeProgrammeRow = row;
   const cells = row.children;
   const name = row.querySelector(".programme-name")?.textContent.trim() || "Programme";
@@ -1210,9 +1750,12 @@ function showProgrammeDetail(row) {
     "Sustainable Cities Programme": "Sustainable Cities Programme explores urban planning, smart mobility, and sustainability challenges in Malaysian cities."
   };
   const customOverview = row.dataset.overview;
+  const overview = customOverview || summaries[name] || `${name} introduces participants to academic, cultural, and industry learning through a structured short programme.`;
   setText("#programmeDetailName", name);
   setText("#programmeDetailMeta", `${duration}   ${fee}`);
-  setText("#programmeDetailSummary", customOverview || summaries[name] || `${name} introduces participants to academic, cultural, and industry learning through a structured short programme.`);
+  setText("#programmeDetailSummary", overview);
+  setText("#programmeDetailOverviewName", name);
+  setText("#programmeDetailOverview", overview);
   setText("#programmeDetailCategory", category);
   setText("#programmeDetailDuration", duration);
   setText("#programmeDetailFee", fee);
@@ -1792,7 +2335,16 @@ function setProgrammeDetailsEditing(isEditing, status = programmeDetail?.dataset
   const editable = canEditProgrammeDetails(status);
   const editablePanels = getEditableProgrammePanels();
   const activeEditing = editable && isEditing;
-  if (programmeDetail) programmeDetail.dataset.programmeStatus = status;
+  if (programmeDetail) {
+    programmeDetail.dataset.programmeStatus = status;
+    programmeDetail.classList.toggle("is-editing", activeEditing);
+  }
+  programmeDetailTabButtons.forEach((button) => {
+    const lockedDuringEdit = ["applications", "history"].includes(button.dataset.programmeTab);
+    button.disabled = activeEditing && lockedDuringEdit;
+    if (button.disabled) button.setAttribute("aria-disabled", "true");
+    else button.removeAttribute("aria-disabled");
+  });
   editablePanels.forEach((panel) => {
     panel.classList.toggle("is-editing", activeEditing);
     panel.querySelectorAll(".detail-fields strong:not(.editable-display), .programme-scope-list strong").forEach((field) => {
@@ -1822,6 +2374,32 @@ function setProgrammeDetailsEditing(isEditing, status = programmeDetail?.dataset
 function commitProgrammeDetailsGallery() {
   const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "";
   programmeGalleryImages.set(programmeName, pendingProgrammeDetailsGalleryImages.map((image) => ({ ...image })));
+}
+
+function syncActiveProgrammeRowFromDetailPage() {
+  if (!activeProgrammeRow) return;
+  const row = activeProgrammeRow;
+  const readDetail = (id, fallback = "") => document.getElementById(id)?.textContent.trim() || fallback;
+  const category = readDetail("programmeDetailCategory", row.children[1]?.textContent.trim() || "");
+  const duration = readDetail("programmeDetailDuration", row.children[2]?.textContent.trim() || "");
+  const fee = readDetail("programmeDetailFee", row.children[3]?.textContent.trim() || "");
+  row.dataset.programmeCategory = category.toLowerCase();
+  row.dataset.language = readDetail("programmeDetailLanguage", row.dataset.language || "");
+  row.dataset.target = readDetail("programmeDetailTarget", row.dataset.target || "");
+  row.dataset.credit = readDetail("programmeDetailCredit", row.dataset.credit || "");
+  row.dataset.participants = `${readDetail("programmeDetailParticipantsLimit", "Not specified")}; ${readDetail("programmeDetailParticipantsWaiver", "No participant waiver")}`;
+  row.dataset.travelTour = readDetail("programmeDetailTravelTour", row.dataset.travelTour || "");
+  row.dataset.certificate = readDetail("programmeDetailCertificate", row.dataset.certificate || "");
+  row.dataset.picName = readDetail("programmeDetailPicName", row.dataset.picName || "");
+  row.dataset.picPhone = readDetail("programmeDetailPicPhone", row.dataset.picPhone || "");
+  row.dataset.picEmail = readDetail("programmeDetailPicEmail", row.dataset.picEmail || "");
+  row.dataset.picFax = readDetail("programmeDetailPicFax", row.dataset.picFax || "");
+  row.dataset.outcome = document.querySelector("#programmeDetailsOutcome")?.dataset.value || row.dataset.outcome || "";
+  row.dataset.inclusions = document.querySelector("#programmeDetailsInclusions")?.dataset.value || row.dataset.inclusions || "";
+  row.dataset.activities = document.querySelector("#programmeDetailsActivities")?.dataset.value || row.dataset.activities || "";
+  if (row.children[1]) row.children[1].textContent = category;
+  if (row.children[2]) row.children[2].textContent = duration;
+  if (row.children[3]) row.children[3].textContent = fee;
 }
 
 function hasProgrammeGalleryChanged() {
@@ -2174,9 +2752,7 @@ function renderProgrammeHistoryTimeline(status) {
   `).join("");
 }
 
-function renderProgrammeApprovalTimeline(status) {
-  const timeline = document.querySelector("#programmeApprovalTimeline");
-  const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "Programme";
+function getProgrammeApprovalTimelineItems(status, programmeName = "Programme") {
   const submittedItem = {
     title: "Programme submitted to KPT",
     date: "10 Aug 2026 by University Admin",
@@ -2196,7 +2772,13 @@ function renderProgrammeApprovalTimeline(status) {
       {
         title: "KPT requested changes",
         date: "13 Aug 2026 by KPT Demo",
-        body: "Clarify the programme fee, add learning outcomes, and update target group details before resubmission."
+        body: "Clarify the programme duration and fee, add learning outcomes, and update target group details before resubmission.",
+        sections: [
+          { label: "Duration", note: "Clarify the programme duration before resubmission." },
+          { label: "Fees", note: "Clarify the programme fee and supporting details." },
+          { label: "Learning Outcome", note: "Add measurable learning outcomes for participants." },
+          { label: "Target Group", note: "Update the target group details to match the programme scope." }
+        ]
       }
     ],
     resubmitted: [
@@ -2235,13 +2817,19 @@ function renderProgrammeApprovalTimeline(status) {
       }
     ]
   };
-  const items = timelineItems[status] || [
+  return timelineItems[status] || [
     {
       title: "No approval updates",
       date: "13 Aug 2026",
       body: "No KPT approval timeline is available for this programme status."
     }
   ];
+}
+
+function renderProgrammeApprovalTimeline(status) {
+  const timeline = document.querySelector("#programmeApprovalTimeline");
+  const programmeName = document.querySelector("#programmeDetailName")?.textContent.trim() || "Programme";
+  const items = getProgrammeApprovalTimelineItems(status, programmeName);
   if (!timeline) return;
   timeline.innerHTML = [...items].reverse().map((item) => `
     <div class="activity-item">
@@ -2264,7 +2852,7 @@ function renderProgrammeStatusNotice(status) {
     },
     "changes requested": {
       title: "KPT has requested changes before this programme can be approved.",
-      body: "Requested changes: clarify programme fee, add learning outcomes, and update target group details.",
+      body: "Requested changes: clarify programme duration and fee, add learning outcomes, and update target group details.",
       action: "Edit requested changes"
     },
     resubmitted: {
@@ -2341,6 +2929,9 @@ editProfileContact?.addEventListener("click", () => {
 });
 cancelProfileContact?.addEventListener("click", () => {
   setUniversityProfileEditing(false, "contact");
+});
+createProgrammePicDefault?.addEventListener("change", () => {
+  setCreateProgrammeDefaultContact(createProgrammePicDefault.checked, !createProgrammePicDefault.checked);
 });
 profileSaveButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -2423,6 +3014,16 @@ settingsToggles.forEach((toggle) => {
     addAuditRecord({ action: `${toggle.checked ? "Enabled" : "Disabled"} ${label}`, entity: "Settings" });
   });
 });
+helpSupportVisibilityToggle?.addEventListener("change", () => {
+  const isVisible = helpSupportVisibilityToggle.checked;
+  try {
+    localStorage.setItem("universityDashboard.helpSupportVisible", String(isVisible));
+  } catch (error) {
+    // Keep the setting functional when browser storage is unavailable.
+  }
+  applyHelpSupportVisibility();
+  addAuditRecord({ action: `${isVisible ? "Enabled" : "Disabled"} Help & Support menu`, entity: "Settings" });
+});
 updatePasswordButton?.addEventListener("click", () => {
   openProgrammeActionConfirm(
     "Update password?",
@@ -2475,6 +3076,7 @@ userTableBody?.addEventListener("click", (event) => {
   }
 });
 editProgrammeDetails?.addEventListener("click", () => {
+  setActiveProgrammeTab("overview");
   setProgrammeDetailsEditing(true);
   if (programmeEditWarning) programmeEditWarning.hidden = true;
 });
@@ -2530,6 +3132,7 @@ proceedProgrammeChanges?.addEventListener("click", () => {
   const applyProgrammeEdits = () => {
     getEditableProgrammePanels().forEach((panel) => commitProgrammeEditableFields(panel));
     commitProgrammeDetailsGallery();
+    syncActiveProgrammeRowFromDetailPage();
     setProgrammeDetailsEditing(false);
     if (programmeEditWarning) programmeEditWarning.hidden = false;
     updateActiveProgrammeStatus("Resubmitted", "status-chip blue");
@@ -2633,7 +3236,9 @@ function addStackedInput(container, labelPrefix) {
   const input = document.createElement("input");
   const button = document.createElement("button");
   input.type = "text";
-  input.placeholder = `${labelPrefix} ${nextNumber}`;
+  input.placeholder = labelPrefix === "Conditional question"
+    ? "e.g., Type a question for applicants"
+    : `${labelPrefix} ${nextNumber}`;
   input.setAttribute("aria-label", `${labelPrefix} ${nextNumber}`);
   button.type = "button";
   button.textContent = "X";
@@ -2697,9 +3302,11 @@ function removeStackedInput(event) {
 }
 
 addProgrammeActivity?.addEventListener("click", () => addStackedInput(programmeActivities, "Activity"));
+addProgrammeConditionalQuestion?.addEventListener("click", () => addStackedInput(programmeConditionalQuestions, "Conditional question"));
 addProgrammeLearningScope?.addEventListener("click", () => addStackedInput(programmeLearningScopes, "Learning outcome"));
 addProgrammeInclusion?.addEventListener("click", () => addBlankStackedInput(programmeInclusions, "Included item"));
 programmeActivities?.addEventListener("click", removeStackedInput);
+programmeConditionalQuestions?.addEventListener("click", removeStackedInput);
 programmeLearningScopes?.addEventListener("click", removeStackedInput);
 programmeInclusions?.addEventListener("click", removeStackedInput);
 createProgrammeDurationType?.addEventListener("change", syncProgrammeCreateConditionalFields);
@@ -2807,7 +3414,6 @@ nextProgrammePage?.addEventListener("click", () => {
 });
 
 function updateApplicationRows() {
-  refreshApplicationAgeCells();
   const selectedStatusGroups = new Set(
     [...statusGroupToggles].filter((toggle) => toggle.checked).map((toggle) => toggle.dataset.statusGroup)
   );
@@ -2854,7 +3460,530 @@ function updateApplicationRows() {
   if (nextPage) {
     nextPage.disabled = currentApplicationPage >= totalPages;
   }
+  updateDashboardMetrics();
 }
+
+function escapeXmlValue(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function formatApplicationExportNationality(value) {
+  return String(value)
+    .split(" ")
+    .map((part) => part ? `${part.charAt(0).toUpperCase()}${part.slice(1)}` : part)
+    .join(" ");
+}
+
+function populateApplicationExportNationalities() {
+  if (!applicationExportNationality) return;
+  const currentValue = applicationExportNationality.value;
+  const nationalities = [...new Set(
+    [...document.querySelectorAll(".applications-table tbody tr[data-application-status]")]
+      .map((row) => row.dataset.nationality)
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
+  applicationExportNationality.replaceChildren(new Option("Any nationality", ""));
+  nationalities.forEach((value) => {
+    applicationExportNationality.append(new Option(formatApplicationExportNationality(value), value));
+  });
+  applicationExportNationality.value = nationalities.includes(currentValue) ? currentValue : "";
+}
+
+function syncApplicationExportColumnSelection() {
+  if (confirmApplicationExport) {
+    confirmApplicationExport.disabled = ![...applicationExportColumns].some((column) => column.checked)
+      || ![...applicationExportStatusToggles].some((status) => status.checked);
+  }
+}
+
+function openApplicationExportModal() {
+  populateApplicationExportNationalities();
+  syncApplicationExportColumnSelection();
+  if (applicationExportModal) applicationExportModal.hidden = false;
+}
+
+function closeApplicationExportModal() {
+  if (applicationExportModal) applicationExportModal.hidden = true;
+}
+
+function getExcelColumnName(index) {
+  let columnName = "";
+  let columnNumber = index + 1;
+  while (columnNumber > 0) {
+    const remainder = (columnNumber - 1) % 26;
+    columnName = String.fromCharCode(65 + remainder) + columnName;
+    columnNumber = Math.floor((columnNumber - 1) / 26);
+  }
+  return columnName;
+}
+
+function buildApplicationsWorksheetXml(headers, rows, tableRef) {
+  const widths = headers.map((header, index) => {
+    const longestValue = Math.max(header.length, ...rows.map((row) => String(row[index] || "").length));
+    return Math.min(42, Math.max(12, longestValue + 2));
+  });
+  const columnsXml = widths.map((width, index) => `<col min="${index + 1}" max="${index + 1}" width="${width}" customWidth="1"/>`).join("");
+  const headerXml = headers.map((header, index) => {
+    const cellRef = `${getExcelColumnName(index)}1`;
+    return `<c r="${cellRef}" s="1" t="inlineStr"><is><t xml:space="preserve">${escapeXmlValue(header)}</t></is></c>`;
+  }).join("");
+  const rowsXml = rows.map((row, rowIndex) => {
+    const excelRow = rowIndex + 2;
+    const cellsXml = row.map((value, columnIndex) => {
+      const cellRef = `${getExcelColumnName(columnIndex)}${excelRow}`;
+      return `<c r="${cellRef}" t="inlineStr"><is><t xml:space="preserve">${escapeXmlValue(value)}</t></is></c>`;
+    }).join("");
+    return `<row r="${excelRow}">${cellsXml}</row>`;
+  }).join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+  <sheetFormatPr defaultRowHeight="18"/>
+  <cols>${columnsXml}</cols>
+  <sheetData><row r="1" ht="26" customHeight="1">${headerXml}</row>${rowsXml}</sheetData>
+  <autoFilter ref="${tableRef}"/>
+  <tableParts count="1"><tablePart r:id="rId1"/></tableParts>
+</worksheet>`;
+}
+
+function writeZipUint16(target, offset, value) {
+  target[offset] = value & 0xff;
+  target[offset + 1] = (value >>> 8) & 0xff;
+}
+
+function writeZipUint32(target, offset, value) {
+  target[offset] = value & 0xff;
+  target[offset + 1] = (value >>> 8) & 0xff;
+  target[offset + 2] = (value >>> 16) & 0xff;
+  target[offset + 3] = (value >>> 24) & 0xff;
+}
+
+const CRC32_TABLE = Array.from({ length: 256 }, (_, value) => {
+  let crc = value;
+  for (let bit = 0; bit < 8; bit += 1) crc = (crc & 1) ? (0xedb88320 ^ (crc >>> 1)) : (crc >>> 1);
+  return crc >>> 0;
+});
+
+function calculateCrc32(bytes) {
+  let crc = 0xffffffff;
+  bytes.forEach((byte) => {
+    crc = (crc >>> 8) ^ CRC32_TABLE[(crc ^ byte) & 0xff];
+  });
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function createStoredZip(entries) {
+  const encoder = new TextEncoder();
+  const parts = [];
+  const centralDirectory = [];
+  let offset = 0;
+
+  entries.forEach(([name, content]) => {
+    const nameBytes = encoder.encode(name);
+    const dataBytes = encoder.encode(content);
+    const crc = calculateCrc32(dataBytes);
+    const localHeader = new Uint8Array(30 + nameBytes.length);
+    writeZipUint32(localHeader, 0, 0x04034b50);
+    writeZipUint16(localHeader, 4, 20);
+    writeZipUint16(localHeader, 6, 0);
+    writeZipUint16(localHeader, 8, 0);
+    writeZipUint16(localHeader, 10, 0);
+    writeZipUint16(localHeader, 12, 0);
+    writeZipUint32(localHeader, 14, crc);
+    writeZipUint32(localHeader, 18, dataBytes.length);
+    writeZipUint32(localHeader, 22, dataBytes.length);
+    writeZipUint16(localHeader, 26, nameBytes.length);
+    writeZipUint16(localHeader, 28, 0);
+    localHeader.set(nameBytes, 30);
+    parts.push(localHeader, dataBytes);
+
+    const centralHeader = new Uint8Array(46 + nameBytes.length);
+    writeZipUint32(centralHeader, 0, 0x02014b50);
+    writeZipUint16(centralHeader, 4, 20);
+    writeZipUint16(centralHeader, 6, 20);
+    writeZipUint16(centralHeader, 8, 0);
+    writeZipUint16(centralHeader, 10, 0);
+    writeZipUint16(centralHeader, 12, 0);
+    writeZipUint16(centralHeader, 14, 0);
+    writeZipUint32(centralHeader, 16, crc);
+    writeZipUint32(centralHeader, 20, dataBytes.length);
+    writeZipUint32(centralHeader, 24, dataBytes.length);
+    writeZipUint16(centralHeader, 28, nameBytes.length);
+    writeZipUint16(centralHeader, 30, 0);
+    writeZipUint16(centralHeader, 32, 0);
+    writeZipUint16(centralHeader, 34, 0);
+    writeZipUint16(centralHeader, 36, 0);
+    writeZipUint32(centralHeader, 38, 0);
+    writeZipUint32(centralHeader, 42, offset);
+    centralHeader.set(nameBytes, 46);
+    centralDirectory.push(centralHeader);
+    offset += localHeader.length + dataBytes.length;
+  });
+
+  const centralOffset = offset;
+  const centralSize = centralDirectory.reduce((total, item) => total + item.length, 0);
+  const endRecord = new Uint8Array(22);
+  writeZipUint32(endRecord, 0, 0x06054b50);
+  writeZipUint16(endRecord, 4, 0);
+  writeZipUint16(endRecord, 6, 0);
+  writeZipUint16(endRecord, 8, entries.length);
+  writeZipUint16(endRecord, 10, entries.length);
+  writeZipUint32(endRecord, 12, centralSize);
+  writeZipUint32(endRecord, 16, centralOffset);
+  writeZipUint16(endRecord, 20, 0);
+  return new Blob([...parts, ...centralDirectory, endRecord], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+}
+
+function buildApplicationsWorkbook(headers, rows) {
+  const lastColumn = getExcelColumnName(Math.max(0, headers.length - 1));
+  const lastRow = Math.max(1, rows.length + 1);
+  const tableRef = `A1:${lastColumn}${lastRow}`;
+  const tableColumns = headers.map((header, index) => `<tableColumn id="${index + 1}" name="${escapeXmlValue(header)}"/>`).join("");
+  const now = new Date().toISOString();
+  const entries = [
+    ["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/tables/table1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`],
+    ["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`],
+    ["docProps/core.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:creator>University Dashboard</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created></cp:coreProperties>`],
+    ["docProps/app.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>University Dashboard</Application></Properties>`],
+    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="Applications" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+    ["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1F4E78"/><bgColor rgb="FF1F4E78"/></patternFill></fill></fills><borders count="2"><border/><border><left style="thin"><color rgb="FFD9E2F3"/></left><right style="thin"><color rgb="FFD9E2F3"/></right><top style="thin"><color rgb="FFD9E2F3"/></top><bottom style="thin"><color rgb="FFD9E2F3"/></bottom></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles><tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleMedium9"/></styleSheet>`],
+    ["xl/worksheets/sheet1.xml", buildApplicationsWorksheetXml(headers, rows, tableRef)],
+    ["xl/worksheets/_rels/sheet1.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table" Target="../tables/table1.xml"/></Relationships>`],
+    ["xl/tables/table1.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="ApplicationsTable" displayName="ApplicationsTable" ref="${tableRef}" totalsRowShown="0"><autoFilter ref="${tableRef}"/><tableColumns count="${headers.length}">${tableColumns}</tableColumns><tableStyleInfo name="TableStyleMedium2" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>`]
+  ];
+  return createStoredZip(entries);
+}
+
+function downloadFullApplicationsList() {
+  const table = document.querySelector(".applications-table");
+  if (!table) return;
+  const nationality = applicationExportNationality?.value || "";
+  const selectedStatuses = new Set(
+    [...applicationExportStatusToggles].filter((status) => status.checked).map((status) => status.dataset.exportStatus)
+  );
+  const selectedColumns = [...applicationExportColumns]
+    .filter((column) => column.checked)
+    .map((column) => Number(column.dataset.exportColumn));
+  if (!selectedColumns.length || !selectedStatuses.size) return;
+
+  const allHeaders = [...table.querySelectorAll("thead th")].map((cell) => cell.textContent.replace(/\s+/g, " ").trim());
+  const headers = selectedColumns.map((index) => allHeaders[index]);
+  const rows = [...table.querySelectorAll("tbody tr[data-application-status]")]
+    .filter((row) => {
+      const rowStatus = row.dataset.applicationStatus;
+      return selectedStatuses.has(rowStatus)
+        && (!nationality || row.dataset.nationality === nationality);
+    })
+    .map((row) => selectedColumns.map((index) => row.cells[index]?.textContent.replace(/\s+/g, " ").trim() || ""));
+  const blob = buildApplicationsWorkbook(headers, rows);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "applications-full-list.xlsx";
+  link.hidden = true;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  closeApplicationExportModal();
+}
+
+function updateDashboardMetrics() {
+  const programmes = [...document.querySelectorAll(".programmes-table tbody tr")];
+  const applications = [...document.querySelectorAll(".applications-table tbody [data-application-status]")];
+  const activeProgrammes = programmes.filter((row) => row.dataset.publicStatus === "published").length;
+  const programmesUnderKptReview = programmes.filter((row) => row.dataset.publicStatus === "pending kpt approval").length;
+  const pendingReviews = applications.filter((row) => ["submitted", "documents submitted"].includes(row.dataset.applicationStatus)).length;
+  const awaitingApplicantDocuments = applications.filter((row) => row.dataset.applicationStatus === "documents required").length;
+  const approvedApplicants = applications.filter((row) => row.dataset.applicationStatus === "approved").length;
+  const offersIssued = applications.filter((row) => row.dataset.applicationStatus === "approved").length;
+  const withdrawnOrRejected = applications.filter((row) => ["withdrawn", "rejected"].includes(row.dataset.applicationStatus)).length;
+
+  const values = {
+    "active-programmes": activeProgrammes,
+    "total-applications": applications.length,
+    "pending-reviews": pendingReviews,
+    "offers-issued": offersIssued
+  };
+  const notes = {
+    "active-programmes": `${programmesUnderKptReview} under KPT review`,
+    "total-applications": `${approvedApplicants} approved applicants`,
+    "pending-reviews": `${awaitingApplicantDocuments} awaiting applicant documents`,
+    "offers-issued": `${withdrawnOrRejected} withdrawn or rejected applications`
+  };
+
+  document.querySelectorAll("[data-dashboard-metric]").forEach((metric) => {
+    metric.textContent = String(values[metric.dataset.dashboardMetric] ?? 0);
+  });
+  document.querySelectorAll("[data-dashboard-note]").forEach((note) => {
+    note.textContent = notes[note.dataset.dashboardNote] || "";
+  });
+  updateDashboardReports();
+  updateDashboardProgrammePipeline();
+  updateReportsTable();
+  updateApplicationChart(document.querySelector("#applicationRange")?.value || "All time");
+}
+
+function updateDashboardProgrammePipeline() {
+  const programmes = [...document.querySelectorAll(".programmes-table tbody tr")];
+  const stageConfig = [
+    { key: "draft", label: "Draft", className: "draft" },
+    { key: "pending kpt approval", label: "KPT review", className: "review" },
+    { key: "changes requested", label: "Changes", className: "changes" },
+    { key: "published", label: "Published", className: "live" },
+    { key: "unpublish", label: "Unpublish", className: "unpublish" },
+    { key: "rejected", label: "Rejected", className: "rejected" }
+  ];
+  const counts = stageConfig.map((stage) => programmes.filter((row) => row.dataset.publicStatus === stage.key).length);
+  const total = programmes.length;
+  const percentages = counts.map((count) => total ? Math.round((count / total) * 100) : 0);
+
+  if (dashboardProgrammePipelineTotal) dashboardProgrammePipelineTotal.textContent = `${total} total`;
+  if (dashboardProgrammePipelineStages) {
+    dashboardProgrammePipelineStages.innerHTML = stageConfig.map((stage, index) => `<div><span><i class="${stage.className}"></i>${stage.label}</span><strong>${counts[index]}</strong><small>${percentages[index]}%</small></div>`).join("");
+  }
+  if (dashboardProgrammePipelineStack) {
+    dashboardProgrammePipelineStack.style.gridTemplateColumns = counts.map((count) => `${count}fr`).join(" ");
+    dashboardProgrammePipelineStack.innerHTML = stageConfig.map((stage) => `<i class="${stage.className}"></i>`).join("");
+  }
+}
+
+function updateReportsTable() {
+  if (!reportTableBody) return;
+
+  const sourceRows = [...document.querySelectorAll(".applications-table tbody [data-application-status]")];
+  const populateFilter = (select, values, emptyLabel) => {
+    if (!select) return;
+    const currentValue = select.value;
+    select.innerHTML = `<option value="">${emptyLabel}</option>${values.map((item) => `<option value="${escapeAttribute(item.value)}">${escapeAttribute(item.label)}</option>`).join("")}`;
+    select.value = values.some((item) => item.value === currentValue) ? currentValue : "";
+  };
+  const programmeValues = [...new Map(sourceRows.map((row) => [row.dataset.programme, row.querySelector(".programme-name")?.textContent.trim() || row.dataset.programme])).entries()]
+    .filter(([value]) => value)
+    .sort((first, second) => first[1].localeCompare(second[1]))
+    .map(([value, label]) => ({ value, label }));
+  const nationalityValues = [...new Map(sourceRows.map((row) => [row.dataset.nationality, row.children[1]?.textContent.trim() || row.dataset.nationality])).entries()]
+    .filter(([value]) => value)
+    .sort((first, second) => first[1].localeCompare(second[1]))
+    .map(([value, label]) => ({ value, label }));
+  populateFilter(reportProgrammeFilter, programmeValues, "All programmes");
+  populateFilter(reportNationalityFilter, nationalityValues, "All nationalities");
+
+  const query = reportSearch?.value.trim().toLowerCase() || "";
+  const programme = reportProgrammeFilter?.value || "";
+  const status = reportStatusFilter?.value || "";
+  const nationality = reportNationalityFilter?.value || "";
+  const dateRange = reportDateFilter?.value || "All time";
+  const rangeDays = {
+    "Last 7 days": 7,
+    "Last 30 days": 30,
+    "Last 3 months": 90,
+    "Last 6 months": 180,
+    "All time": null
+  }[dateRange] ?? null;
+  const datedRows = sourceRows.map((row) => ({ row, date: parseApplicationDate(row.children[3]?.textContent) }));
+  const datedValues = datedRows.filter((item) => item.date).map((item) => item.date.getTime());
+  const latestDate = datedValues.length ? new Date(Math.max(...datedValues)) : null;
+  const startDate = latestDate && rangeDays ? new Date(latestDate) : null;
+  if (startDate) startDate.setDate(startDate.getDate() - (rangeDays - 1));
+
+  const matchedRows = datedRows.filter(({ row, date }) => {
+    const matchesQuery = !query || row.textContent.toLowerCase().includes(query);
+    const matchesProgramme = !programme || row.dataset.programme === programme;
+    const matchesStatus = !status || row.dataset.applicationStatus === status;
+    const matchesNationality = !nationality || row.dataset.nationality === nationality;
+    const matchesDate = !startDate || (date && date >= startDate && date <= latestDate);
+    return matchesQuery && matchesProgramme && matchesStatus && matchesNationality && matchesDate;
+  }).map(({ row }) => row);
+
+  const pageSizeValue = reportPageSize?.value || "25";
+  const limit = pageSizeValue === "all" ? Infinity : Number(pageSizeValue);
+  const totalPages = limit === Infinity ? 1 : Math.max(1, Math.ceil(matchedRows.length / limit));
+  currentReportPage = Math.min(currentReportPage, totalPages);
+  const start = limit === Infinity ? 0 : (currentReportPage - 1) * limit;
+  const end = limit === Infinity ? matchedRows.length : start + limit;
+  const statusChipClasses = {
+    submitted: "blue",
+    "documents required": "amber",
+    "documents submitted": "blue",
+    approved: "green",
+    rejected: "red",
+    withdrawn: "neutral"
+  };
+
+  reportTableBody.innerHTML = matchedRows.slice(start, end).map((row) => {
+    const applicant = row.querySelector(".applicant-name")?.textContent.trim() || "—";
+    const trackingCode = row.querySelector(".applicant-link small")?.textContent.trim() || "—";
+    const rowProgramme = row.querySelector(".programme-name")?.textContent.trim() || "—";
+    const rowStatus = row.dataset.applicationStatus || "";
+    const statusLabel = row.querySelector(".status-chip")?.textContent.trim() || rowStatus;
+    const chipClass = statusChipClasses[rowStatus] || "neutral";
+    return `<tr><td><span class="applicant-name">${escapeAttribute(applicant)}</span><small>${escapeAttribute(trackingCode)}</small></td><td>${escapeAttribute(row.children[1]?.textContent.trim() || "—")}</td><td><span class="programme-name">${escapeAttribute(rowProgramme)}</span></td><td>${escapeAttribute(row.children[3]?.textContent.trim() || "—")}</td><td><span class="status-chip ${chipClass}">${escapeAttribute(statusLabel)}</span></td><td>${escapeAttribute(row.children[6]?.textContent.trim() || "—")}</td></tr>`;
+  }).join("");
+
+  const shownStart = matchedRows.length ? start + 1 : 0;
+  const shownEnd = Math.min(end, matchedRows.length);
+  if (reportTotalCount) reportTotalCount.textContent = `${matchedRows.length} record${matchedRows.length === 1 ? "" : "s"}`;
+  if (reportPaginationSummary) reportPaginationSummary.textContent = `Showing ${shownStart}-${shownEnd} of ${matchedRows.length}`;
+  if (reportPageIndicator) reportPageIndicator.textContent = `Page ${currentReportPage} of ${totalPages}`;
+  if (prevReportPage) prevReportPage.disabled = currentReportPage <= 1;
+  if (nextReportPage) nextReportPage.disabled = currentReportPage >= totalPages;
+}
+
+function updateDashboardReports() {
+  const programmes = [...document.querySelectorAll(".programmes-table tbody tr")];
+  const applications = [...document.querySelectorAll(".applications-table tbody [data-application-status]")];
+  const programmeNames = [...new Set([
+    ...programmes.map((row) => row.querySelector(".programme-name")?.textContent.trim()).filter(Boolean),
+    ...applications.map((row) => row.querySelector(".programme-name")?.textContent.trim()).filter(Boolean)
+  ])].sort((first, second) => first.localeCompare(second));
+  const getProgrammeName = (row) => row.querySelector(".programme-name")?.textContent.trim() || "Unknown programme";
+  const getStatus = (row) => row.dataset.applicationStatus || "";
+  const getStats = (name) => {
+    const rows = applications.filter((row) => getProgrammeName(row) === name);
+    const approved = rows.filter((row) => getStatus(row) === "approved").length;
+    const pending = rows.filter((row) => ["submitted", "documents required", "documents submitted"].includes(getStatus(row))).length;
+    const closed = rows.filter((row) => ["rejected", "withdrawn"].includes(getStatus(row))).length;
+    const processingDays = rows.map((row) => {
+      const applied = Date.parse(row.children[3]?.textContent.trim() || "");
+      const updated = Date.parse(row.children[6]?.textContent.trim() || "");
+      return Number.isFinite(applied) && Number.isFinite(updated) ? Math.max(0, Math.round((updated - applied) / 86400000)) : null;
+    }).filter((value) => value !== null);
+    return {
+      total: rows.length,
+      approved,
+      pending,
+      closed,
+      acceptanceRate: rows.length ? Math.round((approved / rows.length) * 100) : 0,
+      averageProcessing: processingDays.length ? `${Math.round(processingDays.reduce((sum, value) => sum + value, 0) / processingDays.length)} days` : "—"
+    };
+  };
+
+  dashboardSelectedProgrammes = new Set([...dashboardSelectedProgrammes].filter((name) => programmeNames.includes(name)));
+  const programmesByVolume = programmeNames
+    .filter((name) => getStats(name).total > 0)
+    .sort((first, second) => getStats(second).total - getStats(first).total);
+  const topProgrammeNames = programmesByVolume.slice(0, 10);
+  const reportNames = dashboardProgrammeReportMode === "all"
+    ? programmesByVolume
+    : dashboardProgrammeReportMode === "selected" && dashboardSelectedProgrammes.size
+      ? [...dashboardSelectedProgrammes]
+      : topProgrammeNames;
+  const reportStats = new Map(reportNames.map((name) => [name, getStats(name)]));
+  const maxBarValue = Math.max(1, ...[...reportStats.values()].flatMap((stats) => [stats.approved, stats.pending, stats.closed]));
+
+  if (dashboardProgrammeReportOptions) {
+    dashboardProgrammeReportOptions.innerHTML = programmeNames.length
+      ? programmeNames.map((name) => `<label><input type="checkbox" data-dashboard-programme-option="${escapeAttribute(name)}" ${dashboardSelectedProgrammes.has(name) ? "checked" : ""}><span>${escapeAttribute(name)}</span></label>`).join("")
+      : "<small>No programmes available.</small>";
+  }
+  if (dashboardProgrammeReportFilterToggle) {
+    const selectionLabel = dashboardProgrammeReportMode === "all"
+      ? "All programmes"
+      : dashboardProgrammeReportMode === "selected" && dashboardSelectedProgrammes.size
+        ? `${dashboardSelectedProgrammes.size} programmes selected`
+        : "Top 10 programmes";
+    dashboardProgrammeReportFilterToggle.textContent = selectionLabel;
+  }
+
+  if (dashboardApplicationsByProgramme) {
+    dashboardApplicationsByProgramme.style.setProperty("--dashboard-bar-unit", `${Math.min(16, 250 / maxBarValue)}px`);
+    dashboardApplicationsByProgramme.innerHTML = reportNames.length
+      ? reportNames.map((name) => {
+        const stats = reportStats.get(name);
+        return `<div><i style="--accepted: ${stats.approved}; --pending: ${stats.pending}; --rejected: ${stats.closed}"></i><span class="bar-values"><b>${stats.approved}</b><b>${stats.pending}</b><b>${stats.closed}</b></span><span>${escapeAttribute(name)}</span></div>`;
+      }).join("")
+      : "<p>No application data available.</p>";
+  }
+
+  if (dashboardTopCountries) {
+    const countryCounts = new Map();
+    if (dashboardTopCountriesTotal) dashboardTopCountriesTotal.textContent = `${applications.length} total`;
+    applications.forEach((row) => {
+      const country = row.children[1]?.textContent.trim() || "Unknown";
+      const countryKey = country.toLowerCase();
+      const countryEntry = countryCounts.get(countryKey) || { label: country, count: 0 };
+      countryEntry.count += 1;
+      countryCounts.set(countryKey, countryEntry);
+    });
+    const countries = [...countryCounts.values()].sort((first, second) => second.count - first.count || first.label.localeCompare(second.label));
+    const maxCountryCount = countries[0]?.count || 1;
+    dashboardTopCountries.innerHTML = countries.length
+      ? countries.map(({ label, count }) => `<div style="--bar: ${(count / maxCountryCount) * 100}%"><span>${escapeAttribute(label)}</span><i></i><strong>${count}</strong></div>`).join("")
+      : "<p>No application data available.</p>";
+  }
+
+}
+
+dashboardProgrammeReportFilterToggle?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const isOpen = dashboardProgrammeReportFilterMenu?.hidden === false;
+  if (dashboardProgrammeReportFilterMenu) dashboardProgrammeReportFilterMenu.hidden = isOpen;
+  dashboardProgrammeReportFilterToggle.setAttribute("aria-expanded", String(!isOpen));
+});
+
+dashboardProgrammeReportFilterMenu?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const selectionButton = event.target.closest("[data-dashboard-programme-selection]");
+  if (selectionButton) {
+    const selection = selectionButton.dataset.dashboardProgrammeSelection;
+    dashboardProgrammeReportMode = selection === "all" ? "all" : selection === "clear" ? "top" : "top";
+    dashboardSelectedProgrammes.clear();
+    updateDashboardReports();
+    return;
+  }
+  const option = event.target.closest("[data-dashboard-programme-option]") || event.target.closest("label")?.querySelector("[data-dashboard-programme-option]");
+  if (option) {
+    if (option.checked) {
+      dashboardSelectedProgrammes.add(option.dataset.dashboardProgrammeOption);
+      dashboardProgrammeReportMode = "selected";
+    } else {
+      dashboardSelectedProgrammes.delete(option.dataset.dashboardProgrammeOption);
+      if (!dashboardSelectedProgrammes.size) dashboardProgrammeReportMode = "top";
+    }
+    updateDashboardReports();
+  }
+});
+
+document.addEventListener("click", () => {
+  if (dashboardProgrammeReportFilterMenu) dashboardProgrammeReportFilterMenu.hidden = true;
+  dashboardProgrammeReportFilterToggle?.setAttribute("aria-expanded", "false");
+});
+
+reportSearch?.addEventListener("input", () => {
+  currentReportPage = 1;
+  updateReportsTable();
+});
+[reportProgrammeFilter, reportStatusFilter, reportNationalityFilter, reportDateFilter, reportPageSize].forEach((control) => {
+  control?.addEventListener("change", () => {
+    currentReportPage = 1;
+    updateReportsTable();
+  });
+});
+reportResetFilters?.addEventListener("click", () => {
+  if (reportSearch) reportSearch.value = "";
+  if (reportProgrammeFilter) reportProgrammeFilter.value = "";
+  if (reportStatusFilter) reportStatusFilter.value = "";
+  if (reportNationalityFilter) reportNationalityFilter.value = "";
+  if (reportDateFilter) reportDateFilter.value = "All time";
+  if (reportPageSize) reportPageSize.value = "25";
+  currentReportPage = 1;
+  updateReportsTable();
+});
+prevReportPage?.addEventListener("click", () => {
+  currentReportPage = Math.max(1, currentReportPage - 1);
+  updateReportsTable();
+});
+nextReportPage?.addEventListener("click", () => {
+  currentReportPage += 1;
+  updateReportsTable();
+});
 
 function resetApplicationPage() {
   currentApplicationPage = 1;
@@ -2864,71 +3993,6 @@ function resetApplicationPage() {
 function syncAllStatusFilter() {
   if (!allStatusFilters) return;
   allStatusFilters.checked = [...statusGroupToggles].every((toggle) => toggle.checked);
-}
-
-function setStatusFilterAccordion(open) {
-  if (!statusFilterAccordion || !applicationStatusGroups) return;
-  statusFilterAccordion.setAttribute("aria-expanded", open ? "true" : "false");
-  applicationStatusGroups.hidden = !open;
-}
-
-const applicationAgeReferenceDate = new Date(2026, 7, 18);
-const applicationClosedStatuses = new Set(["approved", "rejected", "on hold", "withdrawn"]);
-const shortMonthIndex = {
-  Jan: 0,
-  Feb: 1,
-  Mar: 2,
-  Apr: 3,
-  May: 4,
-  Jun: 5,
-  Jul: 6,
-  Aug: 7,
-  Sep: 8,
-  Oct: 9,
-  Nov: 10,
-  Dec: 11
-};
-
-function parseDashboardDate(value) {
-  const match = value.match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
-  if (!match) return null;
-  const [, day, month, year] = match;
-  const monthIndex = shortMonthIndex[month];
-  if (monthIndex === undefined) return null;
-  return new Date(Number(year), monthIndex, Number(day));
-}
-
-function getApplicationAgeText(row) {
-  if (applicationClosedStatuses.has(row.dataset.applicationStatus)) return "-";
-  const updatedDate = parseDashboardDate(row.children[6]?.textContent.trim() || "");
-  if (!updatedDate) return "-";
-  const days = Math.max(0, Math.floor((applicationAgeReferenceDate - updatedDate) / 86400000));
-  if (days === 0) return "Today";
-  return `${days} ${days === 1 ? "day" : "days"}`;
-}
-
-function getApplicationAgeSortValue(row) {
-  if (applicationClosedStatuses.has(row.dataset.applicationStatus)) return -1;
-  const updatedDate = parseDashboardDate(row.children[6]?.textContent.trim() || "");
-  if (!updatedDate) return -1;
-  return Math.max(0, Math.floor((applicationAgeReferenceDate - updatedDate) / 86400000));
-}
-
-function refreshApplicationAgeCell(row) {
-  if (!row) return;
-  let ageCell = row.querySelector(".application-age-cell");
-  if (!ageCell) {
-    ageCell = document.createElement("td");
-    ageCell.className = "application-age-cell";
-    row.appendChild(ageCell);
-  }
-  const ageText = getApplicationAgeText(row);
-  ageCell.textContent = ageText;
-  ageCell.classList.toggle("is-active", ageText !== "-");
-}
-
-function refreshApplicationAgeCells() {
-  applicationRows.forEach(refreshApplicationAgeCell);
 }
 
 function updateVisibleColumns() {
@@ -2964,6 +4028,20 @@ if (applicantsPerPage) {
   applicantsPerPage.addEventListener("change", resetApplicationPage);
 }
 
+downloadApplicationsList?.addEventListener("click", openApplicationExportModal);
+closeApplicationExport?.addEventListener("click", closeApplicationExportModal);
+cancelApplicationExport?.addEventListener("click", closeApplicationExportModal);
+confirmApplicationExport?.addEventListener("click", downloadFullApplicationsList);
+applicationExportColumns.forEach((column) => {
+  column.addEventListener("change", syncApplicationExportColumnSelection);
+});
+applicationExportStatusToggles.forEach((status) => {
+  status.addEventListener("change", syncApplicationExportColumnSelection);
+});
+applicationExportModal?.addEventListener("click", (event) => {
+  if (event.target === applicationExportModal) closeApplicationExportModal();
+});
+
 columnToggles.forEach((toggle) => {
   toggle.addEventListener("change", updateVisibleColumns);
 });
@@ -2990,17 +4068,6 @@ clearStatusFilters?.addEventListener("click", () => {
   resetApplicationPage();
 });
 
-statusFilterAccordion?.addEventListener("click", (event) => {
-  if (event.target.closest("input, button, .info-tooltip, .section-tooltip, .tooltip-panel")) return;
-  setStatusFilterAccordion(statusFilterAccordion.getAttribute("aria-expanded") !== "true");
-});
-
-statusFilterAccordion?.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter" && event.key !== " ") return;
-  event.preventDefault();
-  setStatusFilterAccordion(statusFilterAccordion.getAttribute("aria-expanded") !== "true");
-});
-
 if (prevPage) {
   prevPage.addEventListener("click", () => {
     currentApplicationPage = Math.max(1, currentApplicationPage - 1);
@@ -3023,7 +4090,6 @@ function getSortValue(row, key) {
   if (key === "status") return row.dataset.applicationStatus || "";
   if (key === "action") return row.querySelector(".mark-btn.yes") ? "yes" : "no";
   if (key === "updated") return Date.parse(row.children[6]?.textContent.trim() || "") || 0;
-  if (key === "age") return getApplicationAgeSortValue(row);
   return "";
 }
 
@@ -3088,7 +4154,7 @@ updateProgrammeRows();
 const statusMeta = {
   submitted: { label: "New Application", chip: "blue" },
   "documents required": { label: "Documents Required", chip: "amber" },
-  "documents submitted": { label: "Req. Documents Submitted", chip: "blue" },
+  "documents submitted": { label: "Req Documents Submitted", chip: "blue" },
   "pre-approved": { label: "Pre-Approved", chip: "green" },
   "final documents required": { label: "Final Documents Required", chip: "amber" },
   "final documents submitted": { label: "Final Documents Submitted", chip: "purple" },
@@ -3111,6 +4177,8 @@ applicationRows.forEach((row) => {
   row.demoActivity = [];
   row.demoDocumentRequests = [];
   row.demoUploadedDocuments = [];
+  row.demoPostApprovalFiles = [];
+  row.demoPendingPostApprovalFiles = [];
   row.dataset.documentRequest = "";
   row.dataset.documentRequestMessage = "";
   row.dataset.offerLetterFile = "";
@@ -3126,6 +4194,8 @@ applicationRows.forEach((row) => {
     row.dataset.documentRequest = "Final document / correction requested";
     row.dataset.documentRequestMessage = requestMessage;
   }
+  row.demoDocRequestedAt = row.dataset.applicationStatus === "documents required" ? Date.parse(row.children[6]?.textContent.trim() || "") : null;
+  row.demoLastReminderAt = null;
 });
 
 const programmeMeta = {
@@ -3138,7 +4208,16 @@ const programmeMeta = {
   "smart mobility lab": { category: "Sports (SPT)", fee: "RM 3,300" },
   "ai heritage storytelling lab": { category: "Science and Technology (SAT)", fee: "RM 3,800" },
   "rainforest research field school": { category: "Nature and Adventure (NAA)", fee: "RM 4,100" },
-  "borneo culture immersion": { category: "Arts & Social Science (ANS)", fee: "RM 2,700" }
+  "borneo culture immersion": { category: "Arts & Social Science (ANS)", fee: "RM 2,700" },
+  "coastal resilience & blue economy": { category: "Environmental and Health Science (EAH)", fee: "RM 3,900" },
+  "sustainable food innovation lab": { category: "Culinary and Hospitality (CAH)", fee: "RM 3,200" },
+  "digital media & creative industries": { category: "Arts & Social Science (ANS)", fee: "RM 3,800" },
+  "global public health fieldwork": { category: "Environmental and Health Science (EAH)", fee: "RM 4,600" },
+  "renewable energy systems workshop": { category: "Science and Technology (SAT)", fee: "RM 4,100" },
+  "intercultural leadership exchange": { category: "Leadership and Management (LAM)", fee: "RM 2,900" },
+  "community heritage documentation": { category: "Food, Culture & Heritage (FCH)", fee: "RM 2,300" },
+  "applied robotics for industry": { category: "Science and Technology (SAT)", fee: "RM 4,900" },
+  "tourism data analytics studio": { category: "Business and Entrepreneurship (BAE)", fee: "RM 3,600" }
 };
 
 function setText(selector, value) {
@@ -3189,8 +4268,8 @@ function getStatusConfirmation(status) {
     "documents submitted": { title: "Confirm documents verified", message: "Mark documents as verified and move this application to the offer letter step?" },
     "pre-approved": { title: "Send pre-approval offer letter?", message: "Verify the documents and send the automatic offer letter generated from the university template?" },
     "final documents submitted": { title: "Confirm final documents submitted", message: "Mark final documents as submitted and ready for university approval review?" },
-    approved: { title: "Confirm approval", message: "Approve this application and record the final university decision?" },
-    rejected: { title: "Confirm rejection", message: "Reject this application? This will move it to an exit state." },
+    approved: { title: "Confirm approval", message: "Approve this application? An offer letter will also be sent to the participant." },
+    rejected: { title: "Confirm rejection", message: "Reject this application? It will be closed and will not continue in the application process." },
     "on hold": { title: "Confirm hold", message: "Put this application on hold? Use this when places are filled or a decision is pending." }
   };
   return confirmations[status];
@@ -3204,6 +4283,28 @@ function openStatusConfirmModal(change) {
   if (statusConfirmMessage) statusConfirmMessage.textContent = confirmation.message;
   if (statusConfirmModal) statusConfirmModal.hidden = false;
   return true;
+}
+
+const DOCUMENT_REMINDER_COOLDOWN_DAYS = 7;
+
+function getDocumentReminderState(row) {
+  const referenceTime = row?.demoLastReminderAt ?? row?.demoDocRequestedAt ?? null;
+  const today = Date.parse(getDemoDate());
+  if (!Number.isFinite(referenceTime) || !Number.isFinite(today)) {
+    return { canRemind: false, daysPassed: 0 };
+  }
+  const daysPassed = Math.max(0, Math.round((today - referenceTime) / (24 * 60 * 60 * 1000)));
+  const canRemind = daysPassed >= DOCUMENT_REMINDER_COOLDOWN_DAYS;
+  return { canRemind, daysPassed };
+}
+
+function buildDocumentReminderActionHtml(row) {
+  const { canRemind, daysPassed } = getDocumentReminderState(row);
+  const button = `<button type="button" data-side-action="remind"${canRemind ? "" : " disabled"}>Send reminder</button>`;
+  const hint = canRemind
+    ? `<p class="application-reminder-hint active">It has been ${daysPassed} day${daysPassed === 1 ? "" : "s"} since the applicant was notified, with no response.</p>`
+    : `<p class="application-reminder-hint">Send reminder becomes available once there is no response from the applicant for ${DOCUMENT_REMINDER_COOLDOWN_DAYS} days.</p>`;
+  return `${button}${hint}`;
 }
 
 function openReminderConfirmModal(row, type = "document") {
@@ -3254,65 +4355,82 @@ function updateRowStatus(row, status, activityTitle, activityNote, options = {})
   if (row === activeApplicantRow && applicantDetail && !applicantDetail.hidden) showApplicantDetail(row, { keepTab: true });
 }
 
-function getApplicationNextStep(status) {
-  if (status === "submitted") return "Review the application and pre-approve, request documents, put on hold, or reject.";
-  if (status === "documents required") return "Waiting for the applicant to upload the requested documents or corrections.";
-  if (status === "documents submitted") return "Review the submitted documents, then upload the offer letter or request another correction.";
-  if (status === "pre-approved") return "Waiting for final documents from the applicant.";
-  if (status === "final documents required") return "Waiting for the applicant to correct or upload final approval documents.";
-  if (status === "final documents submitted") return "Review final documents and approve, put on hold, or reject.";
-  if (status === "approved") return "Application is approved and closed.";
-  if (status === "rejected") return "Application was rejected and is closed.";
-  if (status === "on hold") return "Application is paused by the university.";
-  if (status === "withdrawn") return "Applicant withdrew the application.";
-  return "Review the application status and continue the next step.";
-}
-
-function getApplicationStage(status) {
-  if (["submitted", "documents required", "documents submitted"].includes(status)) return "documents";
-  if (["final documents required", "final documents submitted", "approved", "rejected", "on hold", "withdrawn"].includes(status)) return "final";
-  if (status === "pre-approved") return "final";
-  return "documents";
-}
-
-function getSideStageClass(stage, currentStage, status) {
-  const order = { documents: 1, final: 2 };
-  if (["approved", "rejected", "on hold", "withdrawn"].includes(status)) return "complete";
-  if (stage === currentStage) return "current";
-  return order[stage] < order[currentStage] ? "complete" : "locked";
-}
-
-function getSideStageButton(stage, status) {
-  if (stage === "documents") {
-    if (status === "submitted") return `<button type="button" data-doc-action="request-document">Request document / correction</button><div class="stage-action-with-info"><button type="button" data-doc-action="send-offer">Verify & send offer letter</button><span class="info-tooltip stage-action-tooltip" tabindex="0" aria-label="Offer letter template location" data-tooltip-trigger>?<span class="tooltip-panel" role="tooltip">The offer letter is generated from University Profile > Offer Letter Template. Programme details come from the selected application and cannot be edited here.</span></span></div><button class="email-preview-action" type="button" data-doc-action="offer-email-preview" aria-label="Preview offer email"><span aria-hidden="true"></span>Preview offer email</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
-    if (status === "documents submitted") return `<button type="button" data-doc-action="request-document">Request another correction</button><div class="stage-action-with-info"><button type="button" data-doc-action="send-offer">Verify & send offer letter</button><span class="info-tooltip stage-action-tooltip" tabindex="0" aria-label="Offer letter template location" data-tooltip-trigger>?<span class="tooltip-panel" role="tooltip">The offer letter is generated from University Profile > Offer Letter Template. Programme details come from the selected application and cannot be edited here.</span></span></div><button class="email-preview-action" type="button" data-doc-action="offer-email-preview" aria-label="Preview offer email"><span aria-hidden="true"></span>Preview offer email</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
-    if (status === "documents required") return `<button type="button" data-side-action="simulate-documents">Simulate applicant submitted document</button><button type="button" data-doc-action="request-document">Request another correction</button><button type="button" data-side-action="remind">Send reminder</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
+function getApplicationProgressSteps(row, status) {
+  const hasDocumentPath = ["documents required", "documents submitted"].includes(status) || Boolean(row?.demoDocumentRequests?.length);
+  let steps = hasDocumentPath
+    ? ["Application Submitted", "Documents Required", "Req Documents Submitted", "Approved"]
+    : ["Application Submitted", "Approved"];
+  if (["rejected", "withdrawn"].includes(status)) {
+    steps = steps
+      .map((step) => step === "Approved" ? (status === "withdrawn" ? "Withdrawn" : "Rejected") : step);
   }
-  if (stage === "final") {
-    if (status === "pre-approved") return `<button type="button" data-side-action="simulate-final">Simulate applicant sent final documents</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
-    if (status === "final documents required") return `<button type="button" data-side-action="simulate-final">Simulate applicant sent final documents</button><button type="button" data-doc-action="request-final-document">Request another correction</button><button type="button" data-side-action="remind">Send reminder</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
-    if (status === "final documents submitted") return `<button type="button" data-doc-action="request-final-document">Request final document / correction</button><button type="button" data-decision-status="approved">Approve application</button><button class="secondary" type="button" data-decision-status="on hold">Put on hold</button><button class="danger" type="button" data-decision-status="rejected">Reject</button>`;
+  const currentStep = status === "submitted"
+    ? "Application Submitted"
+    : status === "documents required"
+      ? "Documents Required"
+      : status === "documents submitted"
+        ? "Req Documents Submitted"
+        : ["rejected", "withdrawn"].includes(status)
+          ? (status === "withdrawn" ? "Withdrawn" : "Rejected")
+        : status === "approved"
+          ? "Approved"
+          : "";
+  const currentIndex = steps.indexOf(currentStep);
+  const isClosed = ["rejected", "withdrawn"].includes(status);
+
+  return `
+    <div class="application-current-stage-progress">
+      <h5>Application Progress</h5>
+      <ol>
+        ${steps.map((step, index) => {
+          const state = isClosed ? (index < currentIndex ? "complete" : index === currentIndex ? "current" : "skipped") : index < currentIndex ? "complete" : index === currentIndex ? "current" : "upcoming";
+          return `<li class="${state}"><span class="application-progress-step-node" aria-hidden="true">${state === "complete" ? "✓" : ""}</span><span><strong>${step}</strong>${state === "current" ? "<small>Current stage</small>" : ""}</span></li>`;
+        }).join("")}
+      </ol>
+    </div>`;
+}
+
+function buildCurrentApplicationStagePanel(row, status, variant, title, note, actions, summary = "", label = "Current stage") {
+  return `<section class="application-current-stage-box ${variant}">
+    <span class="application-current-stage-label">${label}</span>
+    <h4>${title}</h4>
+    <p>${note}</p>
+    <div class="application-current-stage-actions">${actions}</div>
+    ${getApplicationProgressSteps(row, status)}
+    ${summary}
+  </section>`;
+}
+
+function getCurrentApplicationStagePanel(status, row, summary = "") {
+  if (status === "submitted") {
+    return buildCurrentApplicationStagePanel(row, status, "current", "New Application", "Review the application and submitted documents, then decide the next step.", `<button type="button" data-doc-action="request-document">Request documents</button><div class="application-current-stage-secondary-actions"><button class="secondary" type="button" data-decision-status="approved">Approve</button><button class="secondary danger" type="button" data-decision-status="rejected">Reject</button></div>`, summary);
   }
-  return `<button type="button" data-expand-application-detail>View stage details</button>`;
+  if (status === "documents required") {
+    return buildCurrentApplicationStagePanel(row, status, "waiting", "Documents Required", "Waiting for the applicant to submit the requested documents.", buildDocumentReminderActionHtml(row), summary);
+  }
+  if (status === "documents submitted") {
+    return buildCurrentApplicationStagePanel(row, status, "current", "Req Documents Submitted", "Review the documents submitted in response to the request.", `<button type="button" data-doc-action="request-document">Request another correction</button><div class="application-current-stage-secondary-actions"><button class="secondary" type="button" data-decision-status="approved">Approve</button><button class="secondary danger" type="button" data-decision-status="rejected">Reject</button></div>`, summary);
+  }
+  if (status === "approved") {
+    return buildCurrentApplicationStagePanel(row, status, "complete", "Approved", "The application is approved. Follow-up records can be added now.", `<button type="button" data-side-tab="post-approval">Open post-approval records</button>`, summary);
+  }
+  if (["rejected", "withdrawn"].includes(status)) {
+    return buildCurrentApplicationStagePanel(row, status, "closed", statusMeta[status]?.label || "Application closed", "This application is no longer in the active workflow.", `<button class="secondary" type="button" data-side-tab="activity">View activity log</button>`, summary, "Closed status");
+  }
+  return buildCurrentApplicationStagePanel(row, status, "waiting", statusMeta[status]?.label || "Application", "Review the current application details and activity.", `<button class="secondary" type="button" data-side-tab="activity">View activity log</button>`, summary);
 }
 
 function buildSideActivity(row, status, statusInfo, applied, updated) {
   const base = [
     { title: "Application submitted", actor: "Applicant", note: `Submitted on ${applied}.` }
   ];
-  if (["documents required", "documents submitted", "pre-approved", "final documents required", "final documents submitted", "approved", "rejected", "on hold"].includes(status)) {
+  if (["documents required", "documents submitted", "approved"].includes(status)) {
     base.push({ title: "Documents requested", actor: "University", note: "University requested missing documents or corrections." });
   }
-  if (["documents submitted", "pre-approved", "final documents submitted", "approved"].includes(status)) {
+  if (["documents submitted", "approved"].includes(status)) {
     base.push({ title: "Requested documents submitted", actor: "Applicant", note: "Applicant uploaded the requested documents." });
   }
-  if (["pre-approved", "final documents required", "final documents submitted", "approved"].includes(status)) {
-    base.push({ title: "Offer letter sent", actor: "University", note: "University verified documents and sent the offer letter." });
-  }
-  if (["final documents required", "final documents submitted", "approved"].includes(status)) {
-    base.push({ title: "Final documents submitted", actor: "Applicant", note: "Applicant submitted final approval documents." });
-  }
-  if (["approved", "rejected", "on hold", "withdrawn"].includes(status)) {
+  if (["approved", "rejected", "withdrawn"].includes(status)) {
     base.push({ title: statusInfo.label, actor: status === "withdrawn" ? "Applicant" : "University", note: `Recorded on ${updated}.` });
   }
   (row.demoActivity || []).forEach((activity) => base.push({ title: activity.title, actor: activity.time, note: activity.note }));
@@ -3323,19 +4441,11 @@ function buildSideReviewContent(row, status, applicantType, code) {
   const requestState = row?.dataset.documentRequest || "";
   const requestHistory = row?.demoDocumentRequests || [];
   const uploadedDocuments = row?.demoUploadedDocuments || [];
-  const offerSent = ["pre-approved", "final documents required", "final documents submitted", "approved"].includes(status);
-  const documentVerified = ["documents submitted", "pre-approved", "final documents required", "final documents submitted", "approved"].includes(status);
-  const finalDocsSubmitted = row?.dataset.finalDocsSubmitted === "true" || ["final documents submitted", "approved"].includes(status);
-  const offerFile = row?.dataset.offerLetterFile || "Offer letter";
-  const finalDocs = [
-    "Proof of payment",
-    "Signed offer letter",
-    applicantType.toLowerCase().includes("malaysian") ? "Visa document not required" : "Visa / pass document"
-  ];
+  const documentVerified = ["documents submitted", "approved"].includes(status);
   const documentRows = [
-    { name: "Passport copy", note: `Applicant - ${code}`, chipLabel: documentVerified ? "Verified" : status === "documents required" ? (requestState || "Action needed") : "Submitted", chip: documentVerified ? "green" : status === "documents required" ? "amber" : "blue", actions: ["View", "Download"] }
+    { name: "Passport copy", note: `Applicant - ${code}`, chipLabel: documentVerified ? "Verified" : status === "documents required" ? "Action needed" : "Submitted", chip: documentVerified ? "green" : status === "documents required" ? "amber" : "blue", actions: ["View", "Download"] }
   ];
-  requestHistory.filter((request) => request.stage !== "final").forEach((request, index) => {
+  requestHistory.forEach((request, index) => {
     documentRows.push({ name: `Request ${index + 1}: ${request.title}`, note: `University - ${request.message}`, chipLabel: "Requested", chip: "amber", actions: [] });
     uploadedDocuments
       .filter((documentItem) => documentItem.requestId === request.id)
@@ -3343,6 +4453,9 @@ function buildSideReviewContent(row, status, applicantType, code) {
         documentRows.push({ name: documentItem.name, note: `Applicant - ${documentItem.note}`, chipLabel: "Submitted", chip: "blue", actions: ["View", "Download"] });
       });
   });
+  if (status === "documents required" && !requestHistory.length) {
+    documentRows.push({ name: requestState || "Additional documents or correction", note: "University request - applicant response pending", chipLabel: "Requested", chip: "amber", actions: [] });
+  }
 
   const renderRow = (item) => `
     <div class="application-side-doc-row">
@@ -3355,49 +4468,87 @@ function buildSideReviewContent(row, status, applicantType, code) {
         ${item.actions.map((action) => `<button type="button" data-doc-action="${action.toLowerCase()}" data-preview-title="${item.name}" data-preview-section="document">${action}</button>`).join("")}
       </div>
     </div>`;
+  const offerLetterContent = status === "approved" ? `
+    <div class="application-side-offer-letter">
+      <div>
+        <strong>Offer letter</strong>
+        <small>Generated and sent to the participant after approval.</small>
+      </div>
+      <div>
+        ${createStatusChip("Sent", "green").outerHTML}
+        <button type="button" data-doc-action="view" data-preview-title="Offer letter" data-preview-section="offer letter">View</button>
+        <button type="button" data-doc-action="download" data-preview-title="Offer letter" data-preview-section="offer letter">Download</button>
+      </div>
+    </div>` : "";
 
   return `
-    <section class="application-side-review-block">
-      <h4>Document Review &amp; Offer Letter</h4>
+    <section class="application-side-review-block documents-card" data-side-section="documents">
+      <h4>Documents</h4>
       ${documentRows.map(renderRow).join("")}
-      <div class="application-side-doc-row">
-        <div>
-          <strong>${offerSent ? offerFile : "Offer letter not sent"}</strong>
-          <small>${offerSent ? `University - ${code}` : "Verify documents and send the automatic offer letter."}</small>
-        </div>
-        <div>
-          ${createStatusChip(offerSent ? "Sent" : documentVerified ? "Ready" : "Locked", offerSent ? "green" : documentVerified ? "blue" : "neutral").outerHTML}
-          ${offerSent ? `<button type="button" data-doc-action="view" data-preview-title="${offerFile}" data-preview-section="offer">View</button><button type="button" data-doc-action="download" data-preview-title="${offerFile}" data-preview-section="offer">Download</button>` : ""}
-        </div>
-      </div>
-    </section>
-    <section class="application-side-review-block${finalDocsSubmitted || status === "final documents required" ? "" : " muted"}">
-      <h4>Final Approval</h4>
-      ${requestHistory.filter((request) => request.stage === "final").map((request, index) => `
-        <div class="application-side-doc-row">
-          <div>
-            <strong>Final request ${index + 1}: ${request.title}</strong>
-            <small>University - ${request.message}</small>
-          </div>
-          <div>${createStatusChip("Requested", "amber").outerHTML}</div>
-        </div>`).join("")}
-      ${finalDocs.map((doc) => `
-        <div class="application-side-doc-row">
-          <div>
-            <strong>${doc}</strong>
-            <small>${finalDocsSubmitted ? `Applicant - ${code}` : "Appears after applicant submits final documents."}</small>
-          </div>
-          <div>
-            ${finalDocsSubmitted ? "" : createStatusChip(offerSent ? "Pending" : "Locked", offerSent ? "amber" : "neutral").outerHTML}
-            ${finalDocsSubmitted ? `<button type="button" data-doc-action="view" data-preview-title="${doc}" data-preview-section="final">View</button><button type="button" data-doc-action="download" data-preview-title="${doc}" data-preview-section="final">Download</button>` : ""}
-          </div>
-        </div>`).join("")}
+      ${offerLetterContent}
     </section>
   `;
 }
 
+function buildSidePostApprovalContent(status, row = null) {
+  const available = status === "approved";
+  const savedFiles = row?.demoPostApprovalFiles || [];
+  const pendingFiles = row?.demoPendingPostApprovalFiles || [];
+  const renderFileRows = (files, stateLabel) => files.map((file) => `
+        <div class="application-side-post-file-row">
+          <strong>${escapeAttribute(file.name)}</strong>
+          <small>${stateLabel}</small>
+        </div>`).join("");
+  return `
+    <h4 class="application-side-subtitle">Post-Approval Records</h4>
+    <section class="application-side-review-block${available ? "" : " muted"}">
+      <p class="application-side-post-note">${available ? "Optional record storage for documents shared after approval." : "Available after the application is approved."}</p>
+      <div class="application-side-post-records">
+        <div class="application-side-post-record">
+          <strong>Applicant records</strong>
+          <small>Visa / pass proof and payment proof</small>
+        </div>
+        <div class="application-side-post-record">
+          <strong>University records</strong>
+          <small>Certificate and attendance confirmation</small>
+        </div>
+      </div>
+      <div class="application-side-post-file-list">
+        <strong>Uploaded records</strong>
+        ${savedFiles.length ? renderFileRows(savedFiles, "Saved record") : "<small class=\"application-side-post-empty\">No documents saved yet.</small>"}
+        ${pendingFiles.length ? `<div class="application-side-post-pending"><strong>Ready to save</strong>${renderFileRows(pendingFiles, "Pending confirmation")}</div>` : ""}
+      </div>
+      <div class="application-side-post-actions">
+        <button type="button" data-post-approval-upload ${available ? "" : "disabled"}>Upload document</button>
+        <button type="button" data-post-approval-confirm ${available && pendingFiles.length ? "" : "disabled"}>Confirm upload</button>
+        <button type="button" data-post-approval-download ${available ? "" : "disabled"}>Download all documents</button>
+        <input type="file" data-post-approval-file multiple hidden>
+      </div>
+    </section>`;
+}
+
 function closeApplicationSidePanel() {
-  if (applicationSidePanel) applicationSidePanel.hidden = true;
+  document.documentElement.classList.remove("application-modal-open");
+  document.body.classList.remove("application-modal-open");
+  applicationSideBackdrop?.classList.remove("is-visible");
+  if (applicationSidePanel) {
+    window.clearTimeout(applicationSidePanelCloseTimer);
+    if (!applicationSidePanel.hidden) {
+      applicationSidePanel.classList.remove("is-open");
+      applicationSidePanel.classList.add("is-closing");
+      applicationSidePanelCloseTimer = window.setTimeout(() => {
+        applicationSidePanel.hidden = true;
+        if (applicationSideBackdrop) applicationSideBackdrop.hidden = true;
+        applicationSidePanel.classList.remove("is-closing");
+        applicationSidePanelCloseTimer = null;
+      }, 280);
+    } else {
+      applicationSidePanel.hidden = true;
+      if (applicationSideBackdrop) applicationSideBackdrop.hidden = true;
+      applicationSidePanel.classList.remove("is-open", "is-closing");
+      applicationSidePanelCloseTimer = null;
+    }
+  }
   applicationRows.forEach((row) => row.classList.remove("selected-row"));
 }
 
@@ -3436,21 +4587,45 @@ function renderApplicationSidePanel(row, preferredTab = getActiveApplicationSide
   const programme = row.querySelector(".programme-name")?.textContent.trim() || "";
   const applied = row.children[3]?.textContent.trim() || "";
   const updated = row.children[6]?.textContent.trim() || "";
-  const age = getApplicationAgeText(row);
   const status = row.dataset.applicationStatus || "submitted";
   const statusInfo = statusMeta[status] || statusMeta.submitted;
   const applicantType = getApplicantType(row);
   const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Science and Technology (SAT)", fee: "RM 3,000" };
   const requiresStudentPass = applicantType.toLowerCase().includes("student pass");
-  const currentStage = getApplicationStage(status);
+  const applicationSummary = `
+    <div class="application-current-stage-summary">
+      <div class="application-current-stage-summary-divider" aria-hidden="true"></div>
+      <h5>Application Summary</h5>
+      <div class="application-current-stage-summary-fields">
+        <div><span>Applied Date</span><strong>${applied}</strong></div>
+        <div><span>Current Status</span><strong>${statusInfo.label}</strong></div>
+        <div><span>Last Updated</span><strong>${updated}</strong></div>
+        <div><span>Immigration</span><strong>${requiresStudentPass ? "Student Pass Required" : "Not required"}</strong></div>
+      </div>
+    </div>`;
+  const currentStagePanel = getCurrentApplicationStagePanel(status, row, applicationSummary);
   const activityItems = buildSideActivity(row, status, statusInfo, applied, updated);
-  const reviewContent = buildSideReviewContent(row, status, applicantType, code);
-  const activeSideTab = preferredTab === "review" ? "review" : "overview";
+  const documentsContent = buildSideReviewContent(row, status, applicantType, code);
+  const postApprovalContent = buildSidePostApprovalContent(status, row);
+  const validSideTabs = ["overview", "activity", "post-approval"];
+  const activeSideTab = validSideTabs.includes(preferredTab) ? preferredTab : "overview";
   const orderedRows = getApplicationSideOrder();
   const sideIndex = orderedRows.indexOf(row);
   const hasPrevious = sideIndex > 0;
   const hasNext = sideIndex >= 0 && sideIndex < orderedRows.length - 1;
+  window.clearTimeout(applicationSidePanelCloseTimer);
+  applicationSidePanel.classList.remove("is-closing");
+  document.documentElement.classList.add("application-modal-open");
+  document.body.classList.add("application-modal-open");
+  if (applicationSideBackdrop) {
+    applicationSideBackdrop.hidden = false;
+    applicationSideBackdrop.classList.remove("is-visible");
+  }
   applicationSidePanel.hidden = false;
+  window.requestAnimationFrame(() => {
+    applicationSideBackdrop?.classList.add("is-visible");
+    applicationSidePanel?.classList.add("is-open");
+  });
   applicationSidePanel.innerHTML = `
     <div class="application-side-head">
       <div>
@@ -3461,7 +4636,6 @@ function renderApplicationSidePanel(row, preferredTab = getActiveApplicationSide
       <div class="application-side-head-actions">
         <button type="button" data-application-side-nav="previous" ${hasPrevious ? "" : "disabled"} aria-label="Previous applicant">Prev</button>
         <button type="button" data-application-side-nav="next" ${hasNext ? "" : "disabled"} aria-label="Next applicant">Next</button>
-        <span class="info-tooltip side-nav-tooltip" tabindex="0" aria-label="Applicant navigation order" data-tooltip-trigger>?<span class="tooltip-panel" role="tooltip">Previous and Next follow the current filtered and sorted Applications table list, including the active status filters.</span></span>
         <button type="button" data-close-application-side aria-label="Close application quick view">X</button>
       </div>
     </div>
@@ -3469,7 +4643,8 @@ function renderApplicationSidePanel(row, preferredTab = getActiveApplicationSide
       <div class="application-side-main">
         <div class="detail-tabs application-side-tabs" aria-label="Application quick view tabs">
           <button class="${activeSideTab === "overview" ? "active" : ""}" type="button" data-side-tab="overview">Overview</button>
-          <button class="${activeSideTab === "review" ? "active" : ""}" type="button" data-side-tab="review">Review &amp; Approval</button>
+          <button class="${activeSideTab === "activity" ? "active" : ""}" type="button" data-side-tab="activity">Activity Log</button>
+          <button class="${activeSideTab === "post-approval" ? "active" : ""}" type="button" data-side-tab="post-approval">Post-Approval Records</button>
         </div>
         <div class="application-side-tab-panel${activeSideTab === "overview" ? " active" : ""}" data-side-panel="overview"${activeSideTab === "overview" ? "" : " hidden"}>
           <div class="application-side-card-grid">
@@ -3493,41 +4668,24 @@ function renderApplicationSidePanel(row, preferredTab = getActiveApplicationSide
                 <div><span>Fee</span><strong>${programmeInfo.fee}</strong></div>
               </div>
             </article>
-            <article class="application-side-card summary-card">
-              <h4>Application Summary</h4>
-              <div class="application-side-fields">
-                <div><span>Applied Date</span><strong>${applied}</strong></div>
-                <div><span>Current Status</span><strong>${statusInfo.label}</strong></div>
-                <div><span>Last Updated</span><strong>${updated}</strong></div>
-                <div><span>Age</span><strong>${age}</strong></div>
-                <div><span>Immigration</span><strong>${requiresStudentPass ? "Student Pass Required" : "Not required"}</strong></div>
-                <div><span>Tracking Code</span><strong>${code}</strong></div>
-              </div>
-            </article>
+            ${documentsContent}
           </div>
         </div>
-        <div class="application-side-tab-panel${activeSideTab === "review" ? " active" : ""}" data-side-panel="review"${activeSideTab === "review" ? "" : " hidden"}>
-          ${reviewContent}
+        <div class="application-side-tab-panel${activeSideTab === "activity" ? " active" : ""}" data-side-panel="activity"${activeSideTab === "activity" ? "" : " hidden"}>
           <h4 class="application-side-subtitle">Activity</h4>
           <div class="application-side-activity">
             ${activityItems.map((item) => `<div><strong>${item.title}</strong><small>${item.actor}</small><p>${item.note}</p></div>`).join("")}
           </div>
         </div>
+        <div class="application-side-tab-panel${activeSideTab === "post-approval" ? " active" : ""}" data-side-panel="post-approval"${activeSideTab === "post-approval" ? "" : " hidden"}>
+          ${postApprovalContent}
+        </div>
       </div>
-      <aside class="application-side-stage-column" aria-label="Application stages">
-        ${["documents", "final"].map((stage) => {
-          const labels = {
-            documents: ["Document review & offer letter", "Review documents, request corrections, then send the automatic offer letter."],
-            final: ["Final approval", "Wait for final documents, request corrections if needed, then approve."]
-          };
-          return `<section class="application-stage-box ${getSideStageClass(stage, currentStage, status)}">
-            <h4>${labels[stage][0]}</h4>
-            <p>${labels[stage][1]}</p>
-            <div class="application-stage-actions">${getSideStageButton(stage, status)}</div>
-          </section>`;
-        }).join("")}
+      <aside class="application-side-stage-column" aria-label="Current application stage">
+        ${currentStagePanel}
         <div class="application-side-actions application-side-bottom-actions">
           <button type="button" data-expand-application-detail>Expand full view</button>
+          <button type="button" data-download-application>Download application</button>
         </div>
       </aside>
     </div>
@@ -3559,8 +4717,9 @@ function sendApplicationReminder(row, type = "document") {
   addActivity(row, title, note);
   addAuditRecord({ action: `${title} for ${getApplicationAuditName(row)}`, entity: "Application" });
   row.children[6].textContent = getDemoDate();
+  if (!isFinal) row.demoLastReminderAt = Date.parse(getDemoDate());
   updateApplicationRows();
-  if (row === activeApplicantRow && applicationSidePanel && !applicationSidePanel.hidden) renderApplicationSidePanel(row, "review");
+  if (row === activeApplicantRow && applicationSidePanel && !applicationSidePanel.hidden) renderApplicationSidePanel(row, "documents");
   if (row === activeApplicantRow && applicantDetail && !applicantDetail.hidden) showApplicantDetail(row, { keepTab: true });
 }
 
@@ -3642,6 +4801,63 @@ function showDownloadedNotice(anchor) {
   window.setTimeout(() => toast.remove(), 1400);
 }
 
+function downloadApplicationSummary(row, anchor) {
+  if (!row) return;
+  const name = row.querySelector(".applicant-name")?.textContent.trim() || "Applicant";
+  const code = row.querySelector(".applicant-link small")?.textContent.trim() || "";
+  const nationality = row.children[1]?.textContent.trim() || "";
+  const programme = row.querySelector(".programme-name")?.textContent.trim() || "";
+  const applied = row.children[3]?.textContent.trim() || "";
+  const updated = row.children[6]?.textContent.trim() || "";
+  const status = statusMeta[row.dataset.applicationStatus || "submitted"]?.label || "Application";
+  const applicantType = getApplicantType(row);
+  const requiresStudentPass = applicantType.toLowerCase().includes("student pass");
+  const summary = [
+    "Application summary",
+    "",
+    `Applicant: ${name}`,
+    `Tracking code: ${code}`,
+    `Nationality: ${nationality}`,
+    `Applicant type: ${applicantType}`,
+    `Programme: ${programme}`,
+    `Applied date: ${applied}`,
+    `Current status: ${status}`,
+    `Last updated: ${updated}`,
+    `Immigration: ${requiresStudentPass ? "Student Pass Required" : "Not required"}`
+  ].join("\n");
+  const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${code || "application"}-summary.txt`;
+  link.hidden = true;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  showDownloadedNotice(anchor);
+  addActivity(row, "Downloaded application summary", "University downloaded the application summary from quick view.");
+  addAuditRecord({ action: `Downloaded application summary for ${getApplicationAuditName(row)}`, entity: "Application" });
+}
+
+function downloadPostApprovalDocuments(row, anchor) {
+  const files = row?.demoPostApprovalFiles || [];
+  files.forEach((file) => {
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = file.name;
+    link.hidden = true;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+  showDownloadedNotice(anchor);
+  addActivity(row, "Downloaded post-approval records", files.length ? `University downloaded all ${files.length} uploaded post-approval document${files.length === 1 ? "" : "s"}.` : "University downloaded the post-approval records.");
+  addAuditRecord({ action: `Downloaded all post-approval records for ${getApplicationAuditName(row)}`, entity: "Application" });
+}
+
 function openPreviewModal(title, section) {
   if (previewTitle) previewTitle.textContent = title;
   if (previewBody) {
@@ -3686,7 +4902,12 @@ function submitDocumentRequest() {
   activeApplicantRow.demoDocumentRequests.push({ id: Date.now().toString(), title: requestTitle, message: requestMessage, stage: isFinalRequest ? "final" : "documents" });
   activeApplicantRow.dataset.documentRequest = requestTitle;
   activeApplicantRow.dataset.documentRequestMessage = requestMessage;
-  if (isFinalRequest) activeApplicantRow.dataset.finalDocsSubmitted = "";
+  if (isFinalRequest) {
+    activeApplicantRow.dataset.finalDocsSubmitted = "";
+  } else {
+    activeApplicantRow.demoDocRequestedAt = Date.parse(getDemoDate());
+    activeApplicantRow.demoLastReminderAt = null;
+  }
   updateRowStatus(activeApplicantRow, isFinalRequest ? "final documents required" : "documents required", requestTitle, requestMessage);
   closeDocumentRequestModal();
 }
@@ -4402,11 +5623,47 @@ applicationSidePanel?.addEventListener("click", (event) => {
   }
   const sideTab = event.target.closest("[data-side-tab]");
   if (sideTab) {
-    applicationSidePanel.querySelectorAll("[data-side-tab]").forEach((button) => button.classList.toggle("active", button === sideTab));
+    applicationSidePanel.querySelectorAll(".application-side-tabs [data-side-tab]").forEach((button) => button.classList.toggle("active", button.dataset.sideTab === sideTab.dataset.sideTab));
     applicationSidePanel.querySelectorAll("[data-side-panel]").forEach((panel) => {
       panel.hidden = panel.dataset.sidePanel !== sideTab.dataset.sideTab;
       panel.classList.toggle("active", !panel.hidden);
     });
+    if (sideTab.dataset.sideFocus) {
+      applicationSidePanel.querySelector(`[data-side-section="${sideTab.dataset.sideFocus}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    return;
+  }
+  const postApprovalUpload = event.target.closest("[data-post-approval-upload]");
+  if (postApprovalUpload && activeApplicantRow) {
+    applicationSidePanel.querySelector("[data-post-approval-file]")?.click();
+    return;
+  }
+  const postApprovalConfirm = event.target.closest("[data-post-approval-confirm]");
+  if (postApprovalConfirm && activeApplicantRow) {
+    const pendingFiles = activeApplicantRow.demoPendingPostApprovalFiles || [];
+    if (!pendingFiles.length) return;
+    activeApplicantRow.demoPostApprovalFiles = activeApplicantRow.demoPostApprovalFiles || [];
+    pendingFiles.forEach((file) => {
+      const duplicate = activeApplicantRow.demoPostApprovalFiles.some((item) => item.name === file.name && item.lastModified === file.lastModified);
+      if (!duplicate) activeApplicantRow.demoPostApprovalFiles.push(file);
+    });
+    activeApplicantRow.demoPendingPostApprovalFiles = [];
+    const fileNames = pendingFiles.map((file) => file.name).join(", ");
+    addActivity(activeApplicantRow, "Saved post-approval record", `University confirmed ${fileNames} for optional record keeping.`);
+    addAuditRecord({ action: `Saved post-approval record for ${getApplicationAuditName()}`, entity: "Application" });
+    activeApplicantRow.children[6].textContent = getDemoDate();
+    updateApplicationRows();
+    renderApplicationSidePanel(activeApplicantRow, "post-approval");
+    return;
+  }
+  const postApprovalDownload = event.target.closest("[data-post-approval-download]");
+  if (postApprovalDownload && activeApplicantRow) {
+    downloadPostApprovalDocuments(activeApplicantRow, postApprovalDownload);
+    return;
+  }
+  const applicationDownload = event.target.closest("[data-download-application]");
+  if (applicationDownload && activeApplicantRow) {
+    downloadApplicationSummary(activeApplicantRow, applicationDownload);
     return;
   }
   const docAction = event.target.closest("[data-doc-action]");
@@ -4426,7 +5683,9 @@ applicationSidePanel?.addEventListener("click", (event) => {
     } else if (sideAction.dataset.sideAction === "simulate-documents") {
       simulateApplicantDocumentSubmission();
     } else if (sideAction.dataset.sideAction === "remind") {
-      openReminderConfirmModal(activeApplicantRow, activeApplicantRow.dataset.applicationStatus === "final documents required" ? "final" : "document");
+      const isFinal = activeApplicantRow.dataset.applicationStatus === "final documents required";
+      if (!isFinal && !getDocumentReminderState(activeApplicantRow).canRemind) return;
+      openReminderConfirmModal(activeApplicantRow, isFinal ? "final" : "document");
     }
     return;
   }
@@ -4434,6 +5693,69 @@ applicationSidePanel?.addEventListener("click", (event) => {
     showApplicantDetail(activeApplicantRow);
   }
 });
+
+applicationSidePanel?.addEventListener("change", (event) => {
+  const fileInput = event.target.closest("[data-post-approval-file]");
+  if (!fileInput || !activeApplicantRow || !fileInput.files?.length) return;
+  activeApplicantRow.demoPendingPostApprovalFiles = activeApplicantRow.demoPendingPostApprovalFiles || [];
+  [...fileInput.files].forEach((file) => {
+    const duplicate = [...(activeApplicantRow.demoPostApprovalFiles || []), ...activeApplicantRow.demoPendingPostApprovalFiles].some((item) => item.name === file.name && item.lastModified === file.lastModified);
+    if (!duplicate) activeApplicantRow.demoPendingPostApprovalFiles.push(file);
+  });
+  renderApplicationSidePanel(activeApplicantRow, "post-approval");
+});
+
+applicationSideBackdrop?.addEventListener("click", closeApplicationSidePanel);
+
+programmeSidePanel?.addEventListener("click", (event) => {
+  if (event.target.closest("[data-close-programme-side]")) {
+    closeProgrammeSidePanel();
+    return;
+  }
+  const sideTab = event.target.closest("[data-programme-side-tab]");
+  if (sideTab) {
+    programmeSidePanel.querySelectorAll("[data-programme-side-tab]").forEach((button) => button.classList.toggle("active", button.dataset.programmeSideTab === sideTab.dataset.programmeSideTab));
+    programmeSidePanel.querySelectorAll("[data-programme-side-panel]").forEach((panel) => {
+      panel.hidden = panel.dataset.programmeSidePanel !== sideTab.dataset.programmeSideTab;
+    });
+    return;
+  }
+  const action = event.target.closest("[data-programme-side-action]");
+  if (!action || !activeProgrammeRow) return;
+  if (action.dataset.programmeSideAction === "view-applicants") {
+    openProgrammeApplications(activeProgrammeRow);
+    return;
+  }
+  if (action.dataset.programmeSideAction === "resubmit") {
+    const row = activeProgrammeRow;
+    openProgrammeActionConfirm(
+      "Resubmit programme to KPT?",
+      "This will send the existing programme back to KPT for review without changing its details. It will remain off the public listing until it is approved again.",
+      () => {
+        activeProgrammeRow = row;
+        updateActiveProgrammeStatus("Pending KPT Approval", "status-chip amber");
+        renderProgrammeSidePanel(row, "approval");
+      },
+      "Resubmit to KPT"
+    );
+    pendingProgrammeActionAudit = { entity: "Programme", action: `Resubmitted ${getProgrammeAuditName()} to KPT` };
+    return;
+  }
+  if (action.dataset.programmeSideAction === "full-page") {
+    const row = activeProgrammeRow;
+    closeProgrammeSidePanel();
+    showProgrammeDetail(row);
+    return;
+  }
+  if (action.dataset.programmeSideAction === "edit") {
+    const row = activeProgrammeRow;
+    closeProgrammeSidePanel();
+    showProgrammeDetail(row);
+    window.requestAnimationFrame(() => editProgrammeDetails?.click());
+  }
+});
+
+programmeSideBackdrop?.addEventListener("click", closeProgrammeSidePanel);
 
 if (resetDemo) {
   resetDemo.addEventListener("click", () => {
@@ -4447,12 +5769,16 @@ if (resetDemo) {
       row.demoActivity = [];
       row.demoDocumentRequests = [];
       row.demoUploadedDocuments = [];
+      row.demoPostApprovalFiles = [];
+      row.demoPendingPostApprovalFiles = [];
       if (state.status === "final documents required") {
         const requestMessage = "Proof of payment is unclear. Please upload a clearer copy and confirm the signed offer letter.";
         row.demoDocumentRequests.push({ id: `${getRowCode(row)}-final-request`, title: "Final document / correction requested", message: requestMessage, stage: "final" });
         row.dataset.documentRequest = "Final document / correction requested";
         row.dataset.documentRequestMessage = requestMessage;
       }
+      row.demoDocRequestedAt = state.status === "documents required" ? Date.parse(state.updated || "") : null;
+      row.demoLastReminderAt = null;
       row.children[4].innerHTML = state.statusHtml;
       row.children[6].textContent = state.updated;
       row.hidden = false;
@@ -4540,34 +5866,62 @@ if (form) {
   });
 }
 
-const applicationRanges = {
-  "Last 7 days": { submitted: 6, review: 4, approved: 3, other: 3 },
-  "Last 30 days": { submitted: 24, review: 18, approved: 19, other: 11 },
-  "Last 3 months": { submitted: 42, review: 29, approved: 38, other: 21 },
-  "Last 6 months": { submitted: 55, review: 37, approved: 46, other: 34 },
-  "All time": { submitted: 68, review: 45, approved: 51, other: 50 }
-};
-
 const applicationRange = document.querySelector("#applicationRange");
 const applicationDonut = document.querySelector("#applicationDonut");
 const applicationTotal = document.querySelector("#applicationTotal");
-const statusCounts = document.querySelectorAll("[data-status-count]");
 const trendInterval = document.querySelector("#trendInterval");
 const trendBars = document.querySelectorAll("#trendChart > div");
 
-function updateApplicationChart(range) {
-  const data = applicationRanges[range] || applicationRanges["Last 7 days"];
-  const total = Object.values(data).reduce((sum, value) => sum + value, 0);
-  const submittedEnd = (data.submitted / total) * 100;
-  const reviewEnd = submittedEnd + (data.review / total) * 100;
-  const approvedEnd = reviewEnd + (data.approved / total) * 100;
+function parseApplicationDate(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/);
+  if (!match) return null;
+  const parsed = new Date(`${match[2]} ${match[1]}, ${match[3]} 00:00:00`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
 
-  applicationTotal.textContent = `${total} total`;
-  applicationDonut.style.setProperty("--submitted-end", `${submittedEnd}%`);
-  applicationDonut.style.setProperty("--review-end", `${reviewEnd}%`);
-  applicationDonut.style.setProperty("--approved-end", `${approvedEnd}%`);
-  statusCounts.forEach((item) => {
-    item.textContent = data[item.dataset.statusCount];
+function updateApplicationChart(range) {
+  const donut = document.querySelector("#applicationDonut");
+  const totalLabel = document.querySelector("#applicationTotal");
+  const countLabels = document.querySelectorAll("[data-status-count]");
+  if (!donut || !totalLabel) return;
+
+  const rows = [...document.querySelectorAll(".applications-table tbody [data-application-status]")];
+  const datedRows = rows.map((row) => ({
+    row,
+    date: parseApplicationDate(row.children[3]?.textContent)
+  })).filter((item) => item.date);
+  const latestDate = datedRows.length ? new Date(Math.max(...datedRows.map((item) => item.date.getTime()))) : null;
+  const rangeDays = {
+    "Last 7 days": 7,
+    "Last 30 days": 30,
+    "Last 3 months": 90,
+    "Last 6 months": 180,
+    "All time": null
+  }[range] ?? null;
+  const startDate = latestDate && rangeDays ? new Date(latestDate) : null;
+  if (startDate) startDate.setDate(startDate.getDate() - (rangeDays - 1));
+
+  const data = { submitted: 0, review: 0, approved: 0, other: 0 };
+  datedRows.forEach(({ row, date }) => {
+    if (startDate && (date < startDate || date > latestDate)) return;
+    const status = row.dataset.applicationStatus;
+    if (status === "submitted") data.submitted += 1;
+    else if (["documents required", "documents submitted"].includes(status)) data.review += 1;
+    else if (status === "approved") data.approved += 1;
+    else data.other += 1;
+  });
+
+  const total = Object.values(data).reduce((sum, value) => sum + value, 0);
+  const submittedEnd = total ? (data.submitted / total) * 100 : 0;
+  const reviewEnd = total ? submittedEnd + (data.review / total) * 100 : 0;
+  const approvedEnd = total ? reviewEnd + (data.approved / total) * 100 : 0;
+
+  totalLabel.textContent = `${total} total`;
+  donut.style.setProperty("--submitted-end", `${submittedEnd}%`);
+  donut.style.setProperty("--review-end", `${reviewEnd}%`);
+  donut.style.setProperty("--approved-end", `${approvedEnd}%`);
+  countLabels.forEach((item) => {
+    item.textContent = String(data[item.dataset.statusCount] ?? 0);
   });
 }
 
