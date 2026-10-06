@@ -231,7 +231,10 @@ const supportMessage = document.querySelector("#supportMessage");
 const submitSupportRequest = document.querySelector("#submitSupportRequest");
 const settingsTabButtons = document.querySelectorAll("[data-settings-tab]");
 const settingsPanels = document.querySelectorAll("[data-settings-panel]");
-const settingsToggles = document.querySelectorAll(".settings-page input[type='checkbox']:not(#helpSupportVisibilityToggle)");
+const notificationsTabButton = document.querySelector('[data-settings-tab="notifications"]');
+const notificationsSettingsPanel = document.querySelector('[data-settings-panel="notifications"]');
+const notificationsVisibilityToggle = document.querySelector("#notificationsVisibilityToggle");
+const settingsToggles = document.querySelectorAll(".settings-page input[type='checkbox']:not(#helpSupportVisibilityToggle):not(#notificationsVisibilityToggle)");
 const settingsPasswordInputs = document.querySelectorAll(".settings-password-grid input");
 const updatePasswordButton = document.querySelector("#updatePasswordButton");
 const sessionList = document.querySelector(".session-list");
@@ -658,12 +661,25 @@ function resetKptComplianceState() {
 }
 
 function setActiveSettingsTab(tabName = "notifications") {
+  if (tabName === "notifications" && notificationsVisibilityToggle && !notificationsVisibilityToggle.checked) {
+    tabName = "security";
+  }
   settingsTabButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.settingsTab === tabName);
   });
   settingsPanels.forEach((panel) => {
     panel.hidden = panel.dataset.settingsPanel !== tabName;
   });
+}
+
+function applyNotificationsVisibility() {
+  const isVisible = notificationsVisibilityToggle?.checked ?? false;
+  if (notificationsTabButton) notificationsTabButton.hidden = !isVisible;
+  if (notificationsSettingsPanel) notificationsSettingsPanel.hidden = !isVisible;
+
+  if (!isVisible && notificationsSettingsPanel?.classList.contains("active")) {
+    setActiveSettingsTab("security");
+  }
 }
 
 function setActiveHelpTab(tabName = "overview") {
@@ -944,6 +960,14 @@ try {
   // Use the default checked state when browser storage is unavailable.
 }
 applyHelpSupportVisibility();
+try {
+  if (notificationsVisibilityToggle) {
+    notificationsVisibilityToggle.checked = localStorage.getItem("universityDashboard.notificationsVisible") === "true";
+  }
+} catch (error) {
+  // Use the default hidden state when browser storage is unavailable.
+}
+applyNotificationsVisibility();
 applyCurrentUserRole();
 updateAuditRows();
 setActiveHelpTab("overview");
@@ -3025,6 +3049,16 @@ helpSupportVisibilityToggle?.addEventListener("change", () => {
   }
   applyHelpSupportVisibility();
   addAuditRecord({ action: `${isVisible ? "Enabled" : "Disabled"} Help & Support menu`, entity: "Settings" });
+});
+notificationsVisibilityToggle?.addEventListener("change", () => {
+  const isVisible = notificationsVisibilityToggle.checked;
+  try {
+    localStorage.setItem("universityDashboard.notificationsVisible", String(isVisible));
+  } catch (error) {
+    // Keep the setting functional when browser storage is unavailable.
+  }
+  applyNotificationsVisibility();
+  addAuditRecord({ action: `${isVisible ? "Enabled" : "Disabled"} Notifications settings`, entity: "Settings" });
 });
 updatePasswordButton?.addEventListener("click", () => {
   openProgrammeActionConfirm(
