@@ -43,6 +43,7 @@ const reportStatusFilter = document.querySelector("#reportStatusFilter");
 const reportNationalityFilter = document.querySelector("#reportNationalityFilter");
 const reportDateFilter = document.querySelector("#reportDateFilter");
 const reportPageSize = document.querySelector("#reportPageSize");
+const downloadReportsList = document.querySelector("#downloadReportsList");
 const reportResetFilters = document.querySelector("#reportResetFilters");
 const reportTableBody = document.querySelector("#reportTableBody");
 const reportTotalCount = document.querySelector("#reportTotalCount");
@@ -283,6 +284,7 @@ let programmeSort = { key: "", direction: "asc" };
 let currentApplicationPage = 1;
 let currentProgrammePage = 1;
 let currentReportPage = 1;
+let currentReportRows = [];
 let activeApplicantRow = null;
 let applicationSidePanelCloseTimer = null;
 let currentApplicationOrder = [];
@@ -3639,7 +3641,7 @@ function createStoredZip(entries) {
   return new Blob([...parts, ...centralDirectory, endRecord], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 }
 
-function buildApplicationsWorkbook(headers, rows) {
+function buildApplicationsWorkbook(headers, rows, sheetName = "Applications", tableName = "ApplicationsTable") {
   const lastColumn = getExcelColumnName(Math.max(0, headers.length - 1));
   const lastRow = Math.max(1, rows.length + 1);
   const tableRef = `A1:${lastColumn}${lastRow}`;
@@ -3650,12 +3652,12 @@ function buildApplicationsWorkbook(headers, rows) {
     ["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`],
     ["docProps/core.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:creator>University Dashboard</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created></cp:coreProperties>`],
     ["docProps/app.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>University Dashboard</Application></Properties>`],
-    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="Applications" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="${escapeXmlValue(sheetName)}" sheetId="1" r:id="rId1"/></sheets></workbook>`],
     ["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
     ["xl/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1F4E78"/><bgColor rgb="FF1F4E78"/></patternFill></fill></fills><borders count="2"><border/><border><left style="thin"><color rgb="FFD9E2F3"/></left><right style="thin"><color rgb="FFD9E2F3"/></right><top style="thin"><color rgb="FFD9E2F3"/></top><bottom style="thin"><color rgb="FFD9E2F3"/></bottom></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles><tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleMedium9"/></styleSheet>`],
     ["xl/worksheets/sheet1.xml", buildApplicationsWorksheetXml(headers, rows, tableRef)],
     ["xl/worksheets/_rels/sheet1.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/table" Target="../tables/table1.xml"/></Relationships>`],
-    ["xl/tables/table1.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="ApplicationsTable" displayName="ApplicationsTable" ref="${tableRef}" totalsRowShown="0"><autoFilter ref="${tableRef}"/><tableColumns count="${headers.length}">${tableColumns}</tableColumns><tableStyleInfo name="TableStyleMedium2" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>`]
+    ["xl/tables/table1.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="${escapeXmlValue(tableName)}" displayName="${escapeXmlValue(tableName)}" ref="${tableRef}" totalsRowShown="0"><autoFilter ref="${tableRef}"/><tableColumns count="${headers.length}">${tableColumns}</tableColumns><tableStyleInfo name="TableStyleMedium2" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>`]
   ];
   return createStoredZip(entries);
 }
@@ -3692,6 +3694,35 @@ function downloadFullApplicationsList() {
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
   closeApplicationExportModal();
+}
+
+function downloadFullReportsList() {
+  const table = document.querySelector(".reports-table");
+  if (!table || !currentReportRows.length) return;
+
+  const headers = [...table.querySelectorAll("thead th")].map((cell) => cell.textContent.replace(/\s+/g, " ").trim());
+  const rows = currentReportRows.map((row) => {
+    const applicant = row.querySelector(".applicant-name")?.textContent.trim() || "";
+    const trackingCode = row.querySelector(".applicant-link small")?.textContent.trim() || "";
+    return [
+      [applicant, trackingCode].filter(Boolean).join(" "),
+      row.children[1]?.textContent.replace(/\s+/g, " ").trim() || "",
+      row.querySelector(".programme-name")?.textContent.trim() || "",
+      row.children[3]?.textContent.replace(/\s+/g, " ").trim() || "",
+      row.querySelector(".status-chip")?.textContent.replace(/\s+/g, " ").trim() || row.dataset.applicationStatus || "",
+      row.children[6]?.textContent.replace(/\s+/g, " ").trim() || ""
+    ];
+  });
+  const blob = buildApplicationsWorkbook(headers, rows, "Reports", "ReportsTable");
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "reports-full-list.xlsx";
+  link.hidden = true;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 function updateDashboardMetrics() {
@@ -3801,6 +3832,7 @@ function updateReportsTable() {
     const matchesDate = !startDate || (date && date >= startDate && date <= latestDate);
     return matchesQuery && matchesProgramme && matchesStatus && matchesNationality && matchesDate;
   }).map(({ row }) => row);
+  currentReportRows = matchedRows;
 
   const pageSizeValue = reportPageSize?.value || "25";
   const limit = pageSizeValue === "all" ? Infinity : Number(pageSizeValue);
@@ -4029,6 +4061,7 @@ if (applicantsPerPage) {
 }
 
 downloadApplicationsList?.addEventListener("click", openApplicationExportModal);
+downloadReportsList?.addEventListener("click", downloadFullReportsList);
 closeApplicationExport?.addEventListener("click", closeApplicationExportModal);
 cancelApplicationExport?.addEventListener("click", closeApplicationExportModal);
 confirmApplicationExport?.addEventListener("click", downloadFullApplicationsList);
