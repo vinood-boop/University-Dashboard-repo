@@ -977,6 +977,14 @@ body.notification-open .topbar {
   font-weight: 600;
 }
 
+.programme-list-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: max-content;
+}
+
 .create-programme-btn {
   min-height: 32px;
   border: 1px solid #202f3f;
@@ -2471,6 +2479,12 @@ body.application-modal-open {
   outline: none;
   border-color: #9fbdb7;
   box-shadow: 0 0 0 2px rgba(45, 112, 104, 0.12);
+}
+
+textarea.editable-input {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.45;
 }
 
 .editable-other-input {
@@ -6131,6 +6145,134 @@ body.application-modal-open {
   color: var(--muted);
 }
 
+.country-demand-board {
+  display: grid;
+  gap: 16px;
+}
+
+.country-feature-card {
+  border: 1px solid #c9e4dc;
+  border-radius: 14px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f1fbf7 0%, #f8f5ff 100%);
+}
+
+.country-feature-kicker,
+.country-ranking-head,
+.country-feature-main small,
+.country-rank-row small {
+  color: var(--muted);
+  font-size: var(--fs-minor);
+}
+
+.country-feature-kicker {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.country-feature-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.country-feature-main strong,
+.country-feature-main small {
+  display: block;
+}
+
+.country-feature-main strong {
+  font-size: var(--fs-panel-heading);
+}
+
+.country-emblem {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: #236b63;
+  color: #fff;
+  font-size: var(--fs-minor);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.country-emblem-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #e7f2ef;
+  color: #236b63;
+  font-size: 10px;
+}
+
+.country-feature-track,
+.country-rank-track {
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e4eceb;
+}
+
+.country-feature-track {
+  height: 9px;
+  margin-top: 15px;
+}
+
+.country-feature-track i,
+.country-rank-track i {
+  display: block;
+  width: var(--bar);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4caa92, #8f78d8);
+}
+
+.country-ranking-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+.country-rank-list {
+  display: grid;
+  gap: 9px;
+}
+
+.country-rank-row {
+  display: grid;
+  grid-template-columns: 26px 28px minmax(110px, 0.8fr) minmax(90px, 1fr) 28px 42px;
+  gap: 9px;
+  align-items: center;
+  min-height: 38px;
+}
+
+.country-rank-number {
+  color: #8a989b;
+  font-size: var(--fs-minor);
+  font-weight: 700;
+}
+
+.country-rank-row strong,
+.country-rank-row b {
+  font-size: var(--fs-panel-text);
+}
+
+.country-rank-row b,
+.country-rank-row small {
+  text-align: right;
+}
+
+.country-rank-track {
+  height: 7px;
+}
+
 .panel.wide {
   grid-column: span 1;
 }
@@ -6879,9 +7021,30 @@ body.application-modal-open {
   }
 
   .application-status-groups {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-column: 1;
     grid-row: 1;
+  }
+
+  .application-status-group {
+    flex-wrap: wrap;
+    align-content: center;
+  }
+
+  .application-status-group .status-group-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .application-status-group:nth-child(3) {
+    padding-left: 0;
+  }
+
+  .application-status-group:nth-child(3)::before {
+    content: none;
   }
 
   .application-status-panel-head {
@@ -7118,6 +7281,11 @@ body.application-modal-open {
 
   .dashboard-report-grid {
     margin-bottom: 14px;
+  }
+
+  .country-rank-row {
+    grid-template-columns: 24px 28px minmax(100px, 0.8fr) minmax(70px, 1fr) 26px 38px;
+    gap: 7px;
   }
 
   .programmes-controls {

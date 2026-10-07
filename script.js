@@ -27,11 +27,14 @@ const applicationExportColumns = document.querySelectorAll("[data-export-column]
 const programmePublicStatusFilter = document.querySelector("#programmePublicStatusFilter");
 const programmeCategoryFilter = document.querySelector("#programmeCategoryFilter");
 const programmesPerPage = document.querySelector("#programmesPerPage");
+const downloadProgrammesList = document.querySelector("#downloadProgrammesList");
+const programmeExportModal = document.querySelector("#programmeExportModal");
+const closeProgrammeExport = document.querySelector("#closeProgrammeExport");
+const cancelProgrammeExport = document.querySelector("#cancelProgrammeExport");
+const confirmProgrammeExport = document.querySelector("#confirmProgrammeExport");
+const programmeExportStatusToggles = document.querySelectorAll("[data-programme-export-status]");
+const programmeExportColumns = document.querySelectorAll("[data-programme-export-column]");
 const programmesSummary = document.querySelector("#programmesSummary");
-const dashboardProgrammeReportFilterToggle = document.querySelector("#dashboardProgrammeReportFilterToggle");
-const dashboardProgrammeReportFilterMenu = document.querySelector("#dashboardProgrammeReportFilterMenu");
-const dashboardProgrammeReportOptions = document.querySelector("#dashboardProgrammeReportOptions");
-const dashboardApplicationsByProgramme = document.querySelector("#dashboardApplicationsByProgramme");
 const dashboardTopCountries = document.querySelector("#dashboardTopCountries");
 const dashboardTopCountriesTotal = document.querySelector("#dashboardTopCountriesTotal");
 const dashboardProgrammePipelineTotal = document.querySelector("#dashboardProgrammePipelineTotal");
@@ -43,7 +46,6 @@ const reportStatusFilter = document.querySelector("#reportStatusFilter");
 const reportNationalityFilter = document.querySelector("#reportNationalityFilter");
 const reportDateFilter = document.querySelector("#reportDateFilter");
 const reportPageSize = document.querySelector("#reportPageSize");
-const downloadReportsList = document.querySelector("#downloadReportsList");
 const reportResetFilters = document.querySelector("#reportResetFilters");
 const reportTableBody = document.querySelector("#reportTableBody");
 const reportTotalCount = document.querySelector("#reportTotalCount");
@@ -51,8 +53,6 @@ const reportPaginationSummary = document.querySelector("#reportPaginationSummary
 const reportPageIndicator = document.querySelector("#reportPageIndicator");
 const prevReportPage = document.querySelector("#prevReportPage");
 const nextReportPage = document.querySelector("#nextReportPage");
-let dashboardProgrammeReportMode = "top";
-let dashboardSelectedProgrammes = new Set();
 const programmesTableBody = document.querySelector(".programmes-table tbody");
 let programmeRows = document.querySelectorAll(".programmes-table tbody tr");
 const programmeSortButtons = document.querySelectorAll(".programmes-table [data-sort-key]");
@@ -91,14 +91,10 @@ const requestedProgrammeFeeNote = document.querySelector("#requestedProgrammeFee
 const requestedProgrammeLearningNote = document.querySelector("#requestedProgrammeLearningNote");
 const requestedProgrammeTargetNote = document.querySelector("#requestedProgrammeTargetNote");
 const requestedProgrammeDurationNote = document.querySelector("#requestedProgrammeDurationNote");
-const requestedProgrammeParticipantsNote = document.querySelector("#requestedProgrammeParticipantsNote");
 const requestedProgrammeDurationCompound = document.querySelector("#requestedProgrammeDurationCompound");
 const requestedProgrammeDurationDisplay = document.querySelector("#requestedProgrammeDurationDisplay");
 const requestedProgrammeFeeCompound = document.querySelector("#requestedProgrammeFeeCompound");
 const requestedProgrammeFeeDisplay = document.querySelector("#requestedProgrammeFeeDisplay");
-const requestedProgrammeParticipantsCompound = document.querySelector("#requestedProgrammeParticipantsCompound");
-const requestedProgrammeParticipantsLimitDisplay = document.querySelector("#requestedProgrammeParticipantsLimitDisplay");
-const requestedProgrammeParticipantsWaiverDisplay = document.querySelector("#requestedProgrammeParticipantsWaiverDisplay");
 const requestedChangesTitle = document.querySelector("#requestedChangesTitle");
 const kptNoticeModal = document.querySelector("#kptNoticeModal");
 const kptNoticeTitle = document.querySelector("#kptNoticeTitle");
@@ -486,7 +482,7 @@ function setActiveView(viewName) {
     panel.classList.toggle("active", panel.dataset.view === viewName);
   });
   if (pageTitle) {
-    pageTitle.textContent = viewName === "applications" ? "Applications" : viewName === "programmes" ? "Programmes" : viewName === "reports" ? "Reports" : viewName === "university-profile" ? "University Profile" : viewName === "user-management" ? "User Management" : viewName === "audit-log" ? "Audit Log" : viewName === "help-support" ? "Help & Support" : viewName === "settings" ? "Settings" : "Dashboard";
+    pageTitle.textContent = viewName === "applications" ? "Applications" : viewName === "programmes" ? "Programmes" : viewName === "reports" ? "Reports" : viewName === "university-profile" ? "University Profile" : viewName === "user-management" ? "User Management" : viewName === "audit-log" ? "Audit Log" : viewName === "help-support" ? "Help & Support" : viewName === "settings" ? "Settings" : "Reports";
   }
 }
 
@@ -496,8 +492,8 @@ function applyHelpSupportVisibility() {
   if (helpSupportViewPanel) helpSupportViewPanel.hidden = !isVisible;
 
   if (!isVisible && helpSupportViewPanel?.classList.contains("active")) {
-    setActiveView("dashboard");
-    history.replaceState(null, "", "#dashboard");
+    setActiveView("reports");
+    history.replaceState(null, "", "#reports");
     scrollWorkspaceToTop();
   }
 }
@@ -606,11 +602,6 @@ function applyCurrentUserRole() {
   superAdminOnlyLinks.forEach((link) => {
     link.hidden = !isSuperAdmin;
   });
-  if (!isSuperAdmin && document.querySelector('[data-view="reports"]')?.classList.contains("active")) {
-    setActiveView("dashboard");
-    history.replaceState(null, "", "#dashboard");
-    scrollWorkspaceToTop();
-  }
 }
 
 function resetUserManagementDemoState() {
@@ -948,7 +939,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-if (location.hash === "#applications" || location.hash === "#programmes" || location.hash === "#reports" || location.hash === "#university-profile" || location.hash === "#user-management" || location.hash === "#audit-log" || location.hash === "#help-support" || location.hash === "#settings") {
+if (location.hash === "#reports" || location.hash === "#applications" || location.hash === "#programmes" || location.hash === "#university-profile" || location.hash === "#user-management" || location.hash === "#audit-log" || location.hash === "#help-support" || location.hash === "#settings") {
   setActiveView(location.hash.slice(1));
   scrollWorkspaceToTop();
 }
@@ -1787,7 +1778,6 @@ function showProgrammeDetail(row) {
   setText("#programmeDetailFee", fee);
   setText("#programmeDetailStatusText", status);
   setText("#programmeDetailTarget", row.dataset.target || (applicants === "0" ? "Group" : "General Public (including student)"));
-  renderProgrammeParticipants(row.dataset.participants);
   setText("#programmeDetailCredit", row.dataset.credit || (category.toLowerCase().includes("business") ? "Not eligible" : "Eligible"));
   setText("#programmeDetailLanguage", row.dataset.language || (category.toLowerCase().includes("language") ? "Malay" : "English"));
   setText("#programmeDetailTravelTour", row.dataset.travelTour || "TBC");
@@ -1929,11 +1919,6 @@ function applyRequestedProgrammeChanges() {
   if (requestedProgrammeFeeCompound && requestedProgrammeFeeDisplay) {
     commitFeeCompound(requestedProgrammeFeeCompound, requestedProgrammeFeeDisplay);
     setText("#programmeDetailFee", requestedProgrammeFeeDisplay.textContent);
-  }
-  if (requestedProgrammeParticipantsCompound && requestedProgrammeParticipantsLimitDisplay && requestedProgrammeParticipantsWaiverDisplay) {
-    commitParticipantsCompound(requestedProgrammeParticipantsCompound, requestedProgrammeParticipantsLimitDisplay, requestedProgrammeParticipantsWaiverDisplay);
-    setText("#programmeDetailParticipantsLimit", requestedProgrammeParticipantsLimitDisplay.textContent);
-    setText("#programmeDetailParticipantsWaiver", requestedProgrammeParticipantsWaiverDisplay.textContent);
   }
   setListField("#programmeDetailsOutcome", requestedProgrammeLearning?.value.trim(), "Participants complete guided activities, site visits, and a reflective project assessed by university facilitators.");
   setText("#programmeDetailTarget", requestedProgrammeTarget?.value || "General Public (including student)");
@@ -2176,45 +2161,6 @@ function parseParticipantsWaiver(text) {
   return match ? { waiverType: "Set waiver", waived: match[1], every: match[2] } : { waiverType: "No waiver", waived: "1", every: "20" };
 }
 
-function toggleParticipantsRows(wrapper) {
-  const showLimit = getCompoundRole(wrapper, "participantLimitType").value === "Set min/max";
-  const showWaiver = getCompoundRole(wrapper, "participantWaiverType").value === "Set waiver";
-  wrapper.querySelectorAll('[data-visibility="limit"]').forEach((el) => { el.hidden = !showLimit; });
-  wrapper.querySelectorAll('[data-visibility="waiver"]').forEach((el) => { el.hidden = !showWaiver; });
-}
-
-function syncParticipantsCompound(wrapper, limitDisplay, waiverDisplay) {
-  const limitData = parseParticipantsLimit(limitDisplay.textContent);
-  const waiverData = parseParticipantsWaiver(waiverDisplay.textContent);
-  getCompoundRole(wrapper, "participantLimitType").value = limitData.limitType;
-  getCompoundRole(wrapper, "participantMin").value = limitData.min;
-  getCompoundRole(wrapper, "participantMax").value = limitData.max;
-  getCompoundRole(wrapper, "participantWaiverType").value = waiverData.waiverType;
-  getCompoundRole(wrapper, "participantWaived").value = waiverData.waived;
-  getCompoundRole(wrapper, "participantEvery").value = waiverData.every;
-  toggleParticipantsRows(wrapper);
-}
-
-function computeParticipantsLimitValue(wrapper) {
-  const limitType = getCompoundRole(wrapper, "participantLimitType").value;
-  return limitType === "Set min/max"
-    ? `${getCompoundRole(wrapper, "participantMin").value || "10"} - ${getCompoundRole(wrapper, "participantMax").value || "40"} participants`
-    : "No participant limit";
-}
-
-function computeParticipantsWaiverValue(wrapper) {
-  const waiverType = getCompoundRole(wrapper, "participantWaiverType").value;
-  if (waiverType !== "Set waiver") return "No participant waiver";
-  const waived = Number(getCompoundRole(wrapper, "participantWaived").value) || 1;
-  const every = Number(getCompoundRole(wrapper, "participantEvery").value) || 20;
-  return `${waived} participant${waived === 1 ? "" : "s"} waived for every ${every} participants`;
-}
-
-function commitParticipantsCompound(wrapper, limitDisplay, waiverDisplay) {
-  limitDisplay.textContent = computeParticipantsLimitValue(wrapper);
-  waiverDisplay.textContent = computeParticipantsWaiverValue(wrapper);
-}
-
 function syncListCompound(wrapper, display) {
   const container = getCompoundRole(wrapper, "listInputs");
   if (!container) return;
@@ -2256,14 +2202,6 @@ function hasProgrammeEditsChanged() {
     });
     panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
       const type = wrapper.dataset.editableCompound;
-      if (type === "participants") {
-        const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
-        const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
-        if (!limitDisplay || !waiverDisplay) return;
-        if (differs(computeParticipantsLimitValue(wrapper), limitDisplay.textContent)) changed = true;
-        if (differs(computeParticipantsWaiverValue(wrapper), waiverDisplay.textContent)) changed = true;
-        return;
-      }
       const display = document.getElementById(wrapper.dataset.editableDisplay);
       if (!display) return;
       if (type === "list") {
@@ -2285,21 +2223,14 @@ function syncProgrammeEditableFields(panel) {
       syncEditableOtherSelect(input, display);
     } else {
       input.value = display.textContent.trim();
+      if (input instanceof HTMLSelectElement && !input.value) {
+        input.value = input.dataset.editableFallback || input.options[0]?.value || "";
+      }
     }
     display.hidden = true;
     input.hidden = false;
   });
   panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
-    if (wrapper.dataset.editableCompound === "participants") {
-      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
-      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
-      if (!limitDisplay || !waiverDisplay) return;
-      syncParticipantsCompound(wrapper, limitDisplay, waiverDisplay);
-      limitDisplay.hidden = true;
-      waiverDisplay.hidden = true;
-      wrapper.hidden = false;
-      return;
-    }
     const display = document.getElementById(wrapper.dataset.editableDisplay);
     const handler = PROGRAMME_COMPOUND_FIELD_HANDLERS[wrapper.dataset.editableCompound];
     if (!display || !handler) return;
@@ -2320,13 +2251,6 @@ function commitProgrammeEditableFields(panel) {
     }
   });
   panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
-    if (wrapper.dataset.editableCompound === "participants") {
-      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
-      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
-      if (!limitDisplay || !waiverDisplay) return;
-      commitParticipantsCompound(wrapper, limitDisplay, waiverDisplay);
-      return;
-    }
     const display = document.getElementById(wrapper.dataset.editableDisplay);
     const handler = PROGRAMME_COMPOUND_FIELD_HANDLERS[wrapper.dataset.editableCompound];
     if (!display || !handler) return;
@@ -2345,13 +2269,6 @@ function resetProgrammeEditableFields(panel) {
   });
   panel.querySelectorAll("[data-editable-compound]").forEach((wrapper) => {
     wrapper.hidden = true;
-    if (wrapper.dataset.editableCompound === "participants") {
-      const limitDisplay = document.getElementById(wrapper.dataset.editableDisplayLimit);
-      const waiverDisplay = document.getElementById(wrapper.dataset.editableDisplayWaiver);
-      if (limitDisplay) limitDisplay.hidden = false;
-      if (waiverDisplay) waiverDisplay.hidden = false;
-      return;
-    }
     const display = document.getElementById(wrapper.dataset.editableDisplay);
     if (display) display.hidden = false;
   });
@@ -2406,14 +2323,16 @@ function syncActiveProgrammeRowFromDetailPage() {
   if (!activeProgrammeRow) return;
   const row = activeProgrammeRow;
   const readDetail = (id, fallback = "") => document.getElementById(id)?.textContent.trim() || fallback;
+  const name = readDetail("programmeDetailOverviewName", row.querySelector(".programme-name")?.textContent.trim() || "Programme");
+  const overview = readDetail("programmeDetailOverview", row.dataset.overview || "");
   const category = readDetail("programmeDetailCategory", row.children[1]?.textContent.trim() || "");
   const duration = readDetail("programmeDetailDuration", row.children[2]?.textContent.trim() || "");
   const fee = readDetail("programmeDetailFee", row.children[3]?.textContent.trim() || "");
   row.dataset.programmeCategory = category.toLowerCase();
+  row.dataset.overview = overview;
   row.dataset.language = readDetail("programmeDetailLanguage", row.dataset.language || "");
   row.dataset.target = readDetail("programmeDetailTarget", row.dataset.target || "");
   row.dataset.credit = readDetail("programmeDetailCredit", row.dataset.credit || "");
-  row.dataset.participants = `${readDetail("programmeDetailParticipantsLimit", "Not specified")}; ${readDetail("programmeDetailParticipantsWaiver", "No participant waiver")}`;
   row.dataset.travelTour = readDetail("programmeDetailTravelTour", row.dataset.travelTour || "");
   row.dataset.certificate = readDetail("programmeDetailCertificate", row.dataset.certificate || "");
   row.dataset.picName = readDetail("programmeDetailPicName", row.dataset.picName || "");
@@ -2423,6 +2342,10 @@ function syncActiveProgrammeRowFromDetailPage() {
   row.dataset.outcome = document.querySelector("#programmeDetailsOutcome")?.dataset.value || row.dataset.outcome || "";
   row.dataset.inclusions = document.querySelector("#programmeDetailsInclusions")?.dataset.value || row.dataset.inclusions || "";
   row.dataset.activities = document.querySelector("#programmeDetailsActivities")?.dataset.value || row.dataset.activities || "";
+  if (row.querySelector(".programme-name")) row.querySelector(".programme-name").textContent = name;
+  setText("#programmeDetailName", name);
+  setText("#programmeDetailSummary", overview);
+  setText("#programmeDetailMeta", `${duration}   ${fee}`);
   if (row.children[1]) row.children[1].textContent = category;
   if (row.children[2]) row.children[2].textContent = duration;
   if (row.children[3]) row.children[3].textContent = fee;
@@ -2498,12 +2421,6 @@ const PROGRAMME_FIELD_ISSUES = [
     rejected: "Rejected reason: Fee justification was not strong enough for the submitted scope."
   },
   {
-    key: "participants",
-    displayId: "programmeDetailParticipantsIssue",
-    default: "Participant limits and waivers must match what KPT reviewed.",
-    rejected: "Rejected reason: Participant limits and waivers were not clearly justified."
-  },
-  {
     key: "learning",
     displayId: "programmeDetailsOutcomeIssue",
     default: "Learning outcomes are too broad. Add a measurable outcome for participants.",
@@ -2532,7 +2449,6 @@ const PROGRAMME_FIELD_ISSUE_LABELS = {
   target: "Target Group",
   duration: "Duration",
   fee: "Fee",
-  participants: "Participants",
   learning: "Learning Outcome"
 };
 
@@ -2557,15 +2473,6 @@ function getUnresolvedProgrammeFieldIssues(status) {
   const feeDisplay = document.getElementById("programmeDetailFee");
   if (feeWrapper && feeDisplay && !differs(computeFeeValue(feeWrapper), feeDisplay.textContent)) {
     unresolved.push("fee");
-  }
-
-  const participantsWrapper = document.querySelector('#programmeDetail [data-editable-compound="participants"]');
-  const limitDisplay = document.getElementById("programmeDetailParticipantsLimit");
-  const waiverDisplay = document.getElementById("programmeDetailParticipantsWaiver");
-  if (participantsWrapper && limitDisplay && waiverDisplay) {
-    const limitChanged = differs(computeParticipantsLimitValue(participantsWrapper), limitDisplay.textContent);
-    const waiverChanged = differs(computeParticipantsWaiverValue(participantsWrapper), waiverDisplay.textContent);
-    if (!limitChanged && !waiverChanged) unresolved.push("participants");
   }
 
   const learningWrapper = document.querySelector('#programmeDetail [data-editable-compound="list"][data-editable-display="programmeDetailsOutcome"]');
@@ -2594,7 +2501,6 @@ function openRequestedChangesModal(mode = "changes requested") {
   if (requestedProgrammeLearningNote) requestedProgrammeLearningNote.textContent = getProgrammeFieldIssueText("learning", rejected);
   if (requestedProgrammeTargetNote) requestedProgrammeTargetNote.textContent = getProgrammeFieldIssueText("target", rejected);
   if (requestedProgrammeDurationNote) requestedProgrammeDurationNote.textContent = getProgrammeFieldIssueText("duration", rejected);
-  if (requestedProgrammeParticipantsNote) requestedProgrammeParticipantsNote.textContent = getProgrammeFieldIssueText("participants", rejected);
   if (requestedProgrammeDurationCompound && requestedProgrammeDurationDisplay) {
     requestedProgrammeDurationDisplay.textContent = document.querySelector("#programmeDetailDuration")?.textContent.trim() || "";
     syncDurationCompound(requestedProgrammeDurationCompound, requestedProgrammeDurationDisplay);
@@ -2602,11 +2508,6 @@ function openRequestedChangesModal(mode = "changes requested") {
   if (requestedProgrammeFeeCompound && requestedProgrammeFeeDisplay) {
     requestedProgrammeFeeDisplay.textContent = document.querySelector("#programmeDetailFee")?.textContent.trim() || "";
     syncFeeCompound(requestedProgrammeFeeCompound, requestedProgrammeFeeDisplay);
-  }
-  if (requestedProgrammeParticipantsCompound && requestedProgrammeParticipantsLimitDisplay && requestedProgrammeParticipantsWaiverDisplay) {
-    requestedProgrammeParticipantsLimitDisplay.textContent = document.querySelector("#programmeDetailParticipantsLimit")?.textContent.trim() || "";
-    requestedProgrammeParticipantsWaiverDisplay.textContent = document.querySelector("#programmeDetailParticipantsWaiver")?.textContent.trim() || "";
-    syncParticipantsCompound(requestedProgrammeParticipantsCompound, requestedProgrammeParticipantsLimitDisplay, requestedProgrammeParticipantsWaiverDisplay);
   }
   if (requestedProgrammeLearning) requestedProgrammeLearning.value = document.querySelector("#programmeDetailsOutcome")?.dataset.value || "";
   if (requestedProgrammeTarget) requestedProgrammeTarget.value = document.querySelector("#programmeDetailTarget")?.textContent.trim() || "General Public (including student)";
@@ -3125,10 +3026,6 @@ function handleCompoundToggleChange(event) {
   }
   const compoundWrapper = event.target.closest("[data-editable-compound]");
   if (compoundWrapper) {
-    if (compoundWrapper.dataset.editableCompound === "participants") {
-      toggleParticipantsRows(compoundWrapper);
-      return;
-    }
     PROGRAMME_COMPOUND_FIELD_HANDLERS[compoundWrapper.dataset.editableCompound]?.toggle?.(compoundWrapper);
   }
 }
@@ -3167,8 +3064,8 @@ proceedProgrammeChanges?.addEventListener("click", () => {
   closeProgrammeChangesModal();
   const applyProgrammeEdits = () => {
     getEditableProgrammePanels().forEach((panel) => commitProgrammeEditableFields(panel));
-    commitProgrammeDetailsGallery();
     syncActiveProgrammeRowFromDetailPage();
+    commitProgrammeDetailsGallery();
     setProgrammeDetailsEditing(false);
     if (programmeEditWarning) programmeEditWarning.hidden = false;
     updateActiveProgrammeStatus("Resubmitted", "status-chip blue");
@@ -3730,33 +3627,60 @@ function downloadFullApplicationsList() {
   closeApplicationExportModal();
 }
 
-function downloadFullReportsList() {
-  const table = document.querySelector(".reports-table");
-  if (!table || !currentReportRows.length) return;
+function syncProgrammeExportSelection() {
+  if (confirmProgrammeExport) {
+    confirmProgrammeExport.disabled = ![...programmeExportColumns].some((column) => column.checked)
+      || ![...programmeExportStatusToggles].some((status) => status.checked);
+  }
+}
 
-  const headers = [...table.querySelectorAll("thead th")].map((cell) => cell.textContent.replace(/\s+/g, " ").trim());
-  const rows = currentReportRows.map((row) => {
-    const applicant = row.querySelector(".applicant-name")?.textContent.trim() || "";
-    const trackingCode = row.querySelector(".applicant-link small")?.textContent.trim() || "";
-    return [
-      [applicant, trackingCode].filter(Boolean).join(" "),
-      row.children[1]?.textContent.replace(/\s+/g, " ").trim() || "",
-      row.querySelector(".programme-name")?.textContent.trim() || "",
-      row.children[3]?.textContent.replace(/\s+/g, " ").trim() || "",
-      row.querySelector(".status-chip")?.textContent.replace(/\s+/g, " ").trim() || row.dataset.applicationStatus || "",
-      row.children[6]?.textContent.replace(/\s+/g, " ").trim() || ""
-    ];
-  });
-  const blob = buildApplicationsWorkbook(headers, rows, "Reports", "ReportsTable");
+function openProgrammeExportModal() {
+  syncProgrammeExportSelection();
+  if (programmeExportModal) programmeExportModal.hidden = false;
+}
+
+function closeProgrammeExportModal() {
+  if (programmeExportModal) programmeExportModal.hidden = true;
+}
+
+function downloadFullProgrammesList() {
+  const table = document.querySelector(".programmes-table");
+  if (!table) return;
+
+  const selectedStatuses = new Set(
+    [...programmeExportStatusToggles].filter((status) => status.checked).map((status) => status.dataset.programmeExportStatus)
+  );
+  const selectedColumns = [...programmeExportColumns]
+    .filter((column) => column.checked)
+    .map((column) => Number(column.dataset.programmeExportColumn));
+  if (!selectedColumns.length || !selectedStatuses.size) return;
+
+  const allHeaders = ["Programme", "Category", "Duration", "Fee", "Applicants", "Status"];
+  const headers = selectedColumns.map((index) => allHeaders[index]);
+  const rows = [...table.querySelectorAll("tbody tr[data-public-status]")]
+    .filter((row) => selectedStatuses.has(row.dataset.publicStatus))
+    .map((row) => {
+      const allValues = [
+        row.querySelector(".programme-name")?.textContent.trim() || "",
+        row.children[1]?.textContent.replace(/\s+/g, " ").trim() || "",
+        row.children[2]?.textContent.replace(/\s+/g, " ").trim() || "",
+        row.children[3]?.textContent.replace(/\s+/g, " ").trim() || "",
+        row.children[4]?.textContent.replace(/\s+/g, " ").trim() || "",
+        row.querySelector(".status-chip")?.textContent.replace(/\s+/g, " ").trim() || row.dataset.publicStatus || ""
+      ];
+      return selectedColumns.map((index) => allValues[index]);
+    });
+  const blob = buildApplicationsWorkbook(headers, rows, "Programmes", "ProgrammesTable");
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "reports-full-list.xlsx";
+  link.download = "programmes-full-list.xlsx";
   link.hidden = true;
   document.body.appendChild(link);
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  closeProgrammeExportModal();
 }
 
 function updateDashboardMetrics() {
@@ -3931,43 +3855,6 @@ function updateDashboardReports() {
     };
   };
 
-  dashboardSelectedProgrammes = new Set([...dashboardSelectedProgrammes].filter((name) => programmeNames.includes(name)));
-  const programmesByVolume = programmeNames
-    .filter((name) => getStats(name).total > 0)
-    .sort((first, second) => getStats(second).total - getStats(first).total);
-  const topProgrammeNames = programmesByVolume.slice(0, 10);
-  const reportNames = dashboardProgrammeReportMode === "all"
-    ? programmesByVolume
-    : dashboardProgrammeReportMode === "selected" && dashboardSelectedProgrammes.size
-      ? [...dashboardSelectedProgrammes]
-      : topProgrammeNames;
-  const reportStats = new Map(reportNames.map((name) => [name, getStats(name)]));
-  const maxBarValue = Math.max(1, ...[...reportStats.values()].flatMap((stats) => [stats.approved, stats.pending, stats.closed]));
-
-  if (dashboardProgrammeReportOptions) {
-    dashboardProgrammeReportOptions.innerHTML = programmeNames.length
-      ? programmeNames.map((name) => `<label><input type="checkbox" data-dashboard-programme-option="${escapeAttribute(name)}" ${dashboardSelectedProgrammes.has(name) ? "checked" : ""}><span>${escapeAttribute(name)}</span></label>`).join("")
-      : "<small>No programmes available.</small>";
-  }
-  if (dashboardProgrammeReportFilterToggle) {
-    const selectionLabel = dashboardProgrammeReportMode === "all"
-      ? "All programmes"
-      : dashboardProgrammeReportMode === "selected" && dashboardSelectedProgrammes.size
-        ? `${dashboardSelectedProgrammes.size} programmes selected`
-        : "Top 10 programmes";
-    dashboardProgrammeReportFilterToggle.textContent = selectionLabel;
-  }
-
-  if (dashboardApplicationsByProgramme) {
-    dashboardApplicationsByProgramme.style.setProperty("--dashboard-bar-unit", `${Math.min(16, 250 / maxBarValue)}px`);
-    dashboardApplicationsByProgramme.innerHTML = reportNames.length
-      ? reportNames.map((name) => {
-        const stats = reportStats.get(name);
-        return `<div><i style="--accepted: ${stats.approved}; --pending: ${stats.pending}; --rejected: ${stats.closed}"></i><span class="bar-values"><b>${stats.approved}</b><b>${stats.pending}</b><b>${stats.closed}</b></span><span>${escapeAttribute(name)}</span></div>`;
-      }).join("")
-      : "<p>No application data available.</p>";
-  }
-
   if (dashboardTopCountries) {
     const countryCounts = new Map();
     if (dashboardTopCountriesTotal) dashboardTopCountriesTotal.textContent = `${applications.length} total`;
@@ -3981,46 +3868,33 @@ function updateDashboardReports() {
     const countries = [...countryCounts.values()].sort((first, second) => second.count - first.count || first.label.localeCompare(second.label));
     const maxCountryCount = countries[0]?.count || 1;
     dashboardTopCountries.innerHTML = countries.length
-      ? countries.map(({ label, count }) => `<div style="--bar: ${(count / maxCountryCount) * 100}%"><span>${escapeAttribute(label)}</span><i></i><strong>${count}</strong></div>`).join("")
+      ? `
+        <div class="country-feature-card">
+          <span class="country-feature-kicker">Leading source</span>
+          <div class="country-feature-main">
+            <span class="country-emblem">${escapeAttribute(countries[0].label.slice(0, 2).toUpperCase())}</span>
+            <div><strong>${escapeAttribute(countries[0].label)}</strong><small>${countries[0].count} application${countries[0].count === 1 ? "" : "s"} · ${Math.round((countries[0].count / applications.length) * 100)}% of total</small></div>
+          </div>
+          <div class="country-feature-track"><i style="--bar: ${(countries[0].count / maxCountryCount) * 100}%"></i></div>
+        </div>
+        <div class="country-ranking-head"><span>Ranked by application volume</span><span>Share of total</span></div>
+        <div class="country-rank-list">
+          ${countries.map(({ label, count }, index) => `
+            <div class="country-rank-row" style="--bar: ${(count / maxCountryCount) * 100}%">
+              <span class="country-rank-number">${String(index + 1).padStart(2, "0")}</span>
+              <span class="country-emblem country-emblem-small">${escapeAttribute(label.slice(0, 2).toUpperCase())}</span>
+              <strong>${escapeAttribute(label)}</strong>
+              <div class="country-rank-track"><i></i></div>
+              <b>${count}</b>
+              <small>${Math.round((count / applications.length) * 100)}%</small>
+            </div>
+          `).join("")}
+        </div>
+      `
       : "<p>No application data available.</p>";
   }
 
 }
-
-dashboardProgrammeReportFilterToggle?.addEventListener("click", (event) => {
-  event.stopPropagation();
-  const isOpen = dashboardProgrammeReportFilterMenu?.hidden === false;
-  if (dashboardProgrammeReportFilterMenu) dashboardProgrammeReportFilterMenu.hidden = isOpen;
-  dashboardProgrammeReportFilterToggle.setAttribute("aria-expanded", String(!isOpen));
-});
-
-dashboardProgrammeReportFilterMenu?.addEventListener("click", (event) => {
-  event.stopPropagation();
-  const selectionButton = event.target.closest("[data-dashboard-programme-selection]");
-  if (selectionButton) {
-    const selection = selectionButton.dataset.dashboardProgrammeSelection;
-    dashboardProgrammeReportMode = selection === "all" ? "all" : selection === "clear" ? "top" : "top";
-    dashboardSelectedProgrammes.clear();
-    updateDashboardReports();
-    return;
-  }
-  const option = event.target.closest("[data-dashboard-programme-option]") || event.target.closest("label")?.querySelector("[data-dashboard-programme-option]");
-  if (option) {
-    if (option.checked) {
-      dashboardSelectedProgrammes.add(option.dataset.dashboardProgrammeOption);
-      dashboardProgrammeReportMode = "selected";
-    } else {
-      dashboardSelectedProgrammes.delete(option.dataset.dashboardProgrammeOption);
-      if (!dashboardSelectedProgrammes.size) dashboardProgrammeReportMode = "top";
-    }
-    updateDashboardReports();
-  }
-});
-
-document.addEventListener("click", () => {
-  if (dashboardProgrammeReportFilterMenu) dashboardProgrammeReportFilterMenu.hidden = true;
-  dashboardProgrammeReportFilterToggle?.setAttribute("aria-expanded", "false");
-});
 
 reportSearch?.addEventListener("input", () => {
   currentReportPage = 1;
@@ -4095,7 +3969,19 @@ if (applicantsPerPage) {
 }
 
 downloadApplicationsList?.addEventListener("click", openApplicationExportModal);
-downloadReportsList?.addEventListener("click", downloadFullReportsList);
+downloadProgrammesList?.addEventListener("click", openProgrammeExportModal);
+closeProgrammeExport?.addEventListener("click", closeProgrammeExportModal);
+cancelProgrammeExport?.addEventListener("click", closeProgrammeExportModal);
+confirmProgrammeExport?.addEventListener("click", downloadFullProgrammesList);
+programmeExportColumns.forEach((column) => {
+  column.addEventListener("change", syncProgrammeExportSelection);
+});
+programmeExportStatusToggles.forEach((status) => {
+  status.addEventListener("change", syncProgrammeExportSelection);
+});
+programmeExportModal?.addEventListener("click", (event) => {
+  if (event.target === programmeExportModal) closeProgrammeExportModal();
+});
 closeApplicationExport?.addEventListener("click", closeApplicationExportModal);
 cancelApplicationExport?.addEventListener("click", closeApplicationExportModal);
 confirmApplicationExport?.addEventListener("click", downloadFullApplicationsList);
@@ -4290,13 +4176,6 @@ const programmeMeta = {
 function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element) element.textContent = value;
-}
-
-function renderProgrammeParticipants(participantsText) {
-  const value = String(participantsText || "").trim();
-  const [limitPart, waiverPart] = value.includes(";") ? value.split(";").map((part) => part.trim()) : [value, ""];
-  setText("#programmeDetailParticipantsLimit", limitPart || "Not specified");
-  setText("#programmeDetailParticipantsWaiver", waiverPart || "No participant waiver");
 }
 
 function setListField(selector, value, fallback) {
@@ -4868,6 +4747,47 @@ function showDownloadedNotice(anchor) {
   window.setTimeout(() => toast.remove(), 1400);
 }
 
+function buildWordParagraph(text, style = "") {
+  const styleXml = style ? `<w:pPr><w:pStyle w:val="${style}"/></w:pPr>` : "";
+  return `<w:p>${styleXml}<w:r><w:t xml:space="preserve">${escapeXmlValue(text)}</w:t></w:r></w:p>`;
+}
+
+function buildApplicationDocumentXml(paragraphs) {
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>${paragraphs.map(({ text, style }) => buildWordParagraph(text, style)).join("")}
+    <w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr>
+  </w:body>
+</w:document>`;
+}
+
+function buildApplicationDocx(paragraphs) {
+  const entries = [
+    ["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`],
+    ["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`],
+    ["word/document.xml", buildApplicationDocumentXml(paragraphs)],
+    ["word/_rels/document.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["word/styles.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:pPr><w:jc w:val="center"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:rPr><w:b/><w:sz w:val="26"/><w:szCs w:val="26"/></w:rPr></w:style></w:styles>`]
+  ];
+  return createStoredZip(entries);
+}
+
+function getApplicationDocumentNames(row, status) {
+  const names = ["Passport copy"];
+  (row.demoDocumentRequests || []).forEach((request, index) => {
+    names.push(`Request ${index + 1}: ${request.title}`);
+    (row.demoUploadedDocuments || [])
+      .filter((documentItem) => documentItem.requestId === request.id)
+      .forEach((documentItem) => names.push(documentItem.name));
+  });
+  if (status === "documents required" && !(row.demoDocumentRequests || []).length) {
+    names.push(row.dataset.documentRequest || "Additional documents or correction");
+  }
+  if (status === "approved") names.push("Offer letter");
+  (row.demoPostApprovalFiles || []).forEach((file) => names.push(file.name));
+  return [...new Set(names.filter(Boolean))];
+}
+
 function downloadApplicationSummary(row, anchor) {
   if (!row) return;
   const name = row.querySelector(".applicant-name")?.textContent.trim() || "Applicant";
@@ -4876,27 +4796,40 @@ function downloadApplicationSummary(row, anchor) {
   const programme = row.querySelector(".programme-name")?.textContent.trim() || "";
   const applied = row.children[3]?.textContent.trim() || "";
   const updated = row.children[6]?.textContent.trim() || "";
-  const status = statusMeta[row.dataset.applicationStatus || "submitted"]?.label || "Application";
+  const statusKey = row.dataset.applicationStatus || "submitted";
+  const status = statusMeta[statusKey]?.label || "Application";
   const applicantType = getApplicantType(row);
   const requiresStudentPass = applicantType.toLowerCase().includes("student pass");
-  const summary = [
-    "Application summary",
-    "",
-    `Applicant: ${name}`,
-    `Tracking code: ${code}`,
-    `Nationality: ${nationality}`,
-    `Applicant type: ${applicantType}`,
-    `Programme: ${programme}`,
-    `Applied date: ${applied}`,
-    `Current status: ${status}`,
-    `Last updated: ${updated}`,
-    `Immigration: ${requiresStudentPass ? "Student Pass Required" : "Not required"}`
-  ].join("\n");
-  const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+  const programmeInfo = programmeMeta[row.dataset.programme] || { category: "Science and Technology (SAT)", fee: "RM 3,000" };
+  const documentNames = getApplicationDocumentNames(row, statusKey);
+  const paragraphs = [
+    { text: "Application details", style: "Title" },
+    { text: `Tracking code: ${code}` },
+    { text: "Applicant details", style: "Heading1" },
+    { text: `Full name: ${name}` },
+    { text: `Nationality: ${nationality}` },
+    { text: `Applicant type: ${applicantType}` },
+    { text: `Phone: +60 11-555 ${code.slice(-4)}` },
+    { text: `Email: ${code.toLowerCase().replace(/[^a-z0-9]+/g, ".")}@student.demo` },
+    { text: "Identification type: Passport" },
+    { text: "Programme details", style: "Heading1" },
+    { text: `Programme: ${programme}` },
+    { text: `Category: ${programmeInfo.category}` },
+    { text: "Duration: 30 Days" },
+    { text: `Fee: ${programmeInfo.fee}` },
+    { text: "Application details", style: "Heading1" },
+    { text: `Applied date: ${applied}` },
+    { text: `Current status: ${status}` },
+    { text: `Last updated: ${updated}` },
+    { text: `Immigration: ${requiresStudentPass ? "Student Pass Required" : "Not required"}` },
+    { text: "Document names", style: "Heading1" },
+    ...documentNames.map((documentName) => ({ text: `- ${documentName}` }))
+  ];
+  const blob = buildApplicationDocx(paragraphs);
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${code || "application"}-summary.txt`;
+  link.download = `${code || "application"}-details.docx`;
   link.hidden = true;
   document.body.appendChild(link);
   link.click();

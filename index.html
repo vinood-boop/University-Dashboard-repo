@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>University Dashboard</title>
+  <title>University Reports</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,10 +18,9 @@
 
       <span class="nav-label">Main menu</span>
       <nav class="nav-list">
-        <a class="nav-item active" href="#dashboard" data-view-link="dashboard"><span>&#8962;</span><u>Dashboard</u></a>
+        <a class="nav-item active" href="#reports" data-view-link="reports"><span>&#8962;</span><u>Reports</u></a>
         <a class="nav-item" href="#applications" data-view-link="applications"><span>&#9638;</span><u>Applications</u></a>
-        <a class="nav-item" href="#programmes" data-view-link="programmes"><span>&#9673;</span><u>Programmes</u></a>
-        <a class="nav-item" href="#reports" data-view-link="reports" data-superadmin-only><span>&#9636;</span><u>Reports</u></a>
+        <a class="nav-item" href="#programmes" data-view-link="programmes"><span>◉</span><u>Programmes</u></a>
       </nav>
 
       <div class="nav-group divided">
@@ -51,7 +50,7 @@
       <section class="dashboard-card">
         <header class="topbar">
           <div class="top-title">
-            <h1>Dashboard</h1>
+            <h1>Reports</h1>
             <span>University Portal</span>
           </div>
           <div class="top-meta">
@@ -96,19 +95,14 @@
                     <span>Nur Aisyah Rahman updated a staff role in User Management.</span>
                     <small>Audit - Today, 9:40 AM</small>
                   </button>
-                  <button class="notification-item unread" type="button" data-notification-target="reports" data-default-unread="true">
-                    <strong>Performance report updated</strong>
-                    <span>Programme acceptance rate and application volume are ready for review.</span>
-                    <small>Reports - Yesterday</small>
-                  </button>
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-        <div class="view-panel active" data-view="dashboard">
-        <section class="metrics" aria-label="Dashboard summary">
+        <div class="view-panel active" data-view="reports">
+        <section class="metrics" aria-label="Reports summary">
           <article class="metric mint" data-keywords="active programmes live archived">
             <span>Active programmes</span>
             <strong data-dashboard-metric="active-programmes">0</strong>
@@ -421,28 +415,6 @@
         </section>
 
         <section class="report-top-grid dashboard-report-grid">
-          <article class="panel" data-keywords="applications per programme accepted pending rejected withdrawn">
-            <div class="panel-head">
-              <div>
-                <h2>Applications per Programme</h2>
-                <p>Total applications by current status.</p>
-              </div>
-              <div class="dashboard-programme-filter">
-                <button type="button" class="range-select dashboard-programme-filter-toggle" id="dashboardProgrammeReportFilterToggle" aria-expanded="false" aria-controls="dashboardProgrammeReportFilterMenu">Top 10 programmes</button>
-                <div class="dashboard-programme-filter-menu" id="dashboardProgrammeReportFilterMenu" hidden>
-                  <div class="dashboard-programme-filter-actions">
-                    <button type="button" data-dashboard-programme-selection="top">Top 10</button>
-                    <button type="button" data-dashboard-programme-selection="all">All</button>
-                    <button type="button" data-dashboard-programme-selection="clear">Clear</button>
-                  </div>
-                  <div class="dashboard-programme-filter-options" id="dashboardProgrammeReportOptions"></div>
-                </div>
-              </div>
-            </div>
-            <div class="grouped-bars" id="dashboardApplicationsByProgramme" aria-label="Applications per programme"></div>
-            <div class="report-legend"><span><i class="accepted"></i>Approved</span><span><i class="pending"></i>Pending</span><span><i class="rejected"></i>Closed</span></div>
-          </article>
-
           <article class="panel" data-keywords="top countries application volume nationality">
             <div class="panel-head">
               <div>
@@ -451,7 +423,7 @@
               </div>
               <span class="soft-pill" id="dashboardTopCountriesTotal">0 total</span>
             </div>
-            <div class="horizontal-bars" id="dashboardTopCountries" aria-label="All countries by application volume"></div>
+            <div class="country-demand-board" id="dashboardTopCountries" aria-label="All countries by application volume"></div>
           </article>
         </section>
 
@@ -897,14 +869,17 @@
                   <option>Agriculture and Veterinary (AAV)</option>
                   <option>Business and Entrepreneurship (BAE)</option>
                 </select>
-                <label class="page-size-control">
-                  <span>Show</span>
-                  <select class="range-select" id="programmesPerPage" aria-label="Programmes per page">
-                    <option value="5">5</option>
-                    <option value="10" selected>10</option>
-                    <option value="all">All</option>
-                  </select>
-                </label>
+                <div class="programme-list-actions">
+                  <label class="page-size-control">
+                    <span>Show</span>
+                    <select class="range-select" id="programmesPerPage" aria-label="Programmes per page">
+                      <option value="5">5</option>
+                      <option value="10" selected>10</option>
+                      <option value="all">All</option>
+                    </select>
+                  </label>
+                  <button class="apply-btn" type="button" id="downloadProgrammesList">Download Full List</button>
+                </div>
               </div>
             </section>
 
@@ -949,6 +924,42 @@
                 <button type="button" id="prevProgrammePage">Previous</button>
                 <strong id="programmePageIndicator">Page 1 of 2</strong>
                 <button type="button" id="nextProgrammePage">Next</button>
+              </div>
+            </div>
+
+            <div class="request-modal" id="programmeExportModal" hidden>
+              <div class="request-modal-card wide-modal-card" role="dialog" aria-modal="true" aria-labelledby="programmeExportTitle">
+                <div class="request-modal-head">
+                  <h3 id="programmeExportTitle">Download full programme list</h3>
+                  <button class="modal-close" type="button" id="closeProgrammeExport" aria-label="Close download options">X</button>
+                </div>
+                <p class="confirm-message">Choose one or more programme statuses and the columns to include in the Excel workbook.</p>
+                <fieldset class="application-export-statuses">
+                  <legend>Programme status</legend>
+                  <div class="column-options">
+                    <label><input type="checkbox" data-programme-export-status="pending kpt approval" checked> Pending KPT Approval</label>
+                    <label><input type="checkbox" data-programme-export-status="changes requested" checked> Changes Requested</label>
+                    <label><input type="checkbox" data-programme-export-status="published" checked> Published</label>
+                    <label><input type="checkbox" data-programme-export-status="draft" checked> Draft</label>
+                    <label><input type="checkbox" data-programme-export-status="rejected" checked> Rejected</label>
+                    <label><input type="checkbox" data-programme-export-status="unpublish" checked> Unpublish</label>
+                  </div>
+                </fieldset>
+                <fieldset class="application-export-columns">
+                  <legend>Columns to include</legend>
+                  <div class="column-options">
+                    <label><input type="checkbox" data-programme-export-column="0" checked> Programme</label>
+                    <label><input type="checkbox" data-programme-export-column="1" checked> Category</label>
+                    <label><input type="checkbox" data-programme-export-column="2" checked> Duration</label>
+                    <label><input type="checkbox" data-programme-export-column="3" checked> Fee</label>
+                    <label><input type="checkbox" data-programme-export-column="4" checked> Applicants</label>
+                    <label><input type="checkbox" data-programme-export-column="5" checked> Status</label>
+                  </div>
+                </fieldset>
+                <div class="modal-actions">
+                  <button type="button" id="cancelProgrammeExport">Cancel</button>
+                  <button class="primary" type="button" id="confirmProgrammeExport">Download XLSX</button>
+                </div>
               </div>
             </div>
 
@@ -999,10 +1010,12 @@
                     <div class="programme-overview-wide">
                       <span>Programme Name</span>
                       <strong id="programmeDetailOverviewName" class="editable-display">Tropical Biodiversity Programme</strong>
+                      <input type="text" class="editable-input" data-editable-target="programmeDetailOverviewName" aria-label="Edit programme name" placeholder="Enter programme name" hidden>
                     </div>
                     <div class="programme-overview-wide">
                       <span>Overview</span>
                       <strong id="programmeDetailOverview" class="editable-display">Programme overview appears here.</strong>
+                      <textarea class="editable-input" data-editable-target="programmeDetailOverview" rows="4" aria-label="Edit programme overview" placeholder="Enter programme overview" hidden></textarea>
                     </div>
                     <div>
                       <span>Category</span>
@@ -1044,39 +1057,11 @@
                     <div>
                       <span>Target Group</span>
                       <strong id="programmeDetailTarget" class="editable-display">General Public (including student)</strong>
-                      <select class="editable-input" data-editable-target="programmeDetailTarget" data-editable-other="programmeDetailTargetOtherInput" data-editable-other-trigger="Others" aria-label="Edit target group" hidden>
-                        <option>Individual</option>
-                        <option>Group</option>
+                      <select class="editable-input" data-editable-target="programmeDetailTarget" data-editable-fallback="General Public (including student)" aria-label="Edit target group" hidden>
                         <option>General Public (including student)</option>
                         <option>Student only</option>
-                        <option>Others</option>
                       </select>
-                      <input type="text" class="editable-input editable-other-input" id="programmeDetailTargetOtherInput" placeholder="Describe target group" aria-label="Other target group" hidden>
                       <small class="field-issue-note" id="programmeDetailTargetIssue" hidden></small>
-                    </div>
-                    <div hidden>
-                      <span>Participants</span>
-                      <strong id="programmeDetailParticipantsLimit" class="editable-display">Not specified</strong>
-                      <strong id="programmeDetailParticipantsWaiver" class="editable-display">No participant waiver</strong>
-                      <div class="editable-compound" data-editable-compound="participants" data-editable-display-limit="programmeDetailParticipantsLimit" data-editable-display-waiver="programmeDetailParticipantsWaiver" hidden>
-                        <div class="editable-compound-row">
-                          <select class="editable-input" data-role="participantLimitType" aria-label="Edit participant limit type">
-                            <option>No limit</option>
-                            <option>Set min/max</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="participantMin" data-visibility="limit" min="1" placeholder="Min e.g., 10" aria-label="Edit minimum participants" hidden>
-                          <input type="number" class="editable-input" data-role="participantMax" data-visibility="limit" min="1" placeholder="Max e.g., 40" aria-label="Edit maximum participants" hidden>
-                        </div>
-                        <div class="editable-compound-row">
-                          <select class="editable-input" data-role="participantWaiverType" aria-label="Edit participant waiver type">
-                            <option>No waiver</option>
-                            <option>Set waiver</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="participantWaived" data-visibility="waiver" min="1" placeholder="Waived e.g., 1" aria-label="Edit waived participants" hidden>
-                          <input type="number" class="editable-input" data-role="participantEvery" data-visibility="waiver" min="1" placeholder="Every e.g., 20" aria-label="Edit for every participants" hidden>
-                        </div>
-                      </div>
-                      <small class="field-issue-note" id="programmeDetailParticipantsIssue" hidden></small>
                     </div>
                     <div>
                       <span>Duration</span>
@@ -1296,30 +1281,6 @@
                           <input type="number" class="editable-input" data-role="feeValue" data-visibility="fixed" min="0" placeholder="e.g., 1200" aria-label="Requested fee amount">
                           <input type="number" class="editable-input" data-role="feeMin" data-visibility="range" min="0" placeholder="Min e.g., 1000" aria-label="Requested minimum fee" hidden>
                           <input type="number" class="editable-input" data-role="feeMax" data-visibility="range" min="0" placeholder="Max e.g., 1500" aria-label="Requested maximum fee" hidden>
-                        </div>
-                      </div>
-                    </label>
-                    <label class="request-textbox">
-                      <em id="requestedProgrammeParticipantsNote">Participant limits and waivers must match what KPT reviewed.</em>
-                      <span>Participants *</span>
-                      <span id="requestedProgrammeParticipantsLimitDisplay" hidden></span>
-                      <span id="requestedProgrammeParticipantsWaiverDisplay" hidden></span>
-                      <div class="editable-compound" id="requestedProgrammeParticipantsCompound" data-editable-compound="participants">
-                        <div class="editable-compound-row">
-                          <select class="editable-input" data-role="participantLimitType" aria-label="Requested participant limit type">
-                            <option>No limit</option>
-                            <option>Set min/max</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="participantMin" data-visibility="limit" min="1" placeholder="Min e.g., 10" aria-label="Requested minimum participants" hidden>
-                          <input type="number" class="editable-input" data-role="participantMax" data-visibility="limit" min="1" placeholder="Max e.g., 40" aria-label="Requested maximum participants" hidden>
-                        </div>
-                        <div class="editable-compound-row">
-                          <select class="editable-input" data-role="participantWaiverType" aria-label="Requested participant waiver type">
-                            <option>No waiver</option>
-                            <option>Set waiver</option>
-                          </select>
-                          <input type="number" class="editable-input" data-role="participantWaived" data-visibility="waiver" min="1" placeholder="Waived e.g., 1" aria-label="Requested waived participants" hidden>
-                          <input type="number" class="editable-input" data-role="participantEvery" data-visibility="waiver" min="1" placeholder="Every e.g., 20" aria-label="Requested for every participants" hidden>
                         </div>
                       </div>
                     </label>
@@ -1733,83 +1694,6 @@
           </section>
         </div>
 
-        <div class="view-panel" data-view="reports" aria-label="Reports content">
-          <section class="reports-page">
-            <section class="panel reports-filter-panel" data-keywords="reports application filters">
-              <div class="panel-head">
-                <div>
-                  <h2>Application report</h2>
-                  <p>Filter application records and prepare the report for export.</p>
-                </div>
-                <div class="report-filter-actions">
-                  <button class="apply-btn" type="button" id="downloadReportsList">Download Full List</button>
-                  <button class="apply-btn" type="button" id="reportResetFilters">Reset filters</button>
-                </div>
-              </div>
-              <div class="report-filters">
-                <input type="search" id="reportSearch" placeholder="Search applicant, tracking code, programme" aria-label="Search report records">
-                <select class="range-select" id="reportProgrammeFilter" aria-label="Report programme">
-                  <option value="">All programmes</option>
-                </select>
-                <select class="range-select" id="reportStatusFilter" aria-label="Report status">
-                  <option value="">All statuses</option>
-                  <option value="submitted">New Application</option>
-                  <option value="documents required">Documents Required</option>
-                  <option value="documents submitted">Req Documents Submitted</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                  <option value="withdrawn">Withdrawn</option>
-                </select>
-                <select class="range-select" id="reportNationalityFilter" aria-label="Report nationality">
-                  <option value="">All nationalities</option>
-                </select>
-                <select class="range-select" id="reportDateFilter" aria-label="Report date range">
-                  <option value="All time">All time</option>
-                  <option value="Last 7 days">Last 7 days</option>
-                  <option value="Last 30 days">Last 30 days</option>
-                  <option value="Last 3 months">Last 3 months</option>
-                  <option value="Last 6 months">Last 6 months</option>
-                </select>
-                <label class="page-size-control">
-                  <span>Show</span>
-                  <select class="range-select" id="reportPageSize" aria-label="Report records per page">
-                    <option value="25" selected>25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="all">All</option>
-                  </select>
-                </label>
-              </div>
-            </section>
-
-            <section class="panel report-table-panel">
-              <div class="panel-head">
-                <div>
-                  <h2>Application records</h2>
-                  <p>Applicant, programme, status, and submission dates.</p>
-                </div>
-                <span class="soft-pill" id="reportTotalCount">0 records</span>
-              </div>
-              <div class="recent-table-wrap">
-                <table class="recent-table reports-table">
-                  <thead>
-                    <tr><th>Applicant</th><th>Nationality</th><th>Programme</th><th>Applied Date</th><th>Status</th><th>Last Updated</th></tr>
-                  </thead>
-                  <tbody id="reportTableBody"></tbody>
-                </table>
-              </div>
-              <div class="pagination-row" aria-label="Reports pagination">
-                <span id="reportPaginationSummary">Showing 0-0 of 0</span>
-                <div class="pagination-controls">
-                  <button type="button" id="prevReportPage">Previous</button>
-                  <strong id="reportPageIndicator">Page 1 of 1</strong>
-                  <button type="button" id="nextReportPage">Next</button>
-                </div>
-              </div>
-            </section>
-          </section>
-        </div>
-
         <div class="view-panel" data-view="university-profile" aria-label="University profile content">
           <section class="profile-page">
             <div class="detail-tabs profile-tabs" aria-label="University profile tabs">
@@ -1965,7 +1849,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Role <span class="section-tooltip role-tooltip" tabindex="0" aria-label="Role permissions">?<span><b>Super Admin</b> Full access to all tabs, Reports, user creation, role changes, and account status controls. Only Super Admin can add users, edit roles, activate accounts, or deactivate accounts.<br><br><b>University Admin</b> Can manage programmes, applications, and university profile. Cannot add users, edit roles, deactivate users, or view Reports.<br><br><b>Admissions Officer</b> Can process applications, request documents, and issue offer letters. Cannot add users, edit roles, deactivate users, or view Reports.</span></span></th>
+                    <th>Role <span class="section-tooltip role-tooltip" tabindex="0" aria-label="Role permissions">?<span><b>Super Admin</b> Full access to all tabs, user creation, role changes, and account status controls. Only Super Admin can add users, edit roles, activate accounts, or deactivate accounts.<br><br><b>University Admin</b> Can manage programmes, applications, and university profile. Cannot add users, edit roles, or deactivate users.<br><br><b>Admissions Officer</b> Can process applications, request documents, and issue offer letters. Cannot add users, edit roles, or deactivate users.</span></span></th>
                     <th>Status</th>
                     <th>Last Login</th>
                     <th>Added</th>
@@ -2083,13 +1967,12 @@ Pre-approval reference: {{tracking_code}}</textarea>
                 <div class="panel-head">
                   <div>
                     <h2>Help &amp; Support</h2>
-                    <p>Use this guide to manage applications, programmes, reports, account access, and settings.</p>
+                    <p>Use this guide to manage applications, programmes, account access, and settings.</p>
                   </div>
                 </div>
                 <div class="help-summary-grid">
                   <div class="help-summary-item"><strong>Applications</strong><span>Review applicants, request documents, issue offer letters, and complete final approval.</span></div>
                   <div class="help-summary-item"><strong>Programmes</strong><span>Create, submit, update, pause, archive, or relaunch approved programmes.</span></div>
-                  <div class="help-summary-item"><strong>Reports</strong><span>Track application volume, country demand, and programme performance.</span></div>
                   <div class="help-summary-item"><strong>Administration</strong><span>Maintain university profile, users, audit history, notifications, and security.</span></div>
                 </div>
               </article>
@@ -2106,7 +1989,6 @@ Pre-approval reference: {{tracking_code}}</textarea>
                     <tbody>
                       <tr><td>Review a new applicant</td><td>Applications</td><td>Open applicant, check documents, request correction or verify documents and send the automatic offer letter.</td></tr>
                       <tr><td>Create programme</td><td>Programmes</td><td>Create New Programme, complete required fields, save draft or submit to KPT.</td></tr>
-                      <tr><td>Check performance</td><td>Reports</td><td>Review applications, countries, and programme performance.</td></tr>
                       <tr><td>Update access</td><td>User Management</td><td>Super Admin opens Edit to change role or account status.</td></tr>
                     </tbody>
                   </table>
@@ -2114,7 +1996,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
               </article>
             </section>
 
-            <section class="help-panel" data-help-panel="menu-guide" hidden data-keywords="help menu dashboard applications programmes reports profile users audit settings">
+            <section class="help-panel" data-help-panel="menu-guide" hidden data-keywords="help menu reports applications programmes profile users audit settings">
               <article class="panel help-card">
                 <div class="panel-head">
                   <div>
@@ -2126,10 +2008,9 @@ Pre-approval reference: {{tracking_code}}</textarea>
                   <table class="recent-table help-table">
                     <thead><tr><th>Menu</th><th>Purpose</th><th>Manage</th></tr></thead>
                     <tbody>
-                      <tr><td>Dashboard</td><td>Overview of active programmes, recent applications, deadlines, and activity.</td><td>Use as the daily landing view for priorities.</td></tr>
+                      <tr><td>Reports</td><td>Overview of active programmes, recent applications, deadlines, and activity.</td><td>Use as the daily landing view for priorities.</td></tr>
                       <tr><td>Applications</td><td>Full applicant list with filters, status tracking, and applicant detail pages.</td><td>Review documents, send requests, send automatic offer letters, and approve or reject.</td></tr>
                       <tr><td>Programmes</td><td>Programme list, KPT status, live status, application count, and programme details.</td><td>Create, submit, edit approved details, pause, archive, or go live.</td></tr>
-                      <tr><td>Reports</td><td>Application and performance reporting for Super Admin users.</td><td>Check applications by programme, top countries, and acceptance performance.</td></tr>
                       <tr><td>University Profile</td><td>Institution details, logo, contact person, and EduTourism participation details.</td><td>Edit profile or contact fields separately, then confirm changes.</td></tr>
                       <tr><td>User Management</td><td>Staff access, role assignment, and account status.</td><td>Only Super Admin can add users or edit role/status.</td></tr>
                       <tr><td>Audit Log</td><td>Administrative history across sessions and users.</td><td>Search and filter by user, action, entity, or date.</td></tr>
@@ -2152,7 +2033,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                   <div class="help-flow-item"><span class="status-chip blue">Applications</span><strong>Document Review &amp; Offer Letter -> Final Approval</strong><p>Review documents, request corrections if needed, and upload the offer letter in the first step. Final Approval starts once the applicant submits final documents.</p></div>
                   <div class="help-flow-item"><span class="status-chip amber">Programmes</span><strong>Draft -> Pending KPT Approval -> Approved -> Live</strong><p>Drafts can be edited or deleted. KPT-requested changes must be corrected and resubmitted. Approved programmes can go live.</p></div>
                   <div class="help-flow-item"><span class="status-chip green">Programmes</span><strong>Draft -> Pending KPT Approval -> Live</strong><p>KPT controls approval and launch. Universities can edit drafts, respond to requested changes, and archive live programmes while retaining historical applicant data.</p></div>
-                  <div class="help-flow-item"><span class="status-chip neutral">Users</span><strong>Super Admin controls access</strong><p>University Admin and Admissions Officer can work on operational areas, but cannot add users, edit roles, deactivate accounts, or view Reports.</p></div>
+                  <div class="help-flow-item"><span class="status-chip neutral">Users</span><strong>Super Admin controls access</strong><p>University Admin and Admissions Officer can work on operational areas, but cannot add users, edit roles, or deactivate accounts.</p></div>
                 </div>
               </article>
             </section>
@@ -2166,7 +2047,7 @@ Pre-approval reference: {{tracking_code}}</textarea>
                   </div>
                 </div>
                 <div class="programme-form-grid help-contact-grid">
-                  <label class="request-textbox"><span>Issue Type</span><select class="range-select" id="supportIssueType"><option>Application workflow</option><option>Programme management</option><option>User access</option><option>Reports</option><option>Technical issue</option></select></label>
+                  <label class="request-textbox"><span>Issue Type</span><select class="range-select" id="supportIssueType"><option>Application workflow</option><option>Programme management</option><option>User access</option><option>Technical issue</option></select></label>
                   <label class="request-textbox"><span>Priority</span><select class="range-select" id="supportPriority"><option>Normal</option><option>High</option><option>Urgent</option></select></label>
                   <label class="request-textbox programme-form-wide"><span>Subject</span><input type="text" id="supportSubject" placeholder="Briefly describe the issue"></label>
                   <label class="request-textbox programme-form-wide"><span>Message</span><textarea id="supportMessage" placeholder="Add details, affected tracking code, programme name, or screenshot notes"></textarea></label>
